@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Responsavel extends DefaultEntity {
@@ -24,6 +26,10 @@ public class Responsavel extends DefaultEntity {
     private String telefone;
 
     private String cargo;
+
+    @OneToOne
+    @JoinColumn(name = "id_nit", unique = true)
+    private Nit nit;
 
     public Long getIdResponsavel() {
         return idResponsavel;

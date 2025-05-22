@@ -3,14 +3,13 @@ package br.unitins.pibiti.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -40,15 +39,11 @@ public class Nit extends DefaultEntity {
     @Column(name = "foto_perfil")
     private String fotoPerfil;
 
-    @OneToOne
-    @JoinColumn(name = "id_responsavel", unique = true)
+    @OneToOne(mappedBy = "nit")
     private Responsavel responsavel;
 
-    @ManyToMany
-    @JoinTable(name = "servico_nit",
-                joinColumns = @JoinColumn(name = "id_nit"),
-                inverseJoinColumns = @JoinColumn(name = "id_servico"))
-    private List<ServicoFornecido> servicos;
+    @OneToMany(mappedBy = "nit", cascade = CascadeType.ALL)
+    private List<ServicoNit> servicos;
 
     public Long getIdNit() {
         return idNit;
@@ -116,5 +111,21 @@ public class Nit extends DefaultEntity {
 
     public void setFotoPerfil(String fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
+    }
+
+    public Responsavel getResponsavel() {
+        return responsavel;
+    }
+
+    public void setResponsavel(Responsavel responsavel) {
+        this.responsavel = responsavel;
+    }
+
+    public List<ServicoNit> getServicos() {
+        return servicos;
+    }
+
+    public void setServicos(List<ServicoNit> servicos) {
+        this.servicos = servicos;
     }
 }
