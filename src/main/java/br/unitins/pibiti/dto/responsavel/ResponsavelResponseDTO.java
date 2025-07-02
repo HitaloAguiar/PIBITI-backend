@@ -1,4 +1,4 @@
-package br.unitins.pibiti.dto;
+package br.unitins.pibiti.dto.responsavel;
 
 import br.unitins.pibiti.model.Responsavel;
 

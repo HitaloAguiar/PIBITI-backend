@@ -1,5 +1,6 @@
 package br.unitins.pibiti.model;
 
+import br.unitins.pibiti.dto.responsavel.ResponsavelDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +31,18 @@ public class Responsavel extends DefaultEntity {
     @OneToOne
     @JoinColumn(name = "id_nit", unique = true)
     private Nit nit;
+
+    public Responsavel() {
+    }
+
+    public Responsavel(ResponsavelDTO responsavelDTO) {
+
+        this.nomeCompleto = responsavelDTO.nomeCompleto();
+        this.cpf = responsavelDTO.cpf();
+        this.email = responsavelDTO.email();
+        this.telefone = responsavelDTO.telefone();
+        this.cargo = responsavelDTO.cargo();
+    }
 
     public Long getIdResponsavel() {
         return idResponsavel;
