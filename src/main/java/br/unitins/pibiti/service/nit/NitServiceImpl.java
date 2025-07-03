@@ -51,10 +51,16 @@ public class NitServiceImpl implements NitService {
         nit.setPrivacidade(nitDTO.privacidade());
 
         nit.setSenha(nitDTO.senha());
-
-        nit.setResponsavel(new Responsavel(nitDTO.responsavelDTO()));
-
+        
         nitRepository.persist(nit);
+
+        Responsavel responsavel = new Responsavel(nitDTO.responsavelDTO());        
+        
+        responsavel.setNit(nit);
+
+        responsavelRepository.persist(responsavel);
+        
+        nit.setResponsavel(responsavel);
 
         return new NitResponseDTO(nit);
     }

@@ -87,4 +87,12 @@ public class Responsavel extends DefaultEntity {
     public void setCargo(String cargo) {
         this.cargo = cargo;
     }
+
+    public Nit getNit() {
+        return nit;
+    }
+
+    public void setNit(Nit nit) {
+        this.nit = nit;
+    }
 }
