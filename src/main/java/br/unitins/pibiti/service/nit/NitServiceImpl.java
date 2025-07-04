@@ -49,8 +49,6 @@ public class NitServiceImpl implements NitService {
         nit.setIct(nitDTO.ict());
 
         nit.setPrivacidade(nitDTO.privacidade());
-
-        nit.setSenha(nitDTO.senha());
         
         nitRepository.persist(nit);
 
@@ -82,8 +80,6 @@ public class NitServiceImpl implements NitService {
         nit.setIct(nitDTO.ict());
 
         nit.setPrivacidade(nitDTO.privacidade());
-
-        nit.setSenha(nitDTO.senha());
 
         Responsavel responsavel = responsavelRepository.findById(nit.getResponsavel().getIdResponsavel());
 
