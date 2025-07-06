@@ -1,5 +1,7 @@
 package br.unitins.pibiti.service.nit;
 
+import java.util.Set;
+
 import br.unitins.pibiti.dto.nit.NitDTO;
 import br.unitins.pibiti.dto.nit.NitResponseDTO;
 import br.unitins.pibiti.dto.responsavel.ResponsavelDTO;
@@ -10,6 +12,9 @@ import br.unitins.pibiti.repository.ResponsavelRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
@@ -20,6 +25,9 @@ public class NitServiceImpl implements NitService {
 
     @Inject
     ResponsavelRepository responsavelRepository;
+
+    @Inject
+    Validator validator;
 
     @Override
     public NitResponseDTO getNit(Long id) {
@@ -34,7 +42,10 @@ public class NitServiceImpl implements NitService {
 
     @Override
     @Transactional
-    public NitResponseDTO cadastrar(NitDTO nitDTO) {
+    public NitResponseDTO cadastrar(NitDTO nitDTO) throws ConstraintViolationException {
+
+        validar(nitDTO);
+        validar(nitDTO.responsavelDTO());
 
         Nit nit = new Nit();
 
@@ -65,7 +76,10 @@ public class NitServiceImpl implements NitService {
 
     @Override
     @Transactional
-    public NitResponseDTO atualizar(Long id, NitDTO nitDTO) {
+    public NitResponseDTO atualizar(Long id, NitDTO nitDTO) throws ConstraintViolationException {
+
+        validar(nitDTO);
+        validar(nitDTO.responsavelDTO());
 
         Nit nit = nitRepository.findById(id);
 
@@ -101,5 +115,21 @@ public class NitServiceImpl implements NitService {
         responsavel.setCargo(responsavelDTO.cargo());
 
         return responsavel;
+    }
+
+    private void validar(NitDTO nitDTO) throws ConstraintViolationException {
+
+        Set<ConstraintViolation<NitDTO>> violations = validator.validate(nitDTO);
+
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
+    }
+
+    private void validar(ResponsavelDTO responsavelDTO) throws ConstraintViolationException {
+
+        Set<ConstraintViolation<ResponsavelDTO>> violations = validator.validate(responsavelDTO);
+
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
     }
 }
