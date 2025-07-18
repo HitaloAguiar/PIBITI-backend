@@ -9,12 +9,14 @@ import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.Responsavel;
 import br.unitins.pibiti.repository.NitRepository;
 import br.unitins.pibiti.repository.ResponsavelRepository;
+import br.unitins.pibiti.service.auth.HashService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
+import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
@@ -28,6 +30,9 @@ public class NitServiceImpl implements NitService {
 
     @Inject
     Validator validator;
+
+    @Inject
+    HashService hashService;
 
     @Override
     public NitResponseDTO getNit(Long id) {
@@ -47,6 +52,12 @@ public class NitServiceImpl implements NitService {
         validar(nitDTO);
         validar(nitDTO.responsavelDTO());
 
+        String senha = nitDTO.senhaDTO().senha();
+        String confirmarSenha = nitDTO.senhaDTO().confirmarSenha();
+
+        if (!senha.equals(confirmarSenha))
+            throw new BadRequestException("Os campos nova senha e confirmação da senha não correspondem");
+
         Nit nit = new Nit();
 
         nit.setCnpj(nitDTO.cnpj());
@@ -60,6 +71,8 @@ public class NitServiceImpl implements NitService {
         nit.setIct(nitDTO.ict());
 
         nit.setPrivacidade(nitDTO.privacidade());
+
+        nit.setSenha(hashService.getHashSenha(senha));
         
         nitRepository.persist(nit);
 
@@ -100,6 +113,22 @@ public class NitServiceImpl implements NitService {
         nit.setResponsavel(atualizarResponsavel(responsavel, nitDTO.responsavelDTO()));
 
         return new NitResponseDTO(nit);
+    }
+
+    @Override
+    public Nit getByLoginAndSenha(String login, String senha) {
+
+        Nit nit;
+
+        if (login.contains("@")) {
+
+            nit = nitRepository.findByEmailAndSenha(login, senha);
+        } else {
+            
+            nit = nitRepository.findByCnpjAndSenha(login, senha);
+        }
+
+        return nit;
     }
 
     private Responsavel atualizarResponsavel(Responsavel responsavel, ResponsavelDTO responsavelDTO) {

@@ -28,7 +28,10 @@ public record NitDTO(
     Boolean privacidade,
 
     @NotNull
-    ResponsavelDTO responsavelDTO
+    ResponsavelDTO responsavelDTO,
+
+    @NotNull
+    SenhaDTO senhaDTO
 ) {
     
 }

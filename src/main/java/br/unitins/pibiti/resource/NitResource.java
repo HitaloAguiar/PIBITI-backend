@@ -10,6 +10,7 @@ import br.unitins.pibiti.dto.nit.NitResponseDTO;
 import br.unitins.pibiti.form.NitImageForm;
 import br.unitins.pibiti.service.file.NitFileService;
 import br.unitins.pibiti.service.nit.NitService;
+import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -39,6 +40,7 @@ public class NitResource {
 
     @GET
     @Path("/{id}")
+    @Authenticated
     public NitResponseDTO getNit(@PathParam("id") Long id) throws NotFoundException {
 
         return nitService.getNit(id);
