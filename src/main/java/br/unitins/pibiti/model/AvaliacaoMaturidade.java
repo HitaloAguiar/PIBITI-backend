@@ -16,7 +16,7 @@ public class AvaliacaoMaturidade extends DefaultEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAvaliacaoMaturidade;
 
-    private Double imc;
+    private Double img;
 
     @ManyToOne
     @JoinColumn(name = "id_nit")
@@ -26,12 +26,12 @@ public class AvaliacaoMaturidade extends DefaultEntity {
         return idAvaliacaoMaturidade;
     }
 
-    public Double getImc() {
-        return imc;
+    public Double getImg() {
+        return img;
     }
 
-    public void setImc(Double imc) {
-        this.imc = imc;
+    public void setImg(Double img) {
+        this.img = img;
     }
 
     public Nit getNit() {

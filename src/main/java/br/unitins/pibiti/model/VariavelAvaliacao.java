@@ -17,7 +17,7 @@ public class VariavelAvaliacao extends DefaultEntity {
     private Boolean selecionado;
 
     @ManyToOne
-    @JoinColumn(name = "id_variavel")
+    @JoinColumn(name = "id_variavel_nit")
     private Variavel variavel;
 
     @ManyToOne
