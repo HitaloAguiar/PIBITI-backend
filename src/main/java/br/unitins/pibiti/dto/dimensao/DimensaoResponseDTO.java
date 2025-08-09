@@ -1,8 +1,8 @@
 package br.unitins.pibiti.dto.dimensao;
 
 public record DimensaoResponseDTO(
-    String nome,
-    Double peso
+    String nome
+    // Double peso
 ) {
     
 }
