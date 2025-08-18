@@ -1,7 +1,7 @@
 package br.unitins.pibiti.model;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -42,8 +42,8 @@ public class Nit extends DefaultEntity {
     @OneToOne(mappedBy = "nit")
     private Responsavel responsavel;
 
-    @OneToMany(mappedBy = "nit", cascade = CascadeType.ALL)
-    private List<ServicoNit> servicos;
+    @OneToMany(mappedBy = "nit", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ServicoNit> servicos;
 
     public Long getIdNit() {
         return idNit;
@@ -121,11 +121,11 @@ public class Nit extends DefaultEntity {
         this.responsavel = responsavel;
     }
 
-    public List<ServicoNit> getServicos() {
+    public Set<ServicoNit> getServicos() {
         return servicos;
     }
 
-    public void setServicos(List<ServicoNit> servicos) {
+    public void setServicos(Set<ServicoNit> servicos) {
         this.servicos = servicos;
     }
 }

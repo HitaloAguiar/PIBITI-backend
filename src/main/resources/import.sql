@@ -91,3 +91,245 @@ INSERT INTO variavel_maturidade_nit (nome, peso, id_dimensao) VALUES ('Estar vin
 INSERT INTO servico_fornecido (nome) VALUES ('Avalia a patenteabilidade de invenções');
 INSERT INTO servico_fornecido (nome) VALUES ('Administra os processos de patentes');
 INSERT INTO servico_fornecido (nome) VALUES ('Negocia ou administra processos de licenciamento');
+
+
+-- Insert de Nit apenas para teste
+INSERT INTO nit (cnpj, email, telefone, ano_inicio_atividades, ict, privacidade, senha) VALUES ('45.738.018/8453-29', 'emailNit@gmail.com', '(82) 9860-0234', '2025-07-12', 'UNTINS', false, 'x6JkviFo/CZc/dYoTsn+KjkyXu9rqbOwZ89vC1horO3B+ZT2N9nhquEvkFxm2WZahBpo5wgui91vSF00c1BYPA==');
+INSERT INTO responsavel (nome_completo, cpf, email, telefone, cargo, id_nit) VALUES ('John Dev', '123.456.789-10', 'testeemail@gmail.com', '(84) 93485-2349', 'Diretor', 1);
+
+/* 
+
+{
+  "idNit": 1,
+  "servicosFornecidos": [
+    1, 3
+  ],
+  "variaveis": [
+    {
+      "idVariavel": 1,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 2,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 3,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 4,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 5,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 6,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 7,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 8,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 9,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 10,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 11,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 12,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 13,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 14,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 15,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 16,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 17,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 18,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 19,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 20,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 21,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 22,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 23,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 24,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 25,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 26,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 27,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 28,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 29,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 30,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 31,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 32,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 33,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 34,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 35,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 36,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 37,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 38,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 39,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 40,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 41,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 42,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 43,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 44,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 45,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 46,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 47,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 48,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 49,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 50,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 51,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 52,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 53,
+      "selecionado": 0
+    },
+    {
+      "idVariavel": 54,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 55,
+      "selecionado": 1
+    },
+    {
+      "idVariavel": 56,
+      "selecionado": 1
+    }
+  ]
+}
+
+*/

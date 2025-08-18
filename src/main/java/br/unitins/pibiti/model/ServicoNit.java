@@ -1,5 +1,7 @@
 package br.unitins.pibiti.model;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +14,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "servico_fornecido_nit")
 public class ServicoNit extends DefaultEntity {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_servico_nit")
@@ -25,6 +27,23 @@ public class ServicoNit extends DefaultEntity {
     @ManyToOne
     @JoinColumn(name = "id_nit")
     private Nit nit;
+
+    @Override
+    public boolean equals(Object o) {
+        
+        if (this == o)
+            return true;
+        if (!(o instanceof ServicoNit))
+            return false;
+        ServicoNit that = (ServicoNit) o;
+        return Objects.equals(nit, that.nit) &&
+                Objects.equals(servico, that.servico);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nit, servico);
+    }
 
     public Long getIdServicoNit() {
         return idServicoNit;
