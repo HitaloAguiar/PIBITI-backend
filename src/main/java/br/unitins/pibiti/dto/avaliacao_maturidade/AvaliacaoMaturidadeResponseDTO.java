@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.unitins.pibiti.dto.nit.NitResponseDTO;
+import br.unitins.pibiti.dto.variavel.VariavelResponseDTO;
 import br.unitins.pibiti.model.AvaliacaoMaturidade;
 import br.unitins.pibiti.model.DimensaoAvaliacao;
 
@@ -12,11 +13,12 @@ public record AvaliacaoMaturidadeResponseDTO(
     Long id,
     Double img,
     Map<String, Double> imds,
+    List<VariavelResponseDTO> variaveisSelecionadas,
     NitResponseDTO nit
 ) {
     
-    public AvaliacaoMaturidadeResponseDTO (AvaliacaoMaturidade avaliacaoMaturidade, List<DimensaoAvaliacao> listDimensaoAvaliacao) {
-        this(avaliacaoMaturidade.getIdAvaliacaoMaturidade(), avaliacaoMaturidade.getImg(), gerarMapImds(listDimensaoAvaliacao), new NitResponseDTO(avaliacaoMaturidade.getNit()));
+    public AvaliacaoMaturidadeResponseDTO (AvaliacaoMaturidade avaliacaoMaturidade, List<DimensaoAvaliacao> listDimensaoAvaliacao, List<VariavelResponseDTO> variaveisSelecionadas) {
+        this(avaliacaoMaturidade.getIdAvaliacaoMaturidade(), avaliacaoMaturidade.getImg(), gerarMapImds(listDimensaoAvaliacao), variaveisSelecionadas, new NitResponseDTO(avaliacaoMaturidade.getNit()));
     }
 
     private static Map<String, Double> gerarMapImds(List<DimensaoAvaliacao> listDimensaoAvaliacao) {

@@ -11,4 +11,9 @@ public interface AvaliacaoMaturidadeService {
     List<VariavelResponseDTO> getVariaveis();
 
     AvaliacaoMaturidadeResponseDTO cadastrarAvaliacaoMaturidade(AvaliacaoMaturidadeDTO avaliacaoMaturidadeDTO);
+
+    // Essas duas rotas serão para eventualmente fazer a funcionalidade de exportar o resultado da avaliação
+    byte[] criarRelatorioAvaliacao();
+
+    byte[] gerarPdf();
 }

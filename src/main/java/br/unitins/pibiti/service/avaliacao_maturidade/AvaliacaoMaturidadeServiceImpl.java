@@ -63,6 +63,8 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
     @Transactional
     public AvaliacaoMaturidadeResponseDTO cadastrarAvaliacaoMaturidade(AvaliacaoMaturidadeDTO avaliacaoMaturidadeDTO) {
 
+        List<Variavel> variaveisSelecionadas = new ArrayList<>();
+
         // -------------------- fazendo o calculo da maturidade ------------------------
         // //
 
@@ -74,6 +76,11 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
         for (VariavelAvaliacaoDTO variavelAvaliacaoDTO : avaliacaoMaturidadeDTO.variaveis()) {
 
             Variavel variavel = variavelRepository.findById(variavelAvaliacaoDTO.idVariavel());
+
+            if (variavelAvaliacaoDTO.selecionado() == 1) {
+
+                variaveisSelecionadas.add(variavel);
+            }
 
             imd = listImds.get(variavel.getDimensao().getIdDimensaoMaturidadeNIT());
 
@@ -140,7 +147,19 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
             variavelAvaliacaoRepository.persist(variavelAvaliacao);
         }
 
-        return new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao);
+        return new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, variaveisSelecionadas.stream().map(VariavelResponseDTO::new).toList());
+    }
+
+    @Override
+    public byte[] criarRelatorioAvaliacao() {
+
+        return null;
+    }
+
+    @Override
+    public byte[] gerarPdf() {
+
+        return null;
     }
 
     private void gerarListaServicos(List<Long> listaIdsServicos, Nit nit) {
