@@ -1,0 +1,33 @@
+package br.unitins.pibiti.dto.avaliacao_maturidade;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import br.unitins.pibiti.dto.nit.NitResponseDTO;
+import br.unitins.pibiti.model.AvaliacaoMaturidade;
+import br.unitins.pibiti.model.DimensaoAvaliacao;
+
+public record AvaliacaoMaturidadeResponseDTO(
+    Long id,
+    Double img,
+    Map<String, Double> imds,
+    NitResponseDTO nit
+) {
+    
+    public AvaliacaoMaturidadeResponseDTO (AvaliacaoMaturidade avaliacaoMaturidade, List<DimensaoAvaliacao> listDimensaoAvaliacao) {
+        this(avaliacaoMaturidade.getIdAvaliacaoMaturidade(), avaliacaoMaturidade.getImg(), gerarMapImds(listDimensaoAvaliacao), new NitResponseDTO(avaliacaoMaturidade.getNit()));
+    }
+
+    private static Map<String, Double> gerarMapImds(List<DimensaoAvaliacao> listDimensaoAvaliacao) {
+
+        Map<String, Double> map = new HashMap<>();
+
+        for (DimensaoAvaliacao dimensaoAvaliacao : listDimensaoAvaliacao) {
+            
+            map.put(dimensaoAvaliacao.getDimensao().getNome(), dimensaoAvaliacao.getImd());
+        }
+
+        return map;
+    }
+}
