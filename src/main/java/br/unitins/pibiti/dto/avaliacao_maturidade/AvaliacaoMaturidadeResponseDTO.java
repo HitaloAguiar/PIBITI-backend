@@ -1,5 +1,6 @@
 package br.unitins.pibiti.dto.avaliacao_maturidade;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +14,12 @@ public record AvaliacaoMaturidadeResponseDTO(
     Double img,
     Map<String, Double> imds,
     List<VariavelAvaliacaoResponseDTO> variaveisSelecionadas,
-    NitResponseDTO nit
+    NitResponseDTO nit,
+    LocalDate dataAvaliacao
 ) {
     
     public AvaliacaoMaturidadeResponseDTO (AvaliacaoMaturidade avaliacaoMaturidade, List<DimensaoAvaliacao> listDimensaoAvaliacao, List<VariavelAvaliacaoResponseDTO> variaveisSelecionadas) {
-        this(avaliacaoMaturidade.getIdAvaliacaoMaturidade(), avaliacaoMaturidade.getImg(), gerarMapImds(listDimensaoAvaliacao), variaveisSelecionadas, new NitResponseDTO(avaliacaoMaturidade.getNit()));
+        this(avaliacaoMaturidade.getIdAvaliacaoMaturidade(), avaliacaoMaturidade.getImg(), gerarMapImds(listDimensaoAvaliacao), variaveisSelecionadas, new NitResponseDTO(avaliacaoMaturidade.getNit()), avaliacaoMaturidade.getCreatedAt().toLocalDate());
     }
 
     private static Map<String, Double> gerarMapImds(List<DimensaoAvaliacao> listDimensaoAvaliacao) {

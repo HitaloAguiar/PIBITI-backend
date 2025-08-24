@@ -1,5 +1,6 @@
 package br.unitins.pibiti.service.avaliacao_maturidade;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,11 +57,13 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
     @Inject
     VariavelAvaliacaoRepository variavelAvaliacaoRepository;
 
+    @Override
     public List<VariavelResponseDTO> getVariaveis() {
 
         return variavelRepository.findAll().stream().map(VariavelResponseDTO::new).toList();
     }
 
+    @Override
     @Transactional
     public AvaliacaoMaturidadeResponseDTO cadastrarAvaliacaoMaturidade(AvaliacaoMaturidadeDTO avaliacaoMaturidadeDTO) {
 
@@ -151,6 +154,51 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
         });
 
         return new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, listVariaveisAvaliacao);
+    }
+
+    @Override
+    public AvaliacaoMaturidadeResponseDTO getLastAvaliacaoMaturidade(Long idNit) {
+
+        Nit nit = nitRepository.findById(idNit);
+
+        AvaliacaoMaturidade avaliacaoMaturidade = avaliacaoMaturidadeRepository.findByNit(nit);
+
+        List<DimensaoAvaliacao> listDimensaoAvaliacao = dimensaoAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
+
+        List<VariavelAvaliacao> listVariavelAvaliacao = variavelAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
+
+        List<VariavelAvaliacaoResponseDTO> listVariavelAvaliacaoResponseDTO = listVariavelAvaliacao.stream().map(variavelAvaliacao -> new VariavelAvaliacaoResponseDTO(variavelAvaliacao.getVariavel(), variavelAvaliacao.getSelecionado() == false? 0 : 1)).toList();
+
+        return new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, listVariavelAvaliacaoResponseDTO);
+    }
+
+    @Override
+    public Map<AvaliacaoMaturidadeResponseDTO, LocalDate> getDadosGráfico(Long idNit) {
+
+        return null;
+    }
+
+    @Override
+    public List<AvaliacaoMaturidadeResponseDTO> getHistoricoAvaliacoes(Long idNit) {
+
+        List<AvaliacaoMaturidadeResponseDTO> listAvaliacaoMaturidadeResponseDTO = new ArrayList<>();
+
+        Nit nit = nitRepository.findById(idNit);
+
+        List<AvaliacaoMaturidade> listAvaliacaoMaturidade = avaliacaoMaturidadeRepository.findListByNit(nit);
+
+        for (AvaliacaoMaturidade avaliacaoMaturidade : listAvaliacaoMaturidade) {
+            
+            List<DimensaoAvaliacao> listDimensaoAvaliacao = dimensaoAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
+
+            List<VariavelAvaliacao> listVariavelAvaliacao = variavelAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
+
+            List<VariavelAvaliacaoResponseDTO> listVariavelAvaliacaoResponseDTO = listVariavelAvaliacao.stream().map(variavelAvaliacao -> new VariavelAvaliacaoResponseDTO(variavelAvaliacao.getVariavel(), variavelAvaliacao.getSelecionado() == false? 0 : 1)).toList();
+
+            listAvaliacaoMaturidadeResponseDTO.add(new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, listVariavelAvaliacaoResponseDTO));
+        }
+
+        return listAvaliacaoMaturidadeResponseDTO;
     }
 
     @Override
