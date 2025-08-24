@@ -4,6 +4,7 @@ import java.util.Set;
 
 import br.unitins.pibiti.dto.nit.NitDTO;
 import br.unitins.pibiti.dto.nit.NitResponseDTO;
+import br.unitins.pibiti.dto.nit.NitUpdateDTO;
 import br.unitins.pibiti.dto.responsavel.ResponsavelDTO;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.Responsavel;
@@ -89,27 +90,20 @@ public class NitServiceImpl implements NitService {
 
     @Override
     @Transactional
-    public NitResponseDTO atualizar(Long id, NitDTO nitDTO) throws ConstraintViolationException {
+    public NitResponseDTO atualizar(Long id, NitUpdateDTO nitDTO) throws ConstraintViolationException {
 
         validar(nitDTO);
         validar(nitDTO.responsavelDTO());
 
         Nit nit = nitRepository.findById(id);
-
         nit.setCnpj(nitDTO.cnpj());
-
         nit.setEmail(nitDTO.email());
-
         nit.setTelefone(nitDTO.telefone());
-
         nit.setAnoInicioAtividades(nitDTO.anoInicioAtividades());
-
         nit.setIct(nitDTO.ict());
-
         nit.setPrivacidade(nitDTO.privacidade());
 
         Responsavel responsavel = responsavelRepository.findById(nit.getResponsavel().getIdResponsavel());
-
         nit.setResponsavel(atualizarResponsavel(responsavel, nitDTO.responsavelDTO()));
 
         return new NitResponseDTO(nit);
@@ -163,7 +157,6 @@ public class NitServiceImpl implements NitService {
     }
 
     private void validar(NitDTO nitDTO) throws ConstraintViolationException {
-
         Set<ConstraintViolation<NitDTO>> violations = validator.validate(nitDTO);
 
         if (!violations.isEmpty())
@@ -171,8 +164,14 @@ public class NitServiceImpl implements NitService {
     }
 
     private void validar(ResponsavelDTO responsavelDTO) throws ConstraintViolationException {
-
         Set<ConstraintViolation<ResponsavelDTO>> violations = validator.validate(responsavelDTO);
+
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
+    }
+
+    private void validar(NitUpdateDTO nitDTO) throws ConstraintViolationException {
+        Set<ConstraintViolation<NitUpdateDTO>> violations = validator.validate(nitDTO);
 
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
