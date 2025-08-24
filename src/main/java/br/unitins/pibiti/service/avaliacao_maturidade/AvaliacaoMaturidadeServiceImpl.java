@@ -8,6 +8,7 @@ import java.util.Map;
 import br.unitins.pibiti.dto.avaliacao_maturidade.AvaliacaoMaturidadeDTO;
 import br.unitins.pibiti.dto.avaliacao_maturidade.AvaliacaoMaturidadeResponseDTO;
 import br.unitins.pibiti.dto.avaliacao_maturidade.VariavelAvaliacaoDTO;
+import br.unitins.pibiti.dto.avaliacao_maturidade.VariavelAvaliacaoResponseDTO;
 import br.unitins.pibiti.dto.variavel.VariavelResponseDTO;
 import br.unitins.pibiti.model.AvaliacaoMaturidade;
 import br.unitins.pibiti.model.DimensaoAvaliacao;
@@ -63,10 +64,9 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
     @Transactional
     public AvaliacaoMaturidadeResponseDTO cadastrarAvaliacaoMaturidade(AvaliacaoMaturidadeDTO avaliacaoMaturidadeDTO) {
 
-        List<Variavel> variaveisSelecionadas = new ArrayList<>();
+        Map<Integer, Variavel> variaveisAvaliacao = new HashMap<>();
 
         // -------------------- fazendo o calculo da maturidade ------------------------
-        // //
 
         Double img = 0.0;
         Double imd;
@@ -77,10 +77,7 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
             Variavel variavel = variavelRepository.findById(variavelAvaliacaoDTO.idVariavel());
 
-            if (variavelAvaliacaoDTO.selecionado() == 1) {
-
-                variaveisSelecionadas.add(variavel);
-            }
+            variaveisAvaliacao.put(variavelAvaliacaoDTO.selecionado(), variavel);
 
             imd = listImds.get(variavel.getDimensao().getIdDimensaoMaturidadeNIT());
 
@@ -97,8 +94,7 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
         img = img * 5;
 
-        // -------------------------- salvando os dados
-        // ---------------------------------------- //
+        // -------------------------- salvando os dados ---------------------------------------- //
 
         // salvando os dados acerca dos Serviços do Nit
 
@@ -147,7 +143,14 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
             variavelAvaliacaoRepository.persist(variavelAvaliacao);
         }
 
-        return new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, variaveisSelecionadas.stream().map(VariavelResponseDTO::new).toList());
+        List<VariavelAvaliacaoResponseDTO> listVariaveisAvaliacao = new ArrayList<>();
+
+        variaveisAvaliacao.forEach((selecionado, variavel) -> {
+
+            listVariaveisAvaliacao.add(new VariavelAvaliacaoResponseDTO(variavel, selecionado));
+        });
+
+        return new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, listVariaveisAvaliacao);
     }
 
     @Override
