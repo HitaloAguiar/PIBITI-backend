@@ -1,6 +1,5 @@
 package br.unitins.pibiti.model;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;

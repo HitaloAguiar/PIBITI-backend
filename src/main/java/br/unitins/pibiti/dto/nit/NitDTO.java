@@ -1,7 +1,5 @@
 package br.unitins.pibiti.dto.nit;
 
-import java.time.LocalDate;
-
 import br.unitins.pibiti.dto.responsavel.ResponsavelDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -96,6 +96,7 @@ public class NitServiceImpl implements NitService {
         validar(nitDTO.responsavelDTO());
 
         Nit nit = nitRepository.findById(id);
+
         nit.setCnpj(nitDTO.cnpj());
         nit.setEmail(nitDTO.email());
         nit.setTelefone(nitDTO.telefone());
@@ -104,6 +105,7 @@ public class NitServiceImpl implements NitService {
         nit.setPrivacidade(nitDTO.privacidade());
 
         Responsavel responsavel = responsavelRepository.findById(nit.getResponsavel().getIdResponsavel());
+
         nit.setResponsavel(atualizarResponsavel(responsavel, nitDTO.responsavelDTO()));
 
         return new NitResponseDTO(nit);
@@ -157,6 +159,7 @@ public class NitServiceImpl implements NitService {
     }
 
     private void validar(NitDTO nitDTO) throws ConstraintViolationException {
+
         Set<ConstraintViolation<NitDTO>> violations = validator.validate(nitDTO);
 
         if (!violations.isEmpty())
@@ -164,6 +167,7 @@ public class NitServiceImpl implements NitService {
     }
 
     private void validar(ResponsavelDTO responsavelDTO) throws ConstraintViolationException {
+
         Set<ConstraintViolation<ResponsavelDTO>> violations = validator.validate(responsavelDTO);
 
         if (!violations.isEmpty())
