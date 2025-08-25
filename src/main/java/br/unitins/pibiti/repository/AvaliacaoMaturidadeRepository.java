@@ -32,4 +32,11 @@ public class AvaliacaoMaturidadeRepository implements PanacheRepository<Avaliaca
 
         return find("nit = ?1", nit).list();
     }
+
+    public AvaliacaoMaturidade findById(String id) {
+        if (id == null)
+            return null;
+
+        return find("idAvaliacaoMaturidade = ?1", id).firstResult();
+    }
 }

@@ -217,6 +217,20 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
         return null;
     }
 
+    @Override
+    public AvaliacaoMaturidadeResponseDTO getAvaliacaoMaturidade(Long idAvaliacao) {
+
+        AvaliacaoMaturidade avaliacaoMaturidade = avaliacaoMaturidadeRepository.findById(idAvaliacao);
+
+        List<DimensaoAvaliacao> listDimensaoAvaliacao = dimensaoAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
+
+        List<VariavelAvaliacao> listVariavelAvaliacao = variavelAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
+
+        List<VariavelAvaliacaoResponseDTO> listVariavelAvaliacaoResponseDTO = listVariavelAvaliacao.stream().map(variavelAvaliacao -> new VariavelAvaliacaoResponseDTO(variavelAvaliacao.getVariavel(), variavelAvaliacao.getSelecionado() == false? 0 : 1)).toList();
+
+        return new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, listVariavelAvaliacaoResponseDTO);
+    }
+
     private void gerarListaServicos(List<Long> listaIdsServicos, Nit nit) {
         // Converte ids para entidades
         List<ServicoFornecido> servicosFornecidos = listaIdsServicos.stream()

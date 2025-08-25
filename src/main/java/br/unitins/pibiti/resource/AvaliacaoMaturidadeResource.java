@@ -60,6 +60,13 @@ public class AvaliacaoMaturidadeResource {
         return avaliacaoMaturidadeService.getHistoricoAvaliacoes(id);
     }
 
+    @GET
+    @Path("/avaliacao-maturidade/{id}")
+    @Authenticated
+    public AvaliacaoMaturidadeResponseDTO geAvaliacaoMaturidade(@PathParam("id") Long id) {
+        return avaliacaoMaturidadeService.getAvaliacaoMaturidade(id);
+    }
+
     @POST
     @Path("/cadastrar-avaliacao-maturidade")
     @Authenticated
