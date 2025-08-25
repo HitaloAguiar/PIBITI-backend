@@ -1,12 +1,12 @@
 package br.unitins.pibiti.service.avaliacao_maturidade;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import br.unitins.pibiti.dto.avaliacao_maturidade.AvaliacaoMaturidadeDTO;
+import br.unitins.pibiti.dto.avaliacao_maturidade.AvaliacaoMaturidadeGraficoResponseDTO;
 import br.unitins.pibiti.dto.avaliacao_maturidade.AvaliacaoMaturidadeResponseDTO;
 import br.unitins.pibiti.dto.avaliacao_maturidade.VariavelAvaliacaoDTO;
 import br.unitins.pibiti.dto.avaliacao_maturidade.VariavelAvaliacaoResponseDTO;
@@ -161,7 +161,7 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
         Nit nit = nitRepository.findById(idNit);
 
-        AvaliacaoMaturidade avaliacaoMaturidade = avaliacaoMaturidadeRepository.findByNit(nit);
+        AvaliacaoMaturidade avaliacaoMaturidade = avaliacaoMaturidadeRepository.findByNitAndLastInserted(nit);
 
         List<DimensaoAvaliacao> listDimensaoAvaliacao = dimensaoAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
 
@@ -173,9 +173,13 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
     }
 
     @Override
-    public Map<AvaliacaoMaturidadeResponseDTO, LocalDate> getDadosGráfico(Long idNit) {
+    public List<AvaliacaoMaturidadeGraficoResponseDTO> getDadosGrafico(Long idNit) {
 
-        return null;
+        Nit nit = nitRepository.findById(idNit);
+
+        List<AvaliacaoMaturidade> avaliacoes = avaliacaoMaturidadeRepository.findListByNit(nit);
+
+        return avaliacoes.stream().map(AvaliacaoMaturidadeGraficoResponseDTO::new).toList();
     }
 
     @Override

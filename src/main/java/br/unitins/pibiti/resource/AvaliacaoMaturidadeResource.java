@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.unitins.pibiti.application.Result;
 import br.unitins.pibiti.dto.avaliacao_maturidade.AvaliacaoMaturidadeDTO;
+import br.unitins.pibiti.dto.avaliacao_maturidade.AvaliacaoMaturidadeGraficoResponseDTO;
 import br.unitins.pibiti.dto.avaliacao_maturidade.AvaliacaoMaturidadeResponseDTO;
 import br.unitins.pibiti.dto.variavel.VariavelResponseDTO;
 import br.unitins.pibiti.service.avaliacao_maturidade.AvaliacaoMaturidadeService;
@@ -41,6 +42,14 @@ public class AvaliacaoMaturidadeResource {
     public AvaliacaoMaturidadeResponseDTO getLastAvaliacaoMaturidade(@PathParam("id") Long id) {
 
         return avaliacaoMaturidadeService.getLastAvaliacaoMaturidade(id);
+    }
+
+    @GET
+    @Path("/dados-grafico/{id}")
+    @Authenticated
+    public List<AvaliacaoMaturidadeGraficoResponseDTO> getDadosGrafico(@PathParam("id") Long id) {
+
+        return avaliacaoMaturidadeService.getDadosGrafico(id);
     }
 
     @GET

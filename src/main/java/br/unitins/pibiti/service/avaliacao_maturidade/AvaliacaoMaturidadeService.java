@@ -1,10 +1,9 @@
 package br.unitins.pibiti.service.avaliacao_maturidade;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 import br.unitins.pibiti.dto.avaliacao_maturidade.AvaliacaoMaturidadeDTO;
+import br.unitins.pibiti.dto.avaliacao_maturidade.AvaliacaoMaturidadeGraficoResponseDTO;
 import br.unitins.pibiti.dto.avaliacao_maturidade.AvaliacaoMaturidadeResponseDTO;
 import br.unitins.pibiti.dto.variavel.VariavelResponseDTO;
 
@@ -16,7 +15,7 @@ public interface AvaliacaoMaturidadeService {
 
     AvaliacaoMaturidadeResponseDTO getLastAvaliacaoMaturidade(Long idNit);
 
-    Map<AvaliacaoMaturidadeResponseDTO, LocalDate> getDadosGráfico(Long idNit);
+    List<AvaliacaoMaturidadeGraficoResponseDTO> getDadosGrafico(Long idNit);
 
     List<AvaliacaoMaturidadeResponseDTO> getHistoricoAvaliacoes(Long idNit);
 
