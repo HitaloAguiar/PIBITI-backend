@@ -4,7 +4,7 @@ import java.util.List;
 
 public record AvaliacaoMaturidadeDTO(
     Long idNit,
-    List<Long> servicosFornecidos,
+    //List<Long> servicosFornecidos,
     List<VariavelAvaliacaoDTO> variaveis
 ) {
     

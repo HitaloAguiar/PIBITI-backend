@@ -97,7 +97,7 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
         Nit nit = nitRepository.findById(avaliacaoMaturidadeDTO.idNit());
 
-        gerarListaServicos(avaliacaoMaturidadeDTO.servicosFornecidos(), nit);
+        //gerarListaServicos(avaliacaoMaturidadeDTO.servicosFornecidos(), nit);
 
         nitRepository.persist(nit);
 
