@@ -15,6 +15,6 @@ public class VariavelAvaliacaoRepository implements PanacheRepository<VariavelAv
         if (avaliacaoMaturidade == null)
             return null;
 
-        return find("avaliacao = ?1", avaliacaoMaturidade).list();
+        return find("avaliacao = ?1 ORDER BY idVariavelAvaliacao ASC", avaliacaoMaturidade).list();
     }
 }

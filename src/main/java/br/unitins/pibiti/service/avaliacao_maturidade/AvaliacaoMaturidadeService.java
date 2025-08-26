@@ -13,6 +13,10 @@ public interface AvaliacaoMaturidadeService {
 
     AvaliacaoMaturidadeResponseDTO cadastrarAvaliacaoMaturidade(AvaliacaoMaturidadeDTO avaliacaoMaturidadeDTO);
 
+    AvaliacaoMaturidadeResponseDTO atualizarAvaliacaoMaturidade(Long idAvaliacao, AvaliacaoMaturidadeDTO avaliacaoMaturidadeDTO);
+
+    void deletarAvaliacaoMaturidade(Long idAvaliacao);
+
     AvaliacaoMaturidadeResponseDTO getLastAvaliacaoMaturidade(Long idNit);
 
     List<AvaliacaoMaturidadeGraficoResponseDTO> getDadosGrafico(Long idNit);

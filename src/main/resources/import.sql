@@ -94,16 +94,13 @@ INSERT INTO servico_fornecido (nome) VALUES ('Negocia ou administra processos de
 
 
 -- Insert de Nit apenas para teste
-INSERT INTO nit (cnpj, email, telefone, ano_inicio_atividades, ict, privacidade, senha) VALUES ('45.738.018/8453-29', 'emailNit@gmail.com', '(82) 9860-0234', '2025-07-12', 'UNTINS', false, 'x6JkviFo/CZc/dYoTsn+KjkyXu9rqbOwZ89vC1horO3B+ZT2N9nhquEvkFxm2WZahBpo5wgui91vSF00c1BYPA==');
+INSERT INTO nit (cnpj, email, telefone, ano_inicio_atividades, ict, privacidade, senha) VALUES ('45.738.018/8453-29', 'emailNit@gmail.com', '(82) 9860-0234', 2025, 'UNTINS', false, 'x6JkviFo/CZc/dYoTsn+KjkyXu9rqbOwZ89vC1horO3B+ZT2N9nhquEvkFxm2WZahBpo5wgui91vSF00c1BYPA==');
 INSERT INTO responsavel (nome_completo, cpf, email, telefone, cargo, id_nit) VALUES ('John Dev', '123.456.789-10', 'testeemail@gmail.com', '(84) 93485-2349', 'Diretor', 1);
 
 /* 
 
 {
   "idNit": 1,
-  "servicosFornecidos": [
-    1, 3
-  ],
   "variaveis": [
     {
       "idVariavel": 1,

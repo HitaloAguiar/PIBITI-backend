@@ -29,6 +29,7 @@ import br.unitins.pibiti.repository.VariavelRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
 public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeService {
@@ -67,8 +68,6 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
     @Transactional
     public AvaliacaoMaturidadeResponseDTO cadastrarAvaliacaoMaturidade(AvaliacaoMaturidadeDTO avaliacaoMaturidadeDTO) {
 
-        Map<Integer, Variavel> variaveisAvaliacao = new HashMap<>();
-
         // -------------------- fazendo o calculo da maturidade ------------------------
 
         Double img = 0.0;
@@ -79,8 +78,6 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
         for (VariavelAvaliacaoDTO variavelAvaliacaoDTO : avaliacaoMaturidadeDTO.variaveis()) {
 
             Variavel variavel = variavelRepository.findById(variavelAvaliacaoDTO.idVariavel());
-
-            variaveisAvaliacao.put(variavelAvaliacaoDTO.selecionado(), variavel);
 
             imd = listImds.get(variavel.getDimensao().getIdDimensaoMaturidadeNIT());
 
@@ -135,6 +132,8 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
         // salvando as variáveis que foram selecionadas para fins de histórico
 
+        List<VariavelAvaliacao> listVariavelAvaliacao = new ArrayList<>();
+
         for (VariavelAvaliacaoDTO variavelAvaliacaoDTO : avaliacaoMaturidadeDTO.variaveis()) {
 
             VariavelAvaliacao variavelAvaliacao = new VariavelAvaliacao();
@@ -144,16 +143,132 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
             variavelAvaliacao.setSelecionado(variavelAvaliacaoDTO.selecionado() == 0 ? false : true);
 
             variavelAvaliacaoRepository.persist(variavelAvaliacao);
+
+            listVariavelAvaliacao.add(variavelAvaliacao);
         }
 
-        List<VariavelAvaliacaoResponseDTO> listVariaveisAvaliacao = new ArrayList<>();
+        return new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, listVariavelAvaliacao.stream().map(VariavelAvaliacaoResponseDTO::new).toList());
+    }
 
-        variaveisAvaliacao.forEach((selecionado, variavel) -> {
+    @Override
+    @Transactional
+    public AvaliacaoMaturidadeResponseDTO atualizarAvaliacaoMaturidade(Long idAvaliacao, AvaliacaoMaturidadeDTO avaliacaoMaturidadeDTO) {
 
-            listVariaveisAvaliacao.add(new VariavelAvaliacaoResponseDTO(variavel, selecionado));
-        });
+        // -------------------- fazendo o calculo da maturidade ------------------------
 
-        return new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, listVariaveisAvaliacao);
+        Double img = 0.0;
+        Double imd;
+
+        Map<Long, Double> listImds = new HashMap<>();
+
+        for (VariavelAvaliacaoDTO variavelAvaliacaoDTO : avaliacaoMaturidadeDTO.variaveis()) {
+
+            Variavel variavel = variavelRepository.findById(variavelAvaliacaoDTO.idVariavel());
+
+            imd = listImds.get(variavel.getDimensao().getIdDimensaoMaturidadeNIT());
+
+            if (imd == null) {
+
+                imd = 0.0;
+            }
+
+            img += (variavelAvaliacaoDTO.selecionado() * variavel.getPeso()) * variavel.getDimensao().getPeso();
+            imd += (variavelAvaliacaoDTO.selecionado() * variavel.getPeso()) * variavel.getDimensao().getPeso();
+
+            listImds.put(variavel.getDimensao().getIdDimensaoMaturidadeNIT(), imd);
+        }
+
+        img = img * 5;
+
+        // -------------------------- salvando os dados ---------------------------------------- //
+
+        // salvando os dados acerca dos Serviços do Nit
+
+        Nit nit = nitRepository.findById(avaliacaoMaturidadeDTO.idNit());
+
+        //gerarListaServicos(avaliacaoMaturidadeDTO.servicosFornecidos(), nit);
+
+        // nitRepository.persist(nit);
+
+        // salvando o IMG (Índice de Maturidade Geral) total da avaliação
+
+        AvaliacaoMaturidade avaliacaoMaturidade = avaliacaoMaturidadeRepository.findById(idAvaliacao);
+
+        if (avaliacaoMaturidade == null)
+            throw new NotFoundException("Nenhuma avaliação encontrada");
+
+        avaliacaoMaturidade.setImg(img);
+        avaliacaoMaturidade.setNit(nit);
+
+        avaliacaoMaturidadeRepository.persist(avaliacaoMaturidade);
+
+        // salvando o IMD (Índice de Maturidade da Dimensão) de cada uma das dimensões
+
+        List<DimensaoAvaliacao> listDimensaoAvaliacao = dimensaoAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
+
+        for (DimensaoAvaliacao dimensaoAvaliacao : listDimensaoAvaliacao) {
+            
+            dimensaoAvaliacao.setImd(listImds.get(dimensaoAvaliacao.getIdDimensaoAvaliacaoNit()) * 5);
+
+            dimensaoAvaliacaoRepository.persist(dimensaoAvaliacao);
+        }
+
+        // salvando as variáveis que foram selecionadas para fins de histórico
+
+        List<VariavelAvaliacao> listVariaveisAvaliacao = variavelAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
+
+        for (VariavelAvaliacao variavelAvaliacao : listVariaveisAvaliacao) {
+            
+            for (VariavelAvaliacaoDTO variavelAvaliacaoDTO : avaliacaoMaturidadeDTO.variaveis()) {
+
+                if (variavelAvaliacaoDTO.idVariavel() == variavelAvaliacao.getIdVariavelAvaliacao()) {
+
+                    variavelAvaliacao.setSelecionado(variavelAvaliacaoDTO.selecionado() == 0 ? false : true);
+    
+                    variavelAvaliacaoRepository.persist(variavelAvaliacao);
+                }
+
+            }
+        }
+
+        // listVariaveisAvaliacao.sort(Comparator.comparing(VariavelAvaliacao::getIdVariavelAvaliacao));
+
+        return new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, listVariaveisAvaliacao.stream().map(VariavelAvaliacaoResponseDTO::new).toList());
+    }
+
+    @Override
+    @Transactional
+    public void deletarAvaliacaoMaturidade(Long idAvaliacao) {
+
+        if (idAvaliacao == null)
+            throw new IllegalArgumentException("Id inválido");
+
+        AvaliacaoMaturidade avaliacaoMaturidade = avaliacaoMaturidadeRepository.findById(idAvaliacao);
+
+        if (avaliacaoMaturidade == null)
+            throw new NotFoundException("Nenhuma avaliação encontrada");
+
+        List<DimensaoAvaliacao> listDimensaoAvaliacao = dimensaoAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
+
+        for (DimensaoAvaliacao dimensaoAvaliacao : listDimensaoAvaliacao) {
+            
+            if (dimensaoAvaliacaoRepository.isPersistent(dimensaoAvaliacao))
+                dimensaoAvaliacaoRepository.delete(dimensaoAvaliacao);
+        }
+
+        List<VariavelAvaliacao> listVariavelAvaliacao = variavelAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
+
+        for (VariavelAvaliacao variavelAvaliacao : listVariavelAvaliacao) {
+            
+            if (variavelAvaliacaoRepository.isPersistent(variavelAvaliacao))
+                variavelAvaliacaoRepository.delete(variavelAvaliacao);
+        }
+
+        if (avaliacaoMaturidadeRepository.isPersistent(avaliacaoMaturidade))
+            avaliacaoMaturidadeRepository.delete(avaliacaoMaturidade);
+
+        else
+            throw new NotFoundException("Nenhuma avaliação encontrada");
     }
 
     @Override
@@ -161,7 +276,13 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
         Nit nit = nitRepository.findById(idNit);
 
+        if (nit == null)
+            throw new NotFoundException("Não existe um NIT com esse ID");
+
         AvaliacaoMaturidade avaliacaoMaturidade = avaliacaoMaturidadeRepository.findByNitAndLastInserted(nit);
+
+        if (avaliacaoMaturidade == null)
+            throw new NotFoundException("Não existe nenhuma avaliação cadastrada");
 
         List<DimensaoAvaliacao> listDimensaoAvaliacao = dimensaoAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
 
@@ -177,7 +298,13 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
         Nit nit = nitRepository.findById(idNit);
 
+        if (nit == null)
+            throw new NotFoundException("Não existe um NIT com esse ID");
+
         List<AvaliacaoMaturidade> avaliacoes = avaliacaoMaturidadeRepository.findListByNit(nit);
+
+        if (avaliacoes.isEmpty())
+            throw new NotFoundException("Não existe nenhuma avaliação cadastrada");
 
         return avaliacoes.stream().map(AvaliacaoMaturidadeGraficoResponseDTO::new).toList();
     }
@@ -189,7 +316,13 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
         Nit nit = nitRepository.findById(idNit);
 
+        if (nit == null)
+            throw new NotFoundException("Não existe um NIT com esse ID");
+
         List<AvaliacaoMaturidade> listAvaliacaoMaturidade = avaliacaoMaturidadeRepository.findListByNit(nit);
+
+        if (listAvaliacaoMaturidade.isEmpty())
+            throw new NotFoundException("Não existe nenhuma avaliação cadastrada");
 
         for (AvaliacaoMaturidade avaliacaoMaturidade : listAvaliacaoMaturidade) {
             
@@ -221,6 +354,9 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
     public AvaliacaoMaturidadeResponseDTO getAvaliacaoMaturidade(Long idAvaliacao) {
 
         AvaliacaoMaturidade avaliacaoMaturidade = avaliacaoMaturidadeRepository.findById(idAvaliacao);
+
+        if (avaliacaoMaturidade == null)
+            throw new NotFoundException("Avaliação não encontrada");
 
         List<DimensaoAvaliacao> listDimensaoAvaliacao = dimensaoAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
 

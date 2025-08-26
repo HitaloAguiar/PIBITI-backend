@@ -1,6 +1,5 @@
 package br.unitins.pibiti.dto.nit;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import br.unitins.pibiti.dto.responsavel.ResponsavelResponseDTO;
