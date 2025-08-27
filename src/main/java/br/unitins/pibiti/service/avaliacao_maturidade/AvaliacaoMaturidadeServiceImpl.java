@@ -59,8 +59,6 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
     @Inject
     VariavelAvaliacaoRepository variavelAvaliacaoRepository;
 
-    private Sort sort = Sort.by("id").ascending();
-
     @Override
     public List<VariavelResponseDTO> getVariaveis() {
 
@@ -105,7 +103,7 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
         //gerarListaServicos(avaliacaoMaturidadeDTO.servicosFornecidos(), nit);
 
-        nitRepository.persist(nit);
+        // nitRepository.persist(nit);
 
         // salvando o IMG (Índice de Maturidade Geral) total da avaliação
 
@@ -113,6 +111,30 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
         avaliacaoMaturidade.setImg(img);
         avaliacaoMaturidade.setNit(nit);
+
+        int imgArredondado = (int) Math.round(img);
+
+        switch (imgArredondado) {
+            case 5:
+                avaliacaoMaturidade.setNivelMaturidade("Consolidado");
+                break;
+            
+            case 4:
+                avaliacaoMaturidade.setNivelMaturidade("Maduro");
+                break;
+            
+            case 3:
+                avaliacaoMaturidade.setNivelMaturidade("Desenvolvido");
+                break;
+            
+            case 2:
+                avaliacaoMaturidade.setNivelMaturidade("Emergente");
+                break;
+        
+            default:
+                avaliacaoMaturidade.setNivelMaturidade("Inicial");
+                break;
+        }
 
         avaliacaoMaturidadeRepository.persist(avaliacaoMaturidade);
 
@@ -202,6 +224,30 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
         avaliacaoMaturidade.setImg(img);
         avaliacaoMaturidade.setNit(nit);
+
+        int imgArredondado = (int) Math.round(img);
+
+        switch (imgArredondado) {
+            case 5:
+                avaliacaoMaturidade.setNivelMaturidade("Consolidado");
+                break;
+            
+            case 4:
+                avaliacaoMaturidade.setNivelMaturidade("Maduro");
+                break;
+            
+            case 3:
+                avaliacaoMaturidade.setNivelMaturidade("Desenvolvido");
+                break;
+            
+            case 2:
+                avaliacaoMaturidade.setNivelMaturidade("Emergente");
+                break;
+        
+            default:
+                avaliacaoMaturidade.setNivelMaturidade("Inicial");
+                break;
+        }
 
         avaliacaoMaturidadeRepository.persist(avaliacaoMaturidade);
 
@@ -299,12 +345,14 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
     @Override
     public List<AvaliacaoMaturidadeGraficoResponseDTO> getDadosGrafico(Long idNit) {
 
+        Sort sort = Sort.by("idAvaliacaoMaturidade").descending();
+
         Nit nit = nitRepository.findById(idNit);
 
         if (nit == null)
             throw new NotFoundException("Não existe um NIT com esse ID");
 
-        List<AvaliacaoMaturidade> avaliacoes = avaliacaoMaturidadeRepository.findListByNit(nit).list();
+        List<AvaliacaoMaturidade> avaliacoes = avaliacaoMaturidadeRepository.findListByNit(nit, sort).list();
 
         if (avaliacoes.isEmpty())
             throw new NotFoundException("Não existe nenhuma avaliação cadastrada");
@@ -313,14 +361,62 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
     }
 
     @Override
-    public List<AvaliacaoMaturidadeResponseDTO> getHistoricoAvaliacoes(Long idNit, int page, int pageSize) {
+    public List<AvaliacaoMaturidadeResponseDTO> getHistoricoAvaliacoes(Long idNit, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
 
         Nit nit = nitRepository.findById(idNit);
 
         if (nit == null)
             throw new NotFoundException("Não existe um NIT com esse ID");
 
-        List<AvaliacaoMaturidade> listAvaliacaoMaturidade = avaliacaoMaturidadeRepository.findListByNit(nit).page(page, pageSize).list();
+        if (isAscending) {
+            
+            sort = Sort.by("idAvaliacaoMaturidade").ascending();
+        } else {
+
+            sort = Sort.by("idAvaliacaoMaturidade").descending();
+        }
+
+        List<AvaliacaoMaturidade> listAvaliacaoMaturidade = avaliacaoMaturidadeRepository.findListByNit(nit, sort).page(page, pageSize).list();
+
+        if (listAvaliacaoMaturidade.isEmpty())
+            throw new NotFoundException("Não existe nenhuma avaliação cadastrada");
+
+        List<AvaliacaoMaturidadeResponseDTO> listAvaliacaoMaturidadeResponseDTO = listAvaliacaoMaturidade.stream()
+        .map(avaliacaoMaturidade -> {
+
+            List<DimensaoAvaliacao> listDimensaoAvaliacao = dimensaoAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
+
+            List<VariavelAvaliacao> listVariavelAvaliacao = variavelAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
+
+            List<VariavelAvaliacaoResponseDTO> listVariavelAvaliacaoResponseDTO = listVariavelAvaliacao.stream().map(variavelAvaliacao -> new VariavelAvaliacaoResponseDTO(variavelAvaliacao.getVariavel(), variavelAvaliacao.getSelecionado() == false? 0 : 1)).toList();
+
+            return new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, listVariavelAvaliacaoResponseDTO);
+        }).toList();
+
+        return listAvaliacaoMaturidadeResponseDTO;
+    }
+
+    @Override
+    public List<AvaliacaoMaturidadeResponseDTO> getHistoricoAvaliacoesByNivelMaturidade(Long idNit, String nivelMaturidade, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        Nit nit = nitRepository.findById(idNit);
+
+        if (nit == null)
+            throw new NotFoundException("Não existe um NIT com esse ID");
+
+        if (isAscending) {
+            
+            sort = Sort.by("idAvaliacaoMaturidade").ascending();
+        } else {
+
+            sort = Sort.by("idAvaliacaoMaturidade").descending();
+        }
+
+        List<AvaliacaoMaturidade> listAvaliacaoMaturidade = avaliacaoMaturidadeRepository.findListByNitAndNivelMaturidade(nit, nivelMaturidade, sort).page(page, pageSize).list();
 
         if (listAvaliacaoMaturidade.isEmpty())
             throw new NotFoundException("Não existe nenhuma avaliação cadastrada");

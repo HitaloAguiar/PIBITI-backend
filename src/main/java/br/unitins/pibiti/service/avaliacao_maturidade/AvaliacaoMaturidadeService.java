@@ -21,7 +21,9 @@ public interface AvaliacaoMaturidadeService {
 
     List<AvaliacaoMaturidadeGraficoResponseDTO> getDadosGrafico(Long idNit);
 
-    List<AvaliacaoMaturidadeResponseDTO> getHistoricoAvaliacoes(Long idNit, int page, int pageSize);
+    List<AvaliacaoMaturidadeResponseDTO> getHistoricoAvaliacoes(Long idNit, int page, int pageSize, Boolean isAscending);
+    
+    List<AvaliacaoMaturidadeResponseDTO> getHistoricoAvaliacoesByNivelMaturidade(Long idNit, String nivelMaturidade, int page, int pageSize, Boolean isAscending);
 
     AvaliacaoMaturidadeResponseDTO getAvaliacaoMaturidade(Long idAvaliacao);
 

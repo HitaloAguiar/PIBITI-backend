@@ -12,6 +12,7 @@ import br.unitins.pibiti.model.DimensaoAvaliacao;
 public record AvaliacaoMaturidadeResponseDTO(
         Long id,
         Double img,
+        String nivelMaturidade,
         Map<String, Double> imds,
         List<VariavelAvaliacaoResponseDTO> variaveisSelecionadas,
         NitResponseDTO nit,
@@ -19,7 +20,7 @@ public record AvaliacaoMaturidadeResponseDTO(
 ) {
 
     public AvaliacaoMaturidadeResponseDTO (AvaliacaoMaturidade avaliacaoMaturidade, List<DimensaoAvaliacao> listDimensaoAvaliacao, List<VariavelAvaliacaoResponseDTO> variaveisSelecionadas) {
-        this(avaliacaoMaturidade.getIdAvaliacaoMaturidade(), avaliacaoMaturidade.getImg(), gerarMapImds(listDimensaoAvaliacao), variaveisSelecionadas, new NitResponseDTO(avaliacaoMaturidade.getNit()), avaliacaoMaturidade.getCreatedAt().toLocalDate());
+        this(avaliacaoMaturidade.getIdAvaliacaoMaturidade(), avaliacaoMaturidade.getImg(), avaliacaoMaturidade.getNivelMaturidade(), gerarMapImds(listDimensaoAvaliacao), variaveisSelecionadas, new NitResponseDTO(avaliacaoMaturidade.getNit()), avaliacaoMaturidade.getCreatedAt().toLocalDate());
     }
 
     private static Map<String, Double> gerarMapImds(List<DimensaoAvaliacao> listDimensaoAvaliacao) {

@@ -62,9 +62,22 @@ public class AvaliacaoMaturidadeResource {
     @Authenticated
     public List<AvaliacaoMaturidadeResponseDTO> getHistoricoAvaliacoes(@PathParam("id") Long idNit,
                                                                         @QueryParam("page") @DefaultValue("0") int page,
-                                                                        @QueryParam("pageSize") @DefaultValue("10") int pageSize) throws NotFoundException {
+                                                                        @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                        @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) throws NotFoundException {
 
-        return avaliacaoMaturidadeService.getHistoricoAvaliacoes(idNit, page, pageSize);
+        return avaliacaoMaturidadeService.getHistoricoAvaliacoes(idNit, page, pageSize, isAscending);
+    }
+
+    @GET
+    @Path("/historico-avaliacoes-com-filtro/{id}/{nivel_maturidade}")
+    @Authenticated
+    public List<AvaliacaoMaturidadeResponseDTO> getHistoricoAvaliacoesComFiltro(@PathParam("id") Long idNit,
+                                                                                @PathParam("nivel_maturidade") String nivelMaturidade,
+                                                                                @QueryParam("page") @DefaultValue("0") int page,
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) throws NotFoundException {
+
+        return avaliacaoMaturidadeService.getHistoricoAvaliacoesByNivelMaturidade(idNit, nivelMaturidade, page, pageSize, isAscending);
     }
 
     @GET

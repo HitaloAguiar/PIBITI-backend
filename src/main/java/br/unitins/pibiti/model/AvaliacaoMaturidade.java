@@ -1,5 +1,6 @@
 package br.unitins.pibiti.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +15,11 @@ public class AvaliacaoMaturidade extends DefaultEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_avaliacao_maturidade_nit")
     private Long idAvaliacaoMaturidade;
+
+    @Column(name = "nivel_maturidade")
+    private String nivelMaturidade;
 
     private Double img;
 
@@ -40,5 +45,13 @@ public class AvaliacaoMaturidade extends DefaultEntity {
 
     public void setNit(Nit nit) {
         this.nit = nit;
+    }
+
+    public String getNivelMaturidade() {
+        return nivelMaturidade;
+    }
+
+    public void setNivelMaturidade(String nivelMaturidade) {
+        this.nivelMaturidade = nivelMaturidade;
     }
 }
