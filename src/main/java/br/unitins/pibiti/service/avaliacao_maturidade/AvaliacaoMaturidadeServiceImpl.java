@@ -14,8 +14,6 @@ import br.unitins.pibiti.dto.variavel.VariavelResponseDTO;
 import br.unitins.pibiti.model.AvaliacaoMaturidade;
 import br.unitins.pibiti.model.DimensaoAvaliacao;
 import br.unitins.pibiti.model.Nit;
-import br.unitins.pibiti.model.ServicoFornecido;
-import br.unitins.pibiti.model.ServicoNit;
 import br.unitins.pibiti.model.Variavel;
 import br.unitins.pibiti.model.VariavelAvaliacao;
 import br.unitins.pibiti.repository.AvaliacaoMaturidadeRepository;
@@ -463,32 +461,5 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
         List<VariavelAvaliacaoResponseDTO> listVariavelAvaliacaoResponseDTO = listVariavelAvaliacao.stream().map(variavelAvaliacao -> new VariavelAvaliacaoResponseDTO(variavelAvaliacao.getVariavel(), variavelAvaliacao.getSelecionado() == false? 0 : 1)).toList();
 
         return new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, listVariavelAvaliacaoResponseDTO);
-    }
-
-    private void gerarListaServicos(List<Long> listaIdsServicos, Nit nit) {
-        // Converte ids para entidades
-        List<ServicoFornecido> servicosFornecidos = listaIdsServicos.stream()
-                .map(id -> servicoFornecidoRepository.findById(id))
-                .toList();
-
-        // Remove vínculos que não estão mais presentes
-        nit.getServicos().removeIf(sn -> servicosFornecidos.stream()
-                .noneMatch(s -> s.getIdServicoFornecido().equals(sn.getServico().getIdServicoFornecido())));
-
-        // Adiciona novos vínculos
-        for (ServicoFornecido servicoFornecido : servicosFornecidos) {
-            boolean jaExiste = nit.getServicos().stream()
-                    .anyMatch(sn -> sn.getServico().getIdServicoFornecido()
-                            .equals(servicoFornecido.getIdServicoFornecido()));
-
-            if (!jaExiste) {
-                ServicoNit servicoNit = new ServicoNit();
-                servicoNit.setServico(servicoFornecido);
-                servicoNit.setNit(nit);
-
-                servicoNitRepository.persist(servicoNit);
-                nit.getServicos().add(servicoNit);
-            }
-        }
     }
 }

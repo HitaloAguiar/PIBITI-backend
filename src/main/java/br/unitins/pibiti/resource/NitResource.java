@@ -3,6 +3,8 @@ package br.unitins.pibiti.resource;
 import java.io.IOException;
 
 import br.unitins.pibiti.dto.nit.NitUpdateDTO;
+import br.unitins.pibiti.dto.nit.ServicosFornecidoDTO;
+
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import br.unitins.pibiti.application.Result;
@@ -97,6 +99,30 @@ public class NitResource {
             return Response
                     .status(Status.BAD_REQUEST)
                     .entity(result)
+                    .build();
+        } catch (Exception e) {
+
+            result = new Result(e.getMessage(), false);
+
+            return Response
+                    .status(Status.BAD_REQUEST)
+                    .entity(result)
+                    .build();
+        }
+    }
+
+    @POST
+    @Path("/cadastrar-servicos-fornecidos")
+    @Authenticated
+    public Response cadastrarServicosFornecidos(ServicosFornecidoDTO servicosFornecidoDTO) {
+
+        Result result;
+
+        try {
+            nitService.cadastrarServicosFornecidos(servicosFornecidoDTO);
+
+            return Response
+                    .status(Status.NO_CONTENT) // 201
                     .build();
         } catch (Exception e) {
 

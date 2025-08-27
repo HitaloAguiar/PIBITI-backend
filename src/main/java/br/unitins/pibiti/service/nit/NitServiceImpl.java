@@ -1,15 +1,21 @@
 package br.unitins.pibiti.service.nit;
 
+import java.util.List;
 import java.util.Set;
 
 import br.unitins.pibiti.dto.nit.NitDTO;
 import br.unitins.pibiti.dto.nit.NitResponseDTO;
 import br.unitins.pibiti.dto.nit.NitUpdateDTO;
+import br.unitins.pibiti.dto.nit.ServicosFornecidoDTO;
 import br.unitins.pibiti.dto.responsavel.ResponsavelDTO;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.Responsavel;
+import br.unitins.pibiti.model.ServicoFornecido;
+import br.unitins.pibiti.model.ServicoNit;
 import br.unitins.pibiti.repository.NitRepository;
 import br.unitins.pibiti.repository.ResponsavelRepository;
+import br.unitins.pibiti.repository.ServicoFornecidoRepository;
+import br.unitins.pibiti.repository.ServicoNitRepository;
 import br.unitins.pibiti.service.auth.HashService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -28,6 +34,12 @@ public class NitServiceImpl implements NitService {
 
     @Inject
     ResponsavelRepository responsavelRepository;
+
+    @Inject
+    ServicoFornecidoRepository servicoFornecidoRepository;
+
+    @Inject
+    ServicoNitRepository servicoNitRepository;
 
     @Inject
     Validator validator;
@@ -112,6 +124,20 @@ public class NitServiceImpl implements NitService {
     }
 
     @Override
+    @Transactional
+    public void cadastrarServicosFornecidos(ServicosFornecidoDTO servicosFornecidoDTO) {
+
+        Nit nit = nitRepository.findById(servicosFornecidoDTO.idNit());
+
+        if (nit == null)
+            throw new NotFoundException("Não existe um NIT com esse ID");
+
+        gerarListaServicos(servicosFornecidoDTO.servicosFornecidos(), nit);
+
+        nitRepository.persist(nit);
+    }
+
+    @Override
     public Nit getByLoginAndSenha(String login, String senha) {
 
         Nit nit;
@@ -179,5 +205,35 @@ public class NitServiceImpl implements NitService {
 
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
+    }
+
+    private void gerarListaServicos(List<Long> listaIdsServicos, Nit nit) {
+        // Converte ids para entidades
+        List<ServicoFornecido> servicosFornecidos = listaIdsServicos.stream()
+                .map(id -> servicoFornecidoRepository.findById(id))
+                .toList();
+
+        if (servicosFornecidos.isEmpty())
+            throw new NotFoundException("Nenhum dos Serviços selecionados é válido");
+
+        // Remove vínculos que não estão mais presentes
+        nit.getServicos().removeIf(sn -> servicosFornecidos.stream()
+                .noneMatch(s -> s.getIdServicoFornecido().equals(sn.getServico().getIdServicoFornecido())));
+
+        // Adiciona novos vínculos
+        for (ServicoFornecido servicoFornecido : servicosFornecidos) {
+            boolean jaExiste = nit.getServicos().stream()
+                    .anyMatch(sn -> sn.getServico().getIdServicoFornecido()
+                            .equals(servicoFornecido.getIdServicoFornecido()));
+
+            if (!jaExiste) {
+                ServicoNit servicoNit = new ServicoNit();
+                servicoNit.setServico(servicoFornecido);
+                servicoNit.setNit(nit);
+
+                servicoNitRepository.persist(servicoNit);
+                nit.getServicos().add(servicoNit);
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ package br.unitins.pibiti.service.nit;
 import br.unitins.pibiti.dto.nit.NitDTO;
 import br.unitins.pibiti.dto.nit.NitResponseDTO;
 import br.unitins.pibiti.dto.nit.NitUpdateDTO;
+import br.unitins.pibiti.dto.nit.ServicosFornecidoDTO;
 import br.unitins.pibiti.model.Nit;
 
 public interface NitService {
@@ -12,6 +13,8 @@ public interface NitService {
     NitResponseDTO cadastrar(NitDTO nitDTO);
 
     NitResponseDTO atualizar(Long id, NitUpdateDTO nitDTO);
+
+    void cadastrarServicosFornecidos(ServicosFornecidoDTO servicosFornecidoDTO);
 
     Nit getByLoginAndSenha(String cnpjOuEmail, String senha);
 
