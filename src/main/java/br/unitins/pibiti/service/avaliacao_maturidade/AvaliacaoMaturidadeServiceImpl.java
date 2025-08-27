@@ -26,6 +26,7 @@ import br.unitins.pibiti.repository.ServicoFornecidoRepository;
 import br.unitins.pibiti.repository.ServicoNitRepository;
 import br.unitins.pibiti.repository.VariavelAvaliacaoRepository;
 import br.unitins.pibiti.repository.VariavelRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -57,6 +58,8 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
     @Inject
     VariavelAvaliacaoRepository variavelAvaliacaoRepository;
+
+    private Sort sort = Sort.by("id").ascending();
 
     @Override
     public List<VariavelResponseDTO> getVariaveis() {
@@ -301,7 +304,7 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
         if (nit == null)
             throw new NotFoundException("Não existe um NIT com esse ID");
 
-        List<AvaliacaoMaturidade> avaliacoes = avaliacaoMaturidadeRepository.findListByNit(nit);
+        List<AvaliacaoMaturidade> avaliacoes = avaliacaoMaturidadeRepository.findListByNit(nit).list();
 
         if (avaliacoes.isEmpty())
             throw new NotFoundException("Não existe nenhuma avaliação cadastrada");
@@ -310,30 +313,29 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
     }
 
     @Override
-    public List<AvaliacaoMaturidadeResponseDTO> getHistoricoAvaliacoes(Long idNit) {
-
-        List<AvaliacaoMaturidadeResponseDTO> listAvaliacaoMaturidadeResponseDTO = new ArrayList<>();
+    public List<AvaliacaoMaturidadeResponseDTO> getHistoricoAvaliacoes(Long idNit, int page, int pageSize) {
 
         Nit nit = nitRepository.findById(idNit);
 
         if (nit == null)
             throw new NotFoundException("Não existe um NIT com esse ID");
 
-        List<AvaliacaoMaturidade> listAvaliacaoMaturidade = avaliacaoMaturidadeRepository.findListByNit(nit);
+        List<AvaliacaoMaturidade> listAvaliacaoMaturidade = avaliacaoMaturidadeRepository.findListByNit(nit).page(page, pageSize).list();
 
         if (listAvaliacaoMaturidade.isEmpty())
             throw new NotFoundException("Não existe nenhuma avaliação cadastrada");
 
-        for (AvaliacaoMaturidade avaliacaoMaturidade : listAvaliacaoMaturidade) {
-            
+        List<AvaliacaoMaturidadeResponseDTO> listAvaliacaoMaturidadeResponseDTO = listAvaliacaoMaturidade.stream()
+        .map(avaliacaoMaturidade -> {
+
             List<DimensaoAvaliacao> listDimensaoAvaliacao = dimensaoAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
 
             List<VariavelAvaliacao> listVariavelAvaliacao = variavelAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
 
             List<VariavelAvaliacaoResponseDTO> listVariavelAvaliacaoResponseDTO = listVariavelAvaliacao.stream().map(variavelAvaliacao -> new VariavelAvaliacaoResponseDTO(variavelAvaliacao.getVariavel(), variavelAvaliacao.getSelecionado() == false? 0 : 1)).toList();
 
-            listAvaliacaoMaturidadeResponseDTO.add(new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, listVariavelAvaliacaoResponseDTO));
-        }
+            return new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, listVariavelAvaliacaoResponseDTO);
+        }).toList();
 
         return listAvaliacaoMaturidadeResponseDTO;
     }

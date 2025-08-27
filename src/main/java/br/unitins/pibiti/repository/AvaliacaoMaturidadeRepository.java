@@ -1,9 +1,8 @@
 package br.unitins.pibiti.repository;
 
-import java.util.List;
-
 import br.unitins.pibiti.model.AvaliacaoMaturidade;
 import br.unitins.pibiti.model.Nit;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -25,12 +24,12 @@ public class AvaliacaoMaturidadeRepository implements PanacheRepository<Avaliaca
         return find("nit = ?1 ORDER BY createdAt DESC", nit).firstResult();
     }
 
-    public List<AvaliacaoMaturidade> findListByNit(Nit nit) {
+    public PanacheQuery<AvaliacaoMaturidade> findListByNit(Nit nit) {
 
         if (nit == null)
             return null;
 
-        return find("nit = ?1", nit).list();
+        return find("nit = ?1", nit);
     }
 
     public AvaliacaoMaturidade findById(String id) {
