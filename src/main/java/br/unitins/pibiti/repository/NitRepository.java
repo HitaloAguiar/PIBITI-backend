@@ -38,4 +38,26 @@ public class NitRepository implements PanacheRepository<Nit> {
 
         return find("cnpj = ?1", cnpj).firstResult();
     }
+
+    public Boolean existsByCnpjAndNit(String cnpj, Long id) {
+
+        if (cnpj == null || id == null){
+            return false;
+        }
+
+        long count = count("cnpj = ?1 AND idNit <> ?2", cnpj, id);
+
+        return count > 0;
+    }
+
+    public Boolean existsByEmailAndNit(String email, Long id) {
+
+        if (email == null || id == null){
+            return false;
+        }
+
+        long count = count("email = ?1 AND idNit <> ?2", email, id);
+
+        return count > 0;
+    }
 }

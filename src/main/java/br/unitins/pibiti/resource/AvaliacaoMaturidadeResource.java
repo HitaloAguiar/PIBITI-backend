@@ -2,6 +2,8 @@ package br.unitins.pibiti.resource;
 
 import java.util.List;
 
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
 import br.unitins.pibiti.application.Result;
 import br.unitins.pibiti.dto.avaliacao_maturidade.AvaliacaoMaturidadeDTO;
 import br.unitins.pibiti.dto.avaliacao_maturidade.AvaliacaoMaturidadeGraficoResponseDTO;
@@ -32,6 +34,9 @@ public class AvaliacaoMaturidadeResource {
     
     @Inject
     AvaliacaoMaturidadeService avaliacaoMaturidadeService;
+
+    @Inject
+    JsonWebToken jwt;
 
     @GET
     @Path("/variaveis")
@@ -94,11 +99,13 @@ public class AvaliacaoMaturidadeResource {
 
         Result result;
 
+        String cnpj = jwt.getSubject();
+
         try {
 
             return Response
                     .status(Status.CREATED) // 201
-                    .entity(avaliacaoMaturidadeService.cadastrarAvaliacaoMaturidade(avaliacaoMaturidadeDTO))
+                    .entity(avaliacaoMaturidadeService.cadastrarAvaliacaoMaturidade(cnpj, avaliacaoMaturidadeDTO))
                     .build();
         } catch (Exception e) {
 
@@ -142,8 +149,10 @@ public class AvaliacaoMaturidadeResource {
 
         Result result;
 
+        String cnpj = jwt.getSubject();
+
         try {
-            avaliacaoMaturidadeService.deletarAvaliacaoMaturidade(idAvaliacao);
+            avaliacaoMaturidadeService.deletarAvaliacaoMaturidade(cnpj, idAvaliacao);
 
             return Response
                     .status(Status.NO_CONTENT)

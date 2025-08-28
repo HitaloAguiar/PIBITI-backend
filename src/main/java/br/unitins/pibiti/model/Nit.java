@@ -22,6 +22,7 @@ public class Nit extends DefaultEntity {
     @Column(unique = true)
     private String cnpj;
 
+    @Column(unique = true)
     private String email;
 
     private String telefone;

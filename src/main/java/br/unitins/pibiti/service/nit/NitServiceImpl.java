@@ -62,14 +62,30 @@ public class NitServiceImpl implements NitService {
     @Transactional
     public NitResponseDTO cadastrar(NitDTO nitDTO) throws ConstraintViolationException {
 
+        // validando DTO
+
         validar(nitDTO);
         validar(nitDTO.responsavelDTO());
 
+        // validando se a senha e a confirmação da senha são iguais
         String senha = nitDTO.senhaDTO().senha();
         String confirmarSenha = nitDTO.senhaDTO().confirmarSenha();
 
         if (!senha.equals(confirmarSenha))
             throw new BadRequestException("Os campos nova senha e confirmação da senha não correspondem");
+
+        // validando se o CNPJ ou Email não são repetidos
+
+        Nit validarCnpj = nitRepository.findByCnpj(nitDTO.cnpj());
+        Nit validarEmail = nitRepository.findByEmail(nitDTO.email());
+
+        if (validarCnpj != null)
+            throw new BadRequestException("CNPJ fornecido já está cadastrado no sistema");
+        
+        if (validarEmail != null)
+            throw new BadRequestException("Email fornecido já está cadastrado no sistema");
+
+        // cadastrando atributos
 
         Nit nit = new Nit();
 
@@ -102,12 +118,20 @@ public class NitServiceImpl implements NitService {
 
     @Override
     @Transactional
-    public NitResponseDTO atualizar(Long id, NitUpdateDTO nitDTO) throws ConstraintViolationException {
+    public NitResponseDTO atualizar(String cnpj, NitUpdateDTO nitDTO) throws ConstraintViolationException {
 
         validar(nitDTO);
         validar(nitDTO.responsavelDTO());
 
-        Nit nit = nitRepository.findById(id);
+        Nit nit = nitRepository.findByCnpj(cnpj);
+
+        if (nitRepository.existsByCnpjAndNit(nitDTO.cnpj(), nit.getIdNit()))
+            throw new BadRequestException("CNPJ fornecido já está cadastrado no sistema");
+        
+        if (nitRepository.existsByEmailAndNit(nitDTO.email(), nit.getIdNit()))
+            throw new BadRequestException("Email fornecido já está cadastrado no sistema");
+
+        // cadastrando novos valores
 
         nit.setCnpj(nitDTO.cnpj());
         nit.setEmail(nitDTO.email());

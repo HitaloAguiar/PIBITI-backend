@@ -5,6 +5,7 @@ import java.io.IOException;
 import br.unitins.pibiti.dto.nit.NitUpdateDTO;
 import br.unitins.pibiti.dto.nit.ServicosFornecidoDTO;
 
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import br.unitins.pibiti.application.Result;
@@ -40,6 +41,9 @@ public class NitResource {
 
     @Inject
     NitFileService nitFileService;
+
+    @Inject
+    JsonWebToken jwt;
 
     @GET
     @Path("/{id}")
@@ -81,13 +85,15 @@ public class NitResource {
 
     @PUT
     @Path("/{id}")
-    public Response atualizar(@PathParam("id") Long id, NitUpdateDTO nitDTO) {
+    public Response atualizar(NitUpdateDTO nitDTO) {
 
         Result result;
 
+        String cnpj = jwt.getSubject();
+
         try {
 
-            nitService.atualizar(id, nitDTO);
+            nitService.atualizar(cnpj, nitDTO);
 
             return Response
                     .status(Status.NO_CONTENT) // 204

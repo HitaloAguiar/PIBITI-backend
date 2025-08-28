@@ -11,11 +11,11 @@ public interface AvaliacaoMaturidadeService {
     
     List<VariavelResponseDTO> getVariaveis();
 
-    AvaliacaoMaturidadeResponseDTO cadastrarAvaliacaoMaturidade(AvaliacaoMaturidadeDTO avaliacaoMaturidadeDTO);
+    AvaliacaoMaturidadeResponseDTO cadastrarAvaliacaoMaturidade(String cnpj, AvaliacaoMaturidadeDTO avaliacaoMaturidadeDTO);
 
     AvaliacaoMaturidadeResponseDTO atualizarAvaliacaoMaturidade(Long idAvaliacao, AvaliacaoMaturidadeDTO avaliacaoMaturidadeDTO);
 
-    void deletarAvaliacaoMaturidade(Long idAvaliacao);
+    void deletarAvaliacaoMaturidade(String cnpj, Long idAvaliacao);
 
     AvaliacaoMaturidadeResponseDTO getLastAvaliacaoMaturidade(Long idNit);
 

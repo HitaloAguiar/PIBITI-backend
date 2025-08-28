@@ -12,7 +12,7 @@ public interface NitService {
 
     NitResponseDTO cadastrar(NitDTO nitDTO);
 
-    NitResponseDTO atualizar(Long id, NitUpdateDTO nitDTO);
+    NitResponseDTO atualizar(String cnpj, NitUpdateDTO nitDTO);
 
     void cadastrarServicosFornecidos(ServicosFornecidoDTO servicosFornecidoDTO);
 

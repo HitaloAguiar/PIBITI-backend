@@ -28,6 +28,7 @@ import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
@@ -65,7 +66,7 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
     @Override
     @Transactional
-    public AvaliacaoMaturidadeResponseDTO cadastrarAvaliacaoMaturidade(AvaliacaoMaturidadeDTO avaliacaoMaturidadeDTO) {
+    public AvaliacaoMaturidadeResponseDTO cadastrarAvaliacaoMaturidade(String cnpj, AvaliacaoMaturidadeDTO avaliacaoMaturidadeDTO) {
 
         // -------------------- fazendo o calculo da maturidade ------------------------
 
@@ -97,7 +98,7 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
         // salvando os dados acerca dos Serviços do Nit
 
-        Nit nit = nitRepository.findById(avaliacaoMaturidadeDTO.idNit());
+        Nit nit = nitRepository.findByCnpj(cnpj);
 
         //gerarListaServicos(avaliacaoMaturidadeDTO.servicosFornecidos(), nit);
 
@@ -285,7 +286,9 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
     @Override
     @Transactional
-    public void deletarAvaliacaoMaturidade(Long idAvaliacao) {
+    public void deletarAvaliacaoMaturidade(String cnpj, Long idAvaliacao) {
+
+        Nit nit = nitRepository.findByCnpj(cnpj);
 
         if (idAvaliacao == null)
             throw new IllegalArgumentException("Id inválido");
@@ -294,6 +297,9 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
 
         if (avaliacaoMaturidade == null)
             throw new NotFoundException("Nenhuma avaliação encontrada");
+
+        if (avaliacaoMaturidade.getNit().getIdNit() != nit.getIdNit())
+            throw new BadRequestException("A avaliação selecionada não pertence ao Nit cadastrado");
 
         List<DimensaoAvaliacao> listDimensaoAvaliacao = dimensaoAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
 
