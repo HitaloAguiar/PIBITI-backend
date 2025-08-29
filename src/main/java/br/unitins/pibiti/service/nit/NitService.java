@@ -3,6 +3,7 @@ package br.unitins.pibiti.service.nit;
 import br.unitins.pibiti.dto.nit.NitDTO;
 import br.unitins.pibiti.dto.nit.NitResponseDTO;
 import br.unitins.pibiti.dto.nit.NitUpdateDTO;
+import br.unitins.pibiti.dto.nit.SenhaDTO;
 import br.unitins.pibiti.dto.nit.ServicosFornecidoDTO;
 import br.unitins.pibiti.model.Nit;
 
@@ -19,4 +20,8 @@ public interface NitService {
     Nit getByLoginAndSenha(String cnpjOuEmail, String senha);
 
     NitResponseDTO getNitLogado(String login);
+
+    void enviarEmailRedefinirSenha(String email, String token);
+
+    void redefinirSenha(String cnpj, SenhaDTO senhaDTO);
 }

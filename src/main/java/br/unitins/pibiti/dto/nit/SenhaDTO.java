@@ -5,4 +5,4 @@ public record SenhaDTO(
     String confirmarSenha
 ) {
     
-} // TODO::confirmar como vai ser o cadastro de senha, se vai ser junto com o DTO de nit ou DTO próprio
+}

@@ -3,6 +3,7 @@ package br.unitins.pibiti.resource;
 import java.io.IOException;
 
 import br.unitins.pibiti.dto.nit.NitUpdateDTO;
+import br.unitins.pibiti.dto.nit.SenhaDTO;
 import br.unitins.pibiti.dto.nit.ServicosFornecidoDTO;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
@@ -12,9 +13,14 @@ import br.unitins.pibiti.application.Result;
 import br.unitins.pibiti.dto.nit.NitDTO;
 import br.unitins.pibiti.dto.nit.NitResponseDTO;
 import br.unitins.pibiti.form.NitImageForm;
+import br.unitins.pibiti.model.Nit;
+import br.unitins.pibiti.repository.NitRepository;
+import br.unitins.pibiti.service.auth.JwtService;
 import br.unitins.pibiti.service.file.NitFileService;
 import br.unitins.pibiti.service.nit.NitService;
 import io.quarkus.security.Authenticated;
+import io.smallrye.jwt.auth.principal.JWTParser;
+import io.smallrye.jwt.auth.principal.ParseException;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -40,10 +46,19 @@ public class NitResource {
     NitService nitService;
 
     @Inject
+    NitRepository nitRepository;
+
+    @Inject
     NitFileService nitFileService;
 
     @Inject
+    JwtService jwtService;
+
+    @Inject
     JsonWebToken jwt;
+
+    @Inject
+    JWTParser jwtParser;
 
     @GET
     @Path("/{id}")
@@ -139,6 +154,40 @@ public class NitResource {
                     .entity(result)
                     .build();
         }
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/esqueci-a-senha/{email}")
+    public Response esqueciASenha(@PathParam("email") String email) throws NotFoundException {
+
+        Nit nit = nitRepository.findByEmail(email);
+
+        String jwt = jwtService.generateJwt(nit);
+
+        nitService.enviarEmailRedefinirSenha(email, jwt);
+
+        return Response
+                .status(Status.CREATED)
+                .build();
+    }
+
+    @PATCH
+    @Path("/redefinir-senha/{token}")
+    public Response resetPassword(@PathParam("token") String token, SenhaDTO senhaDTO) throws ParseException {
+
+        JsonWebToken tokenJson = jwtParser.parse(token);
+
+        String cnpj = tokenJson.getSubject();
+
+        // System.out.println(jwtService.getUserId(tokenJson));
+
+        nitService.redefinirSenha(cnpj, senhaDTO);
+
+        return Response
+                .status(Status.CREATED) // 204
+                .build();
     }
 
     @GET

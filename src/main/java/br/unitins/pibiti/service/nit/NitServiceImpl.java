@@ -6,6 +6,7 @@ import java.util.Set;
 import br.unitins.pibiti.dto.nit.NitDTO;
 import br.unitins.pibiti.dto.nit.NitResponseDTO;
 import br.unitins.pibiti.dto.nit.NitUpdateDTO;
+import br.unitins.pibiti.dto.nit.SenhaDTO;
 import br.unitins.pibiti.dto.nit.ServicosFornecidoDTO;
 import br.unitins.pibiti.dto.responsavel.ResponsavelDTO;
 import br.unitins.pibiti.model.Nit;
@@ -17,6 +18,8 @@ import br.unitins.pibiti.repository.ResponsavelRepository;
 import br.unitins.pibiti.repository.ServicoFornecidoRepository;
 import br.unitins.pibiti.repository.ServicoNitRepository;
 import br.unitins.pibiti.service.auth.HashService;
+import io.vertx.ext.mail.MailClient;
+import io.vertx.ext.mail.MailMessage;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -24,6 +27,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
@@ -46,6 +50,9 @@ public class NitServiceImpl implements NitService {
 
     @Inject
     HashService hashService;
+
+    @Inject
+    MailClient mailerClient;
 
     @Override
     public NitResponseDTO getNit(Long id) {
@@ -191,6 +198,32 @@ public class NitServiceImpl implements NitService {
             throw new NotFoundException("Nit não encontrado");
 
         return new NitResponseDTO(nit);
+    }
+
+    @Override
+    @Transactional
+    public void enviarEmailRedefinirSenha(String email, String token) {
+
+        MailMessage mailMessage = new MailMessage();
+
+        mailMessage.setFrom("p53956275@gmail.com");
+        mailMessage.setTo(email);
+        mailMessage.setSubject("Redefinição de Senha");
+        mailMessage.setText("Clique aqui para redefinir sua senha: "+"/nits/redefinir-senha/"+token);
+
+        mailerClient.sendMail(mailMessage);
+    }
+
+    @Override
+    @Transactional
+    public void redefinirSenha(String cnpj, SenhaDTO senhaDTO) {
+
+        Nit nit = nitRepository.findByCnpj(cnpj);
+
+        if(senhaDTO.senha().equals(senhaDTO.confirmarSenha())){
+            nit.setSenha(hashService.getHashSenha(senhaDTO.senha()));
+        } else
+        throw new NotAuthorizedException("Senhas divergentes");
     }
 
     private Responsavel atualizarResponsavel(Responsavel responsavel, ResponsavelDTO responsavelDTO) {

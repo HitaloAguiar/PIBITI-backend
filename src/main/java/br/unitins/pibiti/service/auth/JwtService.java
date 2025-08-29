@@ -4,5 +4,5 @@ import br.unitins.pibiti.model.Nit;
 
 public interface JwtService {
     
-    public String generateJwt(Nit nit);
+    String generateJwt(Nit nit);
 }
