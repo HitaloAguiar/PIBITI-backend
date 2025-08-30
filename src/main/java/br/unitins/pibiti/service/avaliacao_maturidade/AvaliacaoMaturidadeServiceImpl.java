@@ -441,6 +441,34 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
     }
 
     @Override
+    public List<AvaliacaoMaturidadeResponseDTO> getMelhoresAvaliacoes(Long idNit) {
+
+        Nit nit = nitRepository.findById(idNit);
+
+        if (nit == null)
+            throw new NotFoundException("Não existe um NIT com esse ID");
+
+        List<AvaliacaoMaturidade> podioAvaliacaoMaturidade = avaliacaoMaturidadeRepository.findTop3ByNitOrderByImgDesc(nit);
+
+        if (podioAvaliacaoMaturidade.isEmpty())
+            throw new NotFoundException("Não existe nenhuma avaliação cadastrada");
+
+        List<AvaliacaoMaturidadeResponseDTO> listAvaliacaoMaturidadeResponseDTO = podioAvaliacaoMaturidade.stream()
+        .map(avaliacaoMaturidade -> {
+
+            List<DimensaoAvaliacao> listDimensaoAvaliacao = dimensaoAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
+
+            List<VariavelAvaliacao> listVariavelAvaliacao = variavelAvaliacaoRepository.findByAvaliacao(avaliacaoMaturidade);
+
+            List<VariavelAvaliacaoResponseDTO> listVariavelAvaliacaoResponseDTO = listVariavelAvaliacao.stream().map(variavelAvaliacao -> new VariavelAvaliacaoResponseDTO(variavelAvaliacao.getVariavel(), variavelAvaliacao.getSelecionado() == false? 0 : 1)).toList();
+
+            return new AvaliacaoMaturidadeResponseDTO(avaliacaoMaturidade, listDimensaoAvaliacao, listVariavelAvaliacaoResponseDTO);
+        }).toList();
+
+        return listAvaliacaoMaturidadeResponseDTO;
+    }
+
+    @Override
     public byte[] criarRelatorioAvaliacao() {
 
         return null;

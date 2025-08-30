@@ -92,6 +92,14 @@ public class AvaliacaoMaturidadeResource {
         return avaliacaoMaturidadeService.getAvaliacaoMaturidade(id);
     }
 
+    @GET
+    @Path("/podio-avaliacoes/{id}")
+    @Authenticated
+    public List<AvaliacaoMaturidadeResponseDTO> getMelhoresAvaliacoes(@PathParam("id") Long idNit) throws NotFoundException {
+
+        return avaliacaoMaturidadeService.getMelhoresAvaliacoes(idNit);
+    }
+
     @POST
     @Path("/cadastrar-avaliacao-maturidade")
     @Authenticated

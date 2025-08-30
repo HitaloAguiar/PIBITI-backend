@@ -27,6 +27,8 @@ public interface AvaliacaoMaturidadeService {
 
     AvaliacaoMaturidadeResponseDTO getAvaliacaoMaturidade(Long idAvaliacao);
 
+    List<AvaliacaoMaturidadeResponseDTO> getMelhoresAvaliacoes(Long idNit);
+
     // Essas duas rotas serão para eventualmente fazer a funcionalidade de exportar o resultado da avaliação
     byte[] criarRelatorioAvaliacao();
 

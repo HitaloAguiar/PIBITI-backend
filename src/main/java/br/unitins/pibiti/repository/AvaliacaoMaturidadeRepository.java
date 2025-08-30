@@ -1,5 +1,7 @@
 package br.unitins.pibiti.repository;
 
+import java.util.List;
+
 import br.unitins.pibiti.model.AvaliacaoMaturidade;
 import br.unitins.pibiti.model.Nit;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
@@ -39,6 +41,15 @@ public class AvaliacaoMaturidadeRepository implements PanacheRepository<Avaliaca
             return null;
 
         return find("nit = ?1 AND UPPER(nivelMaturidade) LIKE ?2", sort, nit, "%" + nivelMaturidade.toUpperCase() + "%");
+    }
+
+    public List<AvaliacaoMaturidade> findTop3ByNitOrderByImgDesc(Nit nit) {
+        if (nit == null)
+            return List.of();
+
+        return find("nit = ?1", Sort.by("img").descending(), nit)
+                .range(0, 2) // pega registros 0, 1 e 2 (3 registros)
+                .list();
     }
 
     public AvaliacaoMaturidade findById(String id) {
