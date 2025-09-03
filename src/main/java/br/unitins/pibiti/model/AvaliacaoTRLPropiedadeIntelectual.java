@@ -20,16 +20,20 @@ public class AvaliacaoTRLPropiedadeIntelectual extends DefaultEntity {
     @Column(name = "id_avaliacao_trl_propiedade_intelectual")
     private Long idAvaliacaoTrlPI;
 
-    // Propiedade Intelectual relacionada
+    // Propiedade Intelectual relacionada - Deve ser só uma delas
     @ManyToOne
     @JoinColumn(name = "id_marca")
     private Marca marca;
+
+    @ManyToOne
+    @JoinColumn(name = "id_patente")
+    private Patente patente;
 
     // Variáveis Científicas/Técnicas
     private String hipotese;
     private String protocolo;
     private String relatorio;
-    private String especificacoes ;
+    private String especificacoes;
     private Boolean designVerificationTest;
     private Boolean designVerificationPlan;
 
@@ -72,6 +76,14 @@ public class AvaliacaoTRLPropiedadeIntelectual extends DefaultEntity {
 
     public void setMarca(Marca idMarca) {
         this.marca = idMarca;
+    }
+
+    public Patente getPatente() {
+        return patente;
+    }
+
+    public void setPatente(Patente patente) {
+        this.patente = patente;
     }
 
     public String getHipotese() {

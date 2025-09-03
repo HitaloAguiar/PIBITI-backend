@@ -1,6 +1,7 @@
 package br.unitins.pibiti.dto.avaliacao_trl_pi;
 
 import br.unitins.pibiti.dto.propiedade_intelectual.marca.MarcaResponseDTO;
+import br.unitins.pibiti.dto.propiedade_intelectual.patente.PatenteResponseDTO;
 import br.unitins.pibiti.model.AvaliacaoTRLPropiedadeIntelectual;
 
 import java.math.BigDecimal;
@@ -8,7 +9,10 @@ import java.time.LocalDateTime;
 
 public record AvaliacaoTrlPiResponseDTO(
         Long idAvaliacaoTrlPI,
+
+        // Propiedade Intelectual Relacionada
         MarcaResponseDTO marca,
+        PatenteResponseDTO patente,
 
         // Variáveis Científicas/Técnicas
         String hipotese,
@@ -45,7 +49,7 @@ public record AvaliacaoTrlPiResponseDTO(
 ) {
 
     public AvaliacaoTrlPiResponseDTO(AvaliacaoTRLPropiedadeIntelectual avaliacao) {
-        this(avaliacao.getIdAvaliacaoTrlPI(), new MarcaResponseDTO(avaliacao.getMarca()),
+        this(avaliacao.getIdAvaliacaoTrlPI(), new MarcaResponseDTO(avaliacao.getMarca()), new PatenteResponseDTO(avaliacao.getPatente()),
                 avaliacao.getHipotese(), avaliacao.getProtocolo(), avaliacao.getRelatorio(), avaliacao.getEspecificacoes(),
                 avaliacao.getDesignVerificationTest(), avaliacao.getDesignVerificationPlan(), avaliacao.getStatusPi(),
                 avaliacao.getFreedomToOperate(), avaliacao.getNonDisclosureAgreement(), avaliacao.getMaterialTransferAgreement(),

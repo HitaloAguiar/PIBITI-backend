@@ -5,9 +5,11 @@ import br.unitins.pibiti.dto.avaliacao_trl_pi.AvaliacaoTrlPiResponseDTO;
 import br.unitins.pibiti.model.AvaliacaoTRLPropiedadeIntelectual;
 import br.unitins.pibiti.model.Marca;
 import br.unitins.pibiti.model.Nit;
+import br.unitins.pibiti.model.Patente;
 import br.unitins.pibiti.repository.AvaliacaoTrlPIRepository;
 import br.unitins.pibiti.repository.MarcaRepository;
 import br.unitins.pibiti.repository.NitRepository;
+import br.unitins.pibiti.repository.PatenteRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -29,10 +31,13 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
     NitRepository nitRepository;
 
     @Inject
+    AvaliacaoTrlPIRepository avaliacaoTrlPIRepository;
+
+    @Inject
     MarcaRepository marcaRepository;
 
     @Inject
-    AvaliacaoTrlPIRepository avaliacaoTrlPIRepository;
+    PatenteRepository patenteRepository;
 
     @Inject
     Validator validator;
@@ -48,9 +53,17 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
     public AvaliacaoTrlPiResponseDTO cadastrar(String cnpj, AvaliacaoTrlPiDTO avaliacaoDTO) {
         Nit nit = nitRepository.findByCnpj(cnpj);
         Marca marca = marcaRepository.findById(avaliacaoDTO.idMarca());
+        Patente patente = patenteRepository.findById(avaliacaoDTO.idPatente());
 
         AvaliacaoTRLPropiedadeIntelectual avaliacaoTRL = new AvaliacaoTRLPropiedadeIntelectual();
-        avaliacaoTRL.setMarca(marca);
+
+        if (marca != null) {
+            avaliacaoTRL.setMarca(marca);
+        } else if (patente != null) {
+            avaliacaoTRL.setPatente(patente);
+        } else {
+            throw new NotFoundException("Nenhuma Propiedade Intelectual foi informada.");
+        }
 
         LinkedHashMap<Integer, List<Boolean>> criteriosPorNivel = construirCriteriosPorNivel(avaliacaoDTO);
         int trl = calcularTrl(criteriosPorNivel);
