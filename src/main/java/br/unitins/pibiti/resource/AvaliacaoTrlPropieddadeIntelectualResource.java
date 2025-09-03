@@ -43,12 +43,10 @@ public class AvaliacaoTrlPropieddadeIntelectualResource {
 
         Result result;
 
-        String cnpj = jwt.getSubject();
-
         try {
 
             return Response.status(Status.CREATED) // 201
-                    .entity(avaliacaoTrlPropiedadeIntelectualService.cadastrar(cnpj, avaliacaoDTO)).build();
+                    .entity(avaliacaoTrlPropiedadeIntelectualService.cadastrar(avaliacaoDTO)).build();
         } catch (Exception e) {
 
             result = new Result(e.getMessage(), false);

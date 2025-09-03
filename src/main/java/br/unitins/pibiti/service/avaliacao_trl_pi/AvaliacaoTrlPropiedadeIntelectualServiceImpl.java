@@ -4,11 +4,13 @@ import br.unitins.pibiti.dto.avaliacao_trl_pi.AvaliacaoTrlPiDTO;
 import br.unitins.pibiti.dto.avaliacao_trl_pi.AvaliacaoTrlPiResponseDTO;
 import br.unitins.pibiti.model.AvaliacaoTRLPropiedadeIntelectual;
 import br.unitins.pibiti.model.ContratoFranquia;
+import br.unitins.pibiti.model.DesenhoIndustrial;
 import br.unitins.pibiti.model.Marca;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.Patente;
 import br.unitins.pibiti.repository.AvaliacaoTrlPIRepository;
 import br.unitins.pibiti.repository.ContratoFranquiaRepository;
+import br.unitins.pibiti.repository.DesenhoIndustrialRepository;
 import br.unitins.pibiti.repository.MarcaRepository;
 import br.unitins.pibiti.repository.NitRepository;
 import br.unitins.pibiti.repository.PatenteRepository;
@@ -45,6 +47,9 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
     ContratoFranquiaRepository contratoFranquiaRepository;
 
     @Inject
+    DesenhoIndustrialRepository desenhoIndustrialRepository;
+
+    @Inject
     Validator validator;
 
     @Override
@@ -55,11 +60,13 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
 
     @Override
     @Transactional
-    public AvaliacaoTrlPiResponseDTO cadastrar(String cnpj, AvaliacaoTrlPiDTO avaliacaoDTO) {
-        Nit nit = nitRepository.findByCnpj(cnpj);
+    public AvaliacaoTrlPiResponseDTO cadastrar(AvaliacaoTrlPiDTO avaliacaoDTO) {
+        validar(avaliacaoDTO);
+
         Marca marca = marcaRepository.findById(avaliacaoDTO.idMarca());
         Patente patente = patenteRepository.findById(avaliacaoDTO.idPatente());
         ContratoFranquia contratoFranquia = contratoFranquiaRepository.findById(avaliacaoDTO.idContratoFranquia());
+        DesenhoIndustrial desenhoIndustrial = desenhoIndustrialRepository.findById(avaliacaoDTO.idDesenhoIndustrial());
 
         AvaliacaoTRLPropiedadeIntelectual avaliacaoTRL = new AvaliacaoTRLPropiedadeIntelectual();
 
@@ -69,6 +76,8 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
             avaliacaoTRL.setPatente(patente);
         } else if (contratoFranquia != null) {
             avaliacaoTRL.setContratoFranquia(contratoFranquia);
+        } else if (desenhoIndustrial != null) {
+            avaliacaoTRL.setDesenhoIndustrial(desenhoIndustrial);
         } else {
             throw new NotFoundException("Nenhuma Propiedade Intelectual foi informada.");
         }

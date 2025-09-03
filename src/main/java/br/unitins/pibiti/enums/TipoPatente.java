@@ -26,7 +26,7 @@ public enum TipoPatente {
                 return n;
             }
         }
-        throw new IllegalArgumentException("Nenhum TipoPatente encontrad para o label: " + label);
+        throw new IllegalArgumentException("Nenhum TipoPatente encontrado para o label: " + label);
     }
 
     public static TipoPatente fromId(Long id) {
@@ -35,6 +35,6 @@ public enum TipoPatente {
                 return n;
             }
         }
-        throw new IllegalArgumentException("Nenhum TipoPatente encontrad para o id: " + id);
+        throw new IllegalArgumentException("Nenhum TipoPatente encontrado para o id: " + id);
     }
 }

@@ -8,7 +8,7 @@ public interface AvaliacaoTrlPropiedadeIntelectualService {
 
     AvaliacaoTrlPiResponseDTO getAvaliacao(Long id);
 
-    AvaliacaoTrlPiResponseDTO cadastrar(String cnpj, AvaliacaoTrlPiDTO avaliacaoDTO);
+    AvaliacaoTrlPiResponseDTO cadastrar(AvaliacaoTrlPiDTO avaliacaoDTO);
 
     void deletarAvaliacao(String cnpj, Long idAvaliacao);
 
