@@ -1,6 +1,7 @@
 package br.unitins.pibiti.model;
 
 import br.unitins.pibiti.enums.NaturezaMarca;
+import br.unitins.pibiti.enums.TipoPropiedadeIntelectual;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,26 +20,37 @@ public class Marca {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_marca")
-    private Long idVariavelAvaliacao;
+    private Long idMarca;
 
-    @ManyToOne
-    @JoinColumn(name = "id_tipo_propiedade_intelectual")
     private TipoPropiedadeIntelectual tipoPropiedadeIntelectual;
 
+    @ManyToOne
+    @JoinColumn(name = "id_nit")
+    private Nit nit;
+
+    @Column(nullable = false)
     private String nome;
+
+    @Column(nullable = false)
     private String titular;
+
+    @Column(name = "data_concessao", nullable = false)
     private LocalDate dataConcessao;
+
+    @Column(nullable = false)
     private String periodo;
 
+    @Column(nullable = false)
     private NaturezaMarca natureza;
+
     private String classes;
 
-    public Long getIdVariavelAvaliacao() {
-        return idVariavelAvaliacao;
+    public Long getIdMarca() {
+        return idMarca;
     }
 
-    public void setIdVariavelAvaliacao(Long idVariavelAvaliacao) {
-        this.idVariavelAvaliacao = idVariavelAvaliacao;
+    public void setIdMarca(Long idMarca) {
+        this.idMarca = idMarca;
     }
 
     public TipoPropiedadeIntelectual getTipoPropiedadeIntelectual() {
@@ -47,6 +59,14 @@ public class Marca {
 
     public void setTipoPropiedadeIntelectual(TipoPropiedadeIntelectual tipoPropiedadeIntelectual) {
         this.tipoPropiedadeIntelectual = tipoPropiedadeIntelectual;
+    }
+
+    public Nit getNit() {
+        return nit;
+    }
+
+    public void setNit(Nit nit) {
+        this.nit = nit;
     }
 
     public String getNome() {
