@@ -12,6 +12,7 @@ import br.unitins.pibiti.model.Marca;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.Patente;
 import br.unitins.pibiti.model.RegistroProgramaComputador;
+import br.unitins.pibiti.model.TopografiaCircuitoIntegrado;
 import br.unitins.pibiti.repository.AvaliacaoTrlPIRepository;
 import br.unitins.pibiti.repository.ContratoFranquiaRepository;
 import br.unitins.pibiti.repository.CultivarRepository;
@@ -22,6 +23,7 @@ import br.unitins.pibiti.repository.MarcaRepository;
 import br.unitins.pibiti.repository.NitRepository;
 import br.unitins.pibiti.repository.PatenteRepository;
 import br.unitins.pibiti.repository.RegistroProgramaComputadorRepository;
+import br.unitins.pibiti.repository.TopografiaCircuitoIntegradoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -70,6 +72,9 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
     CultivarRepository cultivarRepository;
 
     @Inject
+    TopografiaCircuitoIntegradoRepository topografiaCircuitoIntegradoRepository;
+
+    @Inject
     Validator validator;
 
     @Override
@@ -91,6 +96,7 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
         DireitoAutor direitoAutor = direitoAutorRepository.findById(avaliacaoDTO.idDireitoAutor());
         RegistroProgramaComputador registroPrograma = registroProgramaComputadorRepository.findById(avaliacaoDTO.idRegistroProgramaComputador());
         Cultivar cultivar = cultivarRepository.findById(avaliacaoDTO.idCultivar());
+        TopografiaCircuitoIntegrado topografiaCircuitoIntegrado = topografiaCircuitoIntegradoRepository.findById(avaliacaoDTO.idTopografiaCircuitoIntegrado());
 
         AvaliacaoTRLPropiedadeIntelectual avaliacaoTRL = new AvaliacaoTRLPropiedadeIntelectual();
 
@@ -110,6 +116,8 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
             avaliacaoTRL.setRegistroProgramaComputador(registroPrograma);
         } else if (cultivar != null) {
             avaliacaoTRL.setCultivar(cultivar);
+        } else if (topografiaCircuitoIntegrado != null) {
+            avaliacaoTRL.setTopografiaCircuitoIntegrado(topografiaCircuitoIntegrado);
         } else {
             throw new NotFoundException("Nenhuma Propiedade Intelectual foi informada.");
         }

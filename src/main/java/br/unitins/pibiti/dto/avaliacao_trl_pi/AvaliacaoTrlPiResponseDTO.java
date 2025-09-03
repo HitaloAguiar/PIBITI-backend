@@ -8,6 +8,7 @@ import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.indica
 import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.marca.MarcaResponseDTO;
 import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.patente.PatenteResponseDTO;
 import br.unitins.pibiti.dto.propiedade_intelectual.protecao_sui_generis.cultivar.CultivarResponseDTO;
+import br.unitins.pibiti.dto.propiedade_intelectual.protecao_sui_generis.topografia_circuito_integrado.TopografiaCircuitoIntegradoResponseDTO;
 import br.unitins.pibiti.model.AvaliacaoTRLPropiedadeIntelectual;
 
 import java.math.BigDecimal;
@@ -21,10 +22,9 @@ public record AvaliacaoTrlPiResponseDTO(Long idAvaliacaoTrlPI,
                                         DesenhoIndustrialResponseDTO desenhoIndustrial,
                                         IndicacaoGeograficaResponseDTO indicacaoGeografica,
                                         DireitoAutorResponseDTO direitoAutor,
-
                                         RegistroProgramaComputadorResponseDTO registroProgramaComputador,
-
                                         CultivarResponseDTO cultivar,
+                                        TopografiaCircuitoIntegradoResponseDTO topografiaCircuitoIntegrado,
 
                                         // Variáveis Científicas/Técnicas
                                         String hipotese, String protocolo, String relatorio, String especificacoes,
@@ -50,7 +50,7 @@ public record AvaliacaoTrlPiResponseDTO(Long idAvaliacaoTrlPI,
     public AvaliacaoTrlPiResponseDTO(AvaliacaoTRLPropiedadeIntelectual avaliacao) {
         this(avaliacao.getIdAvaliacaoTrlPI(), new MarcaResponseDTO(avaliacao.getMarca()), new PatenteResponseDTO(avaliacao.getPatente()), new ContratoFranquiaResponseDTO(avaliacao.getContratoFranquia()), new DesenhoIndustrialResponseDTO(avaliacao.getDesenhoIndustrial()),
                 new IndicacaoGeograficaResponseDTO(avaliacao.getIndicacaoGeografica()), new DireitoAutorResponseDTO(avaliacao.getDireitoAutor()), new RegistroProgramaComputadorResponseDTO(avaliacao.getRegistroProgramaComputador()),
-                new CultivarResponseDTO(avaliacao.getCultivar()),
+                new CultivarResponseDTO(avaliacao.getCultivar()), new TopografiaCircuitoIntegradoResponseDTO(avaliacao.getTopografiaCircuitoIntegrado()),
                 avaliacao.getHipotese(), avaliacao.getProtocolo(), avaliacao.getRelatorio(), avaliacao.getEspecificacoes(), avaliacao.getDesignVerificationTest(), avaliacao.getDesignVerificationPlan(), avaliacao.getStatusPi(), avaliacao.getFreedomToOperate(),
                 avaliacao.getNonDisclosureAgreement(), avaliacao.getMaterialTransferAgreement(), avaliacao.getLicença(), avaliacao.getTipoOuAmbienteTeste(), avaliacao.getResultados(), avaliacao.getConformidades(), avaliacao.getProofOfConceptComCliente(),
                 avaliacao.getContratoLicençaFornecimento(), avaliacao.getReceitaInicial(), avaliacao.getDossiesCertificacoes(), avaliacao.getTrl(), avaliacao.getTrlScore(), avaliacao.getCreatedAt());

@@ -88,4 +88,8 @@ public class AvaliacaoTRLPropiedadeIntelectual extends DefaultEntity {
     @ManyToOne
     @JoinColumn(name = "id_cultivar")
     private Cultivar cultivar;
+
+    @ManyToOne
+    @JoinColumn(name = "id_topografia_circuitos_integrados_autor")
+    private TopografiaCircuitoIntegrado topografiaCircuitoIntegrado;
 }
