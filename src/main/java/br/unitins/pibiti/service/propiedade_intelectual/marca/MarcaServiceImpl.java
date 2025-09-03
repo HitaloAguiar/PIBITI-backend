@@ -53,7 +53,7 @@ public class MarcaServiceImpl implements MarcaService {
         marca.setTitular(marcaDTO.titular());
         marca.setDataConcessao(marcaDTO.dataConcessao());
         marca.setPeriodo(marcaDTO.periodo());
-        marca.setNatureza(NaturezaMarca.fromLabel(marcaDTO.natureza()));
+        marca.setNatureza(NaturezaMarca.fromId(marcaDTO.idNatureza()));
         marca.setClasses(marcaDTO.classes());
         marca.setTipoPropiedadeIntelectual(TipoPropiedadeIntelectual.PRIPIEDADE_INDUSTRIAL);
         marca.setNit(nit);
@@ -70,7 +70,7 @@ public class MarcaServiceImpl implements MarcaService {
         Marca marca = marcaRepository.findById(idMarca);
         Nit nit = nitRepository.findByCnpj(cnpj);
 
-        if(marca == null) {
+        if (marca == null) {
             throw new NotFoundException("Nenhuma marca encontrada.");
         }
 
@@ -81,7 +81,7 @@ public class MarcaServiceImpl implements MarcaService {
         marca.setTitular(marcaDTO.titular());
         marca.setDataConcessao(marcaDTO.dataConcessao());
         marca.setPeriodo(marcaDTO.periodo());
-        marca.setNatureza(NaturezaMarca.fromLabel(marcaDTO.natureza()));
+        marca.setNatureza(NaturezaMarca.fromId(marcaDTO.idNatureza()));
         marca.setClasses(marcaDTO.classes());
 
         return new MarcaResponseDTO(marca);
@@ -93,7 +93,7 @@ public class MarcaServiceImpl implements MarcaService {
         Nit nit = nitRepository.findByCnpj(cnpj);
         Marca marca = marcaRepository.findById(idMarca);
 
-        if(marca == null) {
+        if (marca == null) {
             throw new NotFoundException("Nenhuma marca encontrada.");
         }
 
