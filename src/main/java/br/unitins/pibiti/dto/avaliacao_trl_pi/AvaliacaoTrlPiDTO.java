@@ -6,6 +6,7 @@ public record AvaliacaoTrlPiDTO(
         // Propiedade Intelectual da Avaliação
         Long idMarca,
         Long idPatente,
+        Long idContratoFranquia,
 
         // Variáveis Científicas/Técnicas
         String hipotese,

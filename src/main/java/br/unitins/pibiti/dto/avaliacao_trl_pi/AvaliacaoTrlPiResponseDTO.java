@@ -1,5 +1,6 @@
 package br.unitins.pibiti.dto.avaliacao_trl_pi;
 
+import br.unitins.pibiti.dto.propiedade_intelectual.contato_franquia.ContratoFranquiaResponseDTO;
 import br.unitins.pibiti.dto.propiedade_intelectual.marca.MarcaResponseDTO;
 import br.unitins.pibiti.dto.propiedade_intelectual.patente.PatenteResponseDTO;
 import br.unitins.pibiti.model.AvaliacaoTRLPropiedadeIntelectual;
@@ -13,6 +14,7 @@ public record AvaliacaoTrlPiResponseDTO(
         // Propiedade Intelectual Relacionada
         MarcaResponseDTO marca,
         PatenteResponseDTO patente,
+        ContratoFranquiaResponseDTO contratoFranquia,
 
         // Variáveis Científicas/Técnicas
         String hipotese,
@@ -50,6 +52,7 @@ public record AvaliacaoTrlPiResponseDTO(
 
     public AvaliacaoTrlPiResponseDTO(AvaliacaoTRLPropiedadeIntelectual avaliacao) {
         this(avaliacao.getIdAvaliacaoTrlPI(), new MarcaResponseDTO(avaliacao.getMarca()), new PatenteResponseDTO(avaliacao.getPatente()),
+                new ContratoFranquiaResponseDTO(avaliacao.getContratoFranquia()),
                 avaliacao.getHipotese(), avaliacao.getProtocolo(), avaliacao.getRelatorio(), avaliacao.getEspecificacoes(),
                 avaliacao.getDesignVerificationTest(), avaliacao.getDesignVerificationPlan(), avaliacao.getStatusPi(),
                 avaliacao.getFreedomToOperate(), avaliacao.getNonDisclosureAgreement(), avaliacao.getMaterialTransferAgreement(),

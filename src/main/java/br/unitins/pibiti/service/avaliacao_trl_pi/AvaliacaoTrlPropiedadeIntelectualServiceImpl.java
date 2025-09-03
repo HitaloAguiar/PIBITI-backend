@@ -3,10 +3,12 @@ package br.unitins.pibiti.service.avaliacao_trl_pi;
 import br.unitins.pibiti.dto.avaliacao_trl_pi.AvaliacaoTrlPiDTO;
 import br.unitins.pibiti.dto.avaliacao_trl_pi.AvaliacaoTrlPiResponseDTO;
 import br.unitins.pibiti.model.AvaliacaoTRLPropiedadeIntelectual;
+import br.unitins.pibiti.model.ContratoFranquia;
 import br.unitins.pibiti.model.Marca;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.Patente;
 import br.unitins.pibiti.repository.AvaliacaoTrlPIRepository;
+import br.unitins.pibiti.repository.ContratoFranquiaRepository;
 import br.unitins.pibiti.repository.MarcaRepository;
 import br.unitins.pibiti.repository.NitRepository;
 import br.unitins.pibiti.repository.PatenteRepository;
@@ -40,6 +42,9 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
     PatenteRepository patenteRepository;
 
     @Inject
+    ContratoFranquiaRepository contratoFranquiaRepository;
+
+    @Inject
     Validator validator;
 
     @Override
@@ -54,6 +59,7 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
         Nit nit = nitRepository.findByCnpj(cnpj);
         Marca marca = marcaRepository.findById(avaliacaoDTO.idMarca());
         Patente patente = patenteRepository.findById(avaliacaoDTO.idPatente());
+        ContratoFranquia contratoFranquia = contratoFranquiaRepository.findById(avaliacaoDTO.idContratoFranquia());
 
         AvaliacaoTRLPropiedadeIntelectual avaliacaoTRL = new AvaliacaoTRLPropiedadeIntelectual();
 
@@ -61,6 +67,8 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
             avaliacaoTRL.setMarca(marca);
         } else if (patente != null) {
             avaliacaoTRL.setPatente(patente);
+        } else if (contratoFranquia != null) {
+            avaliacaoTRL.setContratoFranquia(contratoFranquia);
         } else {
             throw new NotFoundException("Nenhuma Propiedade Intelectual foi informada.");
         }

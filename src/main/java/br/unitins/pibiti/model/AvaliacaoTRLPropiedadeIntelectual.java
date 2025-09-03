@@ -29,6 +29,10 @@ public class AvaliacaoTRLPropiedadeIntelectual extends DefaultEntity {
     @JoinColumn(name = "id_patente")
     private Patente patente;
 
+    @ManyToOne
+    @JoinColumn(name = "id_contrato_franquia")
+    private ContratoFranquia contratoFranquia;
+
     // Variáveis Científicas/Técnicas
     private String hipotese;
     private String protocolo;
@@ -84,6 +88,14 @@ public class AvaliacaoTRLPropiedadeIntelectual extends DefaultEntity {
 
     public void setPatente(Patente patente) {
         this.patente = patente;
+    }
+
+    public ContratoFranquia getContratoFranquia() {
+        return contratoFranquia;
+    }
+
+    public void setContratoFranquia(ContratoFranquia contratoFranquia) {
+        this.contratoFranquia = contratoFranquia;
     }
 
     public String getHipotese() {
