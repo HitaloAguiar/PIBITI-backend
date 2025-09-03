@@ -37,7 +37,7 @@ public class DireitoAutorServiceImpl implements DireitoAutorService {
     public DireitoAutorResponseDTO getDireitoAutor(Long id) {
         DireitoAutor direitoAutor = direitoAutorRepository.findById(id);
 
-        if (direitoAutor == null) throw new NotFoundException("Direito de Autor não encontrada.");
+        if (direitoAutor == null) throw new NotFoundException("Direito de Autor não encontrado.");
 
         return new DireitoAutorResponseDTO(direitoAutor);
     }

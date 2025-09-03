@@ -35,7 +35,7 @@ public class RegistroProgramaComputadorServiceImpl implements RegistroProgramaCo
     public RegistroProgramaComputadorResponseDTO getRegistroProgramaComputador(Long id) {
         RegistroProgramaComputador registroPrograma = registroProgramaRepository.findById(id);
 
-        if (registroPrograma == null) throw new NotFoundException("Direito de Autor não encontrada.");
+        if (registroPrograma == null) throw new NotFoundException("Registro de Programa de Computador não encontrado.");
 
         return new RegistroProgramaComputadorResponseDTO(registroPrograma);
     }

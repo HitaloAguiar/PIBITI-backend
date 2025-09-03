@@ -4,6 +4,7 @@ import br.unitins.pibiti.dto.avaliacao_trl_pi.AvaliacaoTrlPiDTO;
 import br.unitins.pibiti.dto.avaliacao_trl_pi.AvaliacaoTrlPiResponseDTO;
 import br.unitins.pibiti.model.AvaliacaoTRLPropiedadeIntelectual;
 import br.unitins.pibiti.model.ContratoFranquia;
+import br.unitins.pibiti.model.Cultivar;
 import br.unitins.pibiti.model.DesenhoIndustrial;
 import br.unitins.pibiti.model.DireitoAutor;
 import br.unitins.pibiti.model.IndicacaoGeografica;
@@ -13,6 +14,7 @@ import br.unitins.pibiti.model.Patente;
 import br.unitins.pibiti.model.RegistroProgramaComputador;
 import br.unitins.pibiti.repository.AvaliacaoTrlPIRepository;
 import br.unitins.pibiti.repository.ContratoFranquiaRepository;
+import br.unitins.pibiti.repository.CultivarRepository;
 import br.unitins.pibiti.repository.DesenhoIndustrialRepository;
 import br.unitins.pibiti.repository.DireitoAutorRepository;
 import br.unitins.pibiti.repository.IndicacaoGeograficaRepository;
@@ -65,6 +67,9 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
     RegistroProgramaComputadorRepository registroProgramaComputadorRepository;
 
     @Inject
+    CultivarRepository cultivarRepository;
+
+    @Inject
     Validator validator;
 
     @Override
@@ -85,6 +90,7 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
         IndicacaoGeografica indicacaoGeografica = indicacaoGeograficaRepository.findById(avaliacaoDTO.idIndicacaoGeografica());
         DireitoAutor direitoAutor = direitoAutorRepository.findById(avaliacaoDTO.idDireitoAutor());
         RegistroProgramaComputador registroPrograma = registroProgramaComputadorRepository.findById(avaliacaoDTO.idRegistroProgramaComputador());
+        Cultivar cultivar = cultivarRepository.findById(avaliacaoDTO.idCultivar());
 
         AvaliacaoTRLPropiedadeIntelectual avaliacaoTRL = new AvaliacaoTRLPropiedadeIntelectual();
 
@@ -102,6 +108,8 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
             avaliacaoTRL.setDireitoAutor(direitoAutor);
         } else if (registroPrograma != null) {
             avaliacaoTRL.setRegistroProgramaComputador(registroPrograma);
+        } else if (cultivar != null) {
+            avaliacaoTRL.setCultivar(cultivar);
         } else {
             throw new NotFoundException("Nenhuma Propiedade Intelectual foi informada.");
         }

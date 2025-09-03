@@ -84,4 +84,8 @@ public class AvaliacaoTRLPropiedadeIntelectual extends DefaultEntity {
     @ManyToOne
     @JoinColumn(name = "id_registro_programa_computador")
     private RegistroProgramaComputador registroProgramaComputador;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cultivar")
+    private Cultivar cultivar;
 }
