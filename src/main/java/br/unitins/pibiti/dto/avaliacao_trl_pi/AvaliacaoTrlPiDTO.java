@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public record AvaliacaoTrlPiDTO(
         // Propiedade Intelectual da Avaliação
-        Long idMarca, Long idPatente, Long idContratoFranquia, Long idDesenhoIndustrial,
+        Long idMarca, Long idPatente, Long idContratoFranquia, Long idDesenhoIndustrial, Long idIndicacaoGeografica,
 
         // Variáveis Científicas/Técnicas
         String hipotese, String protocolo, String relatorio, String especificacoes, Boolean designVerificationTest,

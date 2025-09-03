@@ -20,23 +20,6 @@ public class AvaliacaoTRLPropiedadeIntelectual extends DefaultEntity {
     @Column(name = "id_avaliacao_trl_propiedade_intelectual")
     private Long idAvaliacaoTrlPI;
 
-    // Propiedade Intelectual relacionada - Deve ser só uma delas
-    @ManyToOne
-    @JoinColumn(name = "id_marca")
-    private Marca marca;
-
-    @ManyToOne
-    @JoinColumn(name = "id_patente")
-    private Patente patente;
-
-    @ManyToOne
-    @JoinColumn(name = "id_contrato_franquia")
-    private ContratoFranquia contratoFranquia;
-
-    @ManyToOne
-    @JoinColumn(name = "id_desenho_industrial")
-    private DesenhoIndustrial desenhoIndustrial;
-
     // Variáveis Científicas/Técnicas
     private String hipotese;
     private String protocolo;
@@ -69,6 +52,26 @@ public class AvaliacaoTRLPropiedadeIntelectual extends DefaultEntity {
     private Integer trl;
     private Float trlScore;
 
+    // Propiedade Intelectual relacionada - Deve ser só uma delas
+    @ManyToOne
+    @JoinColumn(name = "id_marca")
+    private Marca marca;
+
+    @ManyToOne
+    @JoinColumn(name = "id_patente")
+    private Patente patente;
+
+    @ManyToOne
+    @JoinColumn(name = "id_contrato_franquia")
+    private ContratoFranquia contratoFranquia;
+
+    @ManyToOne
+    @JoinColumn(name = "id_desenho_industrial")
+    private DesenhoIndustrial desenhoIndustrial;
+
+    @ManyToOne
+    @JoinColumn(name = "id_indicacao_geografica")
+    private IndicacaoGeografica indicacaoGeografica;
 
     public Long getIdAvaliacaoTrlPI() {
         return idAvaliacaoTrlPI;
@@ -76,38 +79,6 @@ public class AvaliacaoTRLPropiedadeIntelectual extends DefaultEntity {
 
     public void setIdAvaliacaoTrlPI(Long idAvaliacaoTrlPI) {
         this.idAvaliacaoTrlPI = idAvaliacaoTrlPI;
-    }
-
-    public Marca getMarca() {
-        return marca;
-    }
-
-    public void setMarca(Marca idMarca) {
-        this.marca = idMarca;
-    }
-
-    public Patente getPatente() {
-        return patente;
-    }
-
-    public void setPatente(Patente patente) {
-        this.patente = patente;
-    }
-
-    public ContratoFranquia getContratoFranquia() {
-        return contratoFranquia;
-    }
-
-    public void setContratoFranquia(ContratoFranquia contratoFranquia) {
-        this.contratoFranquia = contratoFranquia;
-    }
-
-    public DesenhoIndustrial getDesenhoIndustrial() {
-        return desenhoIndustrial;
-    }
-
-    public void setDesenhoIndustrial(DesenhoIndustrial desenhoIndustrial) {
-        this.desenhoIndustrial = desenhoIndustrial;
     }
 
     public String getHipotese() {
@@ -268,5 +239,45 @@ public class AvaliacaoTRLPropiedadeIntelectual extends DefaultEntity {
 
     public void setTrlScore(Float trlScore) {
         this.trlScore = trlScore;
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca idMarca) {
+        this.marca = idMarca;
+    }
+
+    public Patente getPatente() {
+        return patente;
+    }
+
+    public void setPatente(Patente patente) {
+        this.patente = patente;
+    }
+
+    public ContratoFranquia getContratoFranquia() {
+        return contratoFranquia;
+    }
+
+    public void setContratoFranquia(ContratoFranquia contratoFranquia) {
+        this.contratoFranquia = contratoFranquia;
+    }
+
+    public DesenhoIndustrial getDesenhoIndustrial() {
+        return desenhoIndustrial;
+    }
+
+    public void setDesenhoIndustrial(DesenhoIndustrial desenhoIndustrial) {
+        this.desenhoIndustrial = desenhoIndustrial;
+    }
+
+    public IndicacaoGeografica getIndicacaoGeografica() {
+        return indicacaoGeografica;
+    }
+
+    public void setIndicacaoGeografica(IndicacaoGeografica indicacaoGeografica) {
+        this.indicacaoGeografica = indicacaoGeografica;
     }
 }

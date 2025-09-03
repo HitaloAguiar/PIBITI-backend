@@ -5,12 +5,14 @@ import br.unitins.pibiti.dto.avaliacao_trl_pi.AvaliacaoTrlPiResponseDTO;
 import br.unitins.pibiti.model.AvaliacaoTRLPropiedadeIntelectual;
 import br.unitins.pibiti.model.ContratoFranquia;
 import br.unitins.pibiti.model.DesenhoIndustrial;
+import br.unitins.pibiti.model.IndicacaoGeografica;
 import br.unitins.pibiti.model.Marca;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.Patente;
 import br.unitins.pibiti.repository.AvaliacaoTrlPIRepository;
 import br.unitins.pibiti.repository.ContratoFranquiaRepository;
 import br.unitins.pibiti.repository.DesenhoIndustrialRepository;
+import br.unitins.pibiti.repository.IndicacaoGeograficaRepository;
 import br.unitins.pibiti.repository.MarcaRepository;
 import br.unitins.pibiti.repository.NitRepository;
 import br.unitins.pibiti.repository.PatenteRepository;
@@ -50,6 +52,9 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
     DesenhoIndustrialRepository desenhoIndustrialRepository;
 
     @Inject
+    IndicacaoGeograficaRepository indicacaoGeograficaRepository;
+
+    @Inject
     Validator validator;
 
     @Override
@@ -67,6 +72,7 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
         Patente patente = patenteRepository.findById(avaliacaoDTO.idPatente());
         ContratoFranquia contratoFranquia = contratoFranquiaRepository.findById(avaliacaoDTO.idContratoFranquia());
         DesenhoIndustrial desenhoIndustrial = desenhoIndustrialRepository.findById(avaliacaoDTO.idDesenhoIndustrial());
+        IndicacaoGeografica indicacaoGeografica = indicacaoGeograficaRepository.findById(avaliacaoDTO.idIndicacaoGeografica());
 
         AvaliacaoTRLPropiedadeIntelectual avaliacaoTRL = new AvaliacaoTRLPropiedadeIntelectual();
 
@@ -78,6 +84,8 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
             avaliacaoTRL.setContratoFranquia(contratoFranquia);
         } else if (desenhoIndustrial != null) {
             avaliacaoTRL.setDesenhoIndustrial(desenhoIndustrial);
+        } else if (indicacaoGeografica != null) {
+            avaliacaoTRL.setIndicacaoGeografica(indicacaoGeografica);
         } else {
             throw new NotFoundException("Nenhuma Propiedade Intelectual foi informada.");
         }
@@ -112,8 +120,7 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
     private void validar(AvaliacaoTrlPiDTO avaliacaoTrlPiDTO) throws ConstraintViolationException {
         Set<ConstraintViolation<AvaliacaoTrlPiDTO>> violations = validator.validate(avaliacaoTrlPiDTO);
 
-        if (!violations.isEmpty())
-            throw new ConstraintViolationException(violations);
+        if (!violations.isEmpty()) throw new ConstraintViolationException(violations);
     }
 
     private boolean preenchido(String valor) {
