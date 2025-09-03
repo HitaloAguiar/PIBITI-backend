@@ -10,11 +10,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "desenho_industrial")
+@Getter
+@Setter
 public class DesenhoIndustrial {
 
     @Id
@@ -44,76 +48,4 @@ public class DesenhoIndustrial {
     private String periodo;
 
     private TipoDesenhoIndustrial tipoDesenhoIndustrial;
-
-    public Long getIdDesenhoIndustrial() {
-        return idDesenhoIndustrial;
-    }
-
-    public void setIdDesenhoIndustrial(Long idDesenhoIndustrial) {
-        this.idDesenhoIndustrial = idDesenhoIndustrial;
-    }
-
-    public TipoPropiedadeIntelectual getTipoPropiedadeIntelectual() {
-        return tipoPropiedadeIntelectual;
-    }
-
-    public void setTipoPropiedadeIntelectual(TipoPropiedadeIntelectual tipoPropiedadeIntelectual) {
-        this.tipoPropiedadeIntelectual = tipoPropiedadeIntelectual;
-    }
-
-    public Nit getNit() {
-        return nit;
-    }
-
-    public void setNit(Nit nit) {
-        this.nit = nit;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getTitular() {
-        return titular;
-    }
-
-    public void setTitular(String titular) {
-        this.titular = titular;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public LocalDate getDataConcessao() {
-        return dataConcessao;
-    }
-
-    public void setDataConcessao(LocalDate dataConcessao) {
-        this.dataConcessao = dataConcessao;
-    }
-
-    public String getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(String periodo) {
-        this.periodo = periodo;
-    }
-
-    public TipoDesenhoIndustrial getTipoDesenhoIndustrial() {
-        return tipoDesenhoIndustrial;
-    }
-
-    public void setTipoDesenhoIndustrial(TipoDesenhoIndustrial tipoDesenhoIndustrial) {
-        this.tipoDesenhoIndustrial = tipoDesenhoIndustrial;
-    }
 }

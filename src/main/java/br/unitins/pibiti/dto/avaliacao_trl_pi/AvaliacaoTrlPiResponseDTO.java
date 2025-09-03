@@ -1,11 +1,11 @@
 package br.unitins.pibiti.dto.avaliacao_trl_pi;
 
-import br.unitins.pibiti.dto.propiedade_intelectual.contato_franquia.ContratoFranquiaResponseDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.desenho_industrial.DesenhoIndustrialResponseDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.direito_autor.DireitoAutorResponseDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.indicacao_geografica.IndicacaoGeograficaResponseDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.marca.MarcaResponseDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.patente.PatenteResponseDTO;
+import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.contato_franquia.ContratoFranquiaResponseDTO;
+import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.desenho_industrial.DesenhoIndustrialResponseDTO;
+import br.unitins.pibiti.dto.propiedade_intelectual.direito_autoral.direito_autor.DireitoAutorResponseDTO;
+import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.indicacao_geografica.IndicacaoGeograficaResponseDTO;
+import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.marca.MarcaResponseDTO;
+import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.patente.PatenteResponseDTO;
 import br.unitins.pibiti.model.AvaliacaoTRLPropiedadeIntelectual;
 
 import java.math.BigDecimal;

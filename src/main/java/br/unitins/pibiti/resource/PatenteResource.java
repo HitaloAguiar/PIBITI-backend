@@ -1,9 +1,9 @@
 package br.unitins.pibiti.resource;
 
 import br.unitins.pibiti.application.Result;
-import br.unitins.pibiti.dto.propiedade_intelectual.patente.PatenteDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.patente.PatenteResponseDTO;
-import br.unitins.pibiti.service.propiedade_intelectual.patente.PatenteService;
+import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.patente.PatenteDTO;
+import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.patente.PatenteResponseDTO;
+import br.unitins.pibiti.service.propiedade_intelectual.propiedade_industrial.patente.PatenteService;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;

@@ -1,9 +1,9 @@
 package br.unitins.pibiti.resource;
 
 import br.unitins.pibiti.application.Result;
-import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.marca.MarcaDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.marca.MarcaResponseDTO;
-import br.unitins.pibiti.service.propiedade_intelectual.propiedade_industrial.marca.MarcaService;
+import br.unitins.pibiti.dto.propiedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorDTO;
+import br.unitins.pibiti.dto.propiedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorResponseDTO;
+import br.unitins.pibiti.service.propiedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorService;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
@@ -20,26 +20,26 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-@Path("/propiedades-intelectuais/marcas")
+@Path("/propiedades-intelectuais/registros-programa-computador")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class MarcaResource {
+public class RegistroProgramaComputadorResource {
 
     @Inject
-    MarcaService marcaService;
+    RegistroProgramaComputadorService registroProgramaService;
 
     @Inject
     JsonWebToken jwt;
 
     @GET
     @Path("/{id}")
-    public MarcaResponseDTO getMarca(@PathParam("id") Long id) throws NotFoundException {
-        return marcaService.getMarca(id);
+    public RegistroProgramaComputadorResponseDTO getRegistroProgramaComputador(@PathParam("id") Long id) throws NotFoundException {
+        return registroProgramaService.getRegistroProgramaComputador(id);
     }
 
     @POST
     @Authenticated
-    public Response cadastrar(MarcaDTO marcaDTO) {
+    public Response cadastrar(RegistroProgramaComputadorDTO registroProgramaDTO) {
 
         Result result;
 
@@ -47,7 +47,7 @@ public class MarcaResource {
 
             return Response
                     .status(Response.Status.CREATED) // 201
-                    .entity(marcaService.cadastrar(marcaDTO))
+                    .entity(registroProgramaService.cadastrar(registroProgramaDTO))
                     .build();
         } catch (ConstraintViolationException e) {
 
@@ -71,7 +71,7 @@ public class MarcaResource {
     @PUT
     @Path("/{id}")
     @Authenticated
-    public Response atualizar(@PathParam("id") Long id, MarcaDTO marcaDTO) {
+    public Response atualizar(@PathParam("id") Long id, RegistroProgramaComputadorDTO registroProgramaDTO) {
 
         Result result;
 
@@ -79,7 +79,7 @@ public class MarcaResource {
 
         try {
 
-            marcaService.atualizar(cnpj, id, marcaDTO);
+            registroProgramaService.atualizar(cnpj, id, registroProgramaDTO);
 
             return Response
                     .status(Response.Status.NO_CONTENT) // 204
@@ -106,14 +106,14 @@ public class MarcaResource {
     @DELETE
     @Path("/{id}")
     @Authenticated
-    public Response deletarMarca(@PathParam("id") Long idMarca) throws IllegalArgumentException, NotFoundException {
+    public Response deletarRegistroProgramaComputador(@PathParam("id") Long idRegistroProgramaComputador) throws IllegalArgumentException, NotFoundException {
 
         Result result;
 
         String cnpj = jwt.getSubject();
 
         try {
-            marcaService.deletarMarca(cnpj, idMarca);
+            registroProgramaService.deletarRegistroProgramaComputador(cnpj, idRegistroProgramaComputador);
 
             return Response
                     .status(Response.Status.NO_CONTENT)

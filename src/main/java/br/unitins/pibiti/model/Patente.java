@@ -10,11 +10,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "patente")
+@Getter
+@Setter
 public class Patente {
 
     @Id
@@ -47,83 +51,4 @@ public class Patente {
 
     private String categorias;
 
-    public Long getIdPatente() {
-        return idPatente;
-    }
-
-    public void setIdPatente(Long idPatente) {
-        this.idPatente = idPatente;
-    }
-
-    public TipoPropiedadeIntelectual getTipoPropiedadeIntelectual() {
-        return tipoPropiedadeIntelectual;
-    }
-
-    public void setTipoPropiedadeIntelectual(TipoPropiedadeIntelectual tipoPropiedadeIntelectual) {
-        this.tipoPropiedadeIntelectual = tipoPropiedadeIntelectual;
-    }
-
-    public Nit getNit() {
-        return nit;
-    }
-
-    public void setNit(Nit nit) {
-        this.nit = nit;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getResumo() {
-        return resumo;
-    }
-
-    public void setResumo(String resumo) {
-        this.resumo = resumo;
-    }
-
-    public LocalDate getDataConcessao() {
-        return dataConcessao;
-    }
-
-    public void setDataConcessao(LocalDate dataConcessao) {
-        this.dataConcessao = dataConcessao;
-    }
-
-    public String getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(String periodo) {
-        this.periodo = periodo;
-    }
-
-    public TipoPatente getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoPatente tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getClassificacao() {
-        return classificacao;
-    }
-
-    public void setClassificacao(String classificacao) {
-        this.classificacao = classificacao;
-    }
-
-    public String getCategorias() {
-        return categorias;
-    }
-
-    public void setCategorias(String categorias) {
-        this.categorias = categorias;
-    }
 }

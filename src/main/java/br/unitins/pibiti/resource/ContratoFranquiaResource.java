@@ -1,9 +1,9 @@
 package br.unitins.pibiti.resource;
 
 import br.unitins.pibiti.application.Result;
-import br.unitins.pibiti.dto.propiedade_intelectual.contato_franquia.ContratoFranquiaDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.contato_franquia.ContratoFranquiaResponseDTO;
-import br.unitins.pibiti.service.propiedade_intelectual.contrato_franquia.ContratoFranquiaService;
+import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.contato_franquia.ContratoFranquiaDTO;
+import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.contato_franquia.ContratoFranquiaResponseDTO;
+import br.unitins.pibiti.service.propiedade_intelectual.propiedade_industrial.contrato_franquia.ContratoFranquiaService;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;

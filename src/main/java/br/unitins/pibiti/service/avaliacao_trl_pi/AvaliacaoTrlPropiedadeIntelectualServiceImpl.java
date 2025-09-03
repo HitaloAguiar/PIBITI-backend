@@ -10,6 +10,7 @@ import br.unitins.pibiti.model.IndicacaoGeografica;
 import br.unitins.pibiti.model.Marca;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.Patente;
+import br.unitins.pibiti.model.RegistroProgramaComputador;
 import br.unitins.pibiti.repository.AvaliacaoTrlPIRepository;
 import br.unitins.pibiti.repository.ContratoFranquiaRepository;
 import br.unitins.pibiti.repository.DesenhoIndustrialRepository;
@@ -18,6 +19,7 @@ import br.unitins.pibiti.repository.IndicacaoGeograficaRepository;
 import br.unitins.pibiti.repository.MarcaRepository;
 import br.unitins.pibiti.repository.NitRepository;
 import br.unitins.pibiti.repository.PatenteRepository;
+import br.unitins.pibiti.repository.RegistroProgramaComputadorRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -60,6 +62,9 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
     DireitoAutorRepository direitoAutorRepository;
 
     @Inject
+    RegistroProgramaComputadorRepository registroProgramaComputadorRepository;
+
+    @Inject
     Validator validator;
 
     @Override
@@ -79,6 +84,7 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
         DesenhoIndustrial desenhoIndustrial = desenhoIndustrialRepository.findById(avaliacaoDTO.idDesenhoIndustrial());
         IndicacaoGeografica indicacaoGeografica = indicacaoGeograficaRepository.findById(avaliacaoDTO.idIndicacaoGeografica());
         DireitoAutor direitoAutor = direitoAutorRepository.findById(avaliacaoDTO.idDireitoAutor());
+        RegistroProgramaComputador registroPrograma = registroProgramaComputadorRepository.findById(avaliacaoDTO.idRegistroProgramaComputador());
 
         AvaliacaoTRLPropiedadeIntelectual avaliacaoTRL = new AvaliacaoTRLPropiedadeIntelectual();
 
@@ -94,6 +100,8 @@ public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTr
             avaliacaoTRL.setIndicacaoGeografica(indicacaoGeografica);
         } else if (direitoAutor != null) {
             avaliacaoTRL.setDireitoAutor(direitoAutor);
+        } else if (registroPrograma != null) {
+            avaliacaoTRL.setRegistroProgramaComputador(registroPrograma);
         } else {
             throw new NotFoundException("Nenhuma Propiedade Intelectual foi informada.");
         }

@@ -10,11 +10,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "marca")
+@Getter
+@Setter
 public class Marca {
 
     @Id
@@ -44,77 +48,5 @@ public class Marca {
     private NaturezaMarca natureza;
 
     private String classes;
-
-    public Long getIdMarca() {
-        return idMarca;
-    }
-
-    public void setIdMarca(Long idMarca) {
-        this.idMarca = idMarca;
-    }
-
-    public TipoPropiedadeIntelectual getTipoPropiedadeIntelectual() {
-        return tipoPropiedadeIntelectual;
-    }
-
-    public void setTipoPropiedadeIntelectual(TipoPropiedadeIntelectual tipoPropiedadeIntelectual) {
-        this.tipoPropiedadeIntelectual = tipoPropiedadeIntelectual;
-    }
-
-    public Nit getNit() {
-        return nit;
-    }
-
-    public void setNit(Nit nit) {
-        this.nit = nit;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getTitular() {
-        return titular;
-    }
-
-    public void setTitular(String titular) {
-        this.titular = titular;
-    }
-
-    public LocalDate getDataConcessao() {
-        return dataConcessao;
-    }
-
-    public void setDataConcessao(LocalDate dataConcessao) {
-        this.dataConcessao = dataConcessao;
-    }
-
-    public String getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(String periodo) {
-        this.periodo = periodo;
-    }
-
-    public NaturezaMarca getNatureza() {
-        return natureza;
-    }
-
-    public void setNatureza(NaturezaMarca natureza) {
-        this.natureza = natureza;
-    }
-
-    public String getClasses() {
-        return classes;
-    }
-
-    public void setClasses(String classes) {
-        this.classes = classes;
-    }
 
 }

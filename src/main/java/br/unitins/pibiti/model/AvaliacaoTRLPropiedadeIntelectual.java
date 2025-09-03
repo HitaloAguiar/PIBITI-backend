@@ -8,11 +8,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "avaliacao_trl_propiedade_intelectual")
+@Getter
+@Setter
 public class AvaliacaoTRLPropiedadeIntelectual extends DefaultEntity {
 
     @Id
@@ -77,219 +81,7 @@ public class AvaliacaoTRLPropiedadeIntelectual extends DefaultEntity {
     @JoinColumn(name = "id_direito_autor")
     private DireitoAutor direitoAutor;
 
-    public Long getIdAvaliacaoTrlPI() {
-        return idAvaliacaoTrlPI;
-    }
-
-    public void setIdAvaliacaoTrlPI(Long idAvaliacaoTrlPI) {
-        this.idAvaliacaoTrlPI = idAvaliacaoTrlPI;
-    }
-
-    public String getHipotese() {
-        return hipotese;
-    }
-
-    public void setHipotese(String hipotese) {
-        this.hipotese = hipotese;
-    }
-
-    public String getProtocolo() {
-        return protocolo;
-    }
-
-    public void setProtocolo(String protocolo) {
-        this.protocolo = protocolo;
-    }
-
-    public String getRelatorio() {
-        return relatorio;
-    }
-
-    public void setRelatorio(String relatorio) {
-        this.relatorio = relatorio;
-    }
-
-    public String getEspecificacoes() {
-        return especificacoes;
-    }
-
-    public void setEspecificacoes(String especificacoes) {
-        this.especificacoes = especificacoes;
-    }
-
-    public Boolean getDesignVerificationTest() {
-        return designVerificationTest;
-    }
-
-    public void setDesignVerificationTest(Boolean designVerificationTest) {
-        this.designVerificationTest = designVerificationTest;
-    }
-
-    public Boolean getDesignVerificationPlan() {
-        return designVerificationPlan;
-    }
-
-    public void setDesignVerificationPlan(Boolean designVerificationPlan) {
-        this.designVerificationPlan = designVerificationPlan;
-    }
-
-    public String getStatusPi() {
-        return statusPi;
-    }
-
-    public void setStatusPi(String statusPi) {
-        this.statusPi = statusPi;
-    }
-
-    public Boolean getFreedomToOperate() {
-        return freedomToOperate;
-    }
-
-    public void setFreedomToOperate(Boolean freedomToOperate) {
-        this.freedomToOperate = freedomToOperate;
-    }
-
-    public Boolean getNonDisclosureAgreement() {
-        return nonDisclosureAgreement;
-    }
-
-    public void setNonDisclosureAgreement(Boolean nonDisclosureAgreement) {
-        this.nonDisclosureAgreement = nonDisclosureAgreement;
-    }
-
-    public Boolean getMaterialTransferAgreement() {
-        return materialTransferAgreement;
-    }
-
-    public void setMaterialTransferAgreement(Boolean materialTransferAgreement) {
-        this.materialTransferAgreement = materialTransferAgreement;
-    }
-
-    public Boolean getLicença() {
-        return licença;
-    }
-
-    public void setLicença(Boolean licença) {
-        this.licença = licença;
-    }
-
-    public String getTipoOuAmbienteTeste() {
-        return tipoOuAmbienteTeste;
-    }
-
-    public void setTipoOuAmbienteTeste(String tipoOuAmbienteTeste) {
-        this.tipoOuAmbienteTeste = tipoOuAmbienteTeste;
-    }
-
-    public String getResultados() {
-        return resultados;
-    }
-
-    public void setResultados(String resultados) {
-        this.resultados = resultados;
-    }
-
-    public Boolean getConformidades() {
-        return conformidades;
-    }
-
-    public void setConformidades(Boolean conformidades) {
-        this.conformidades = conformidades;
-    }
-
-    public Boolean getProofOfConceptComCliente() {
-        return proofOfConceptComCliente;
-    }
-
-    public void setProofOfConceptComCliente(Boolean proofOfConceptComCliente) {
-        this.proofOfConceptComCliente = proofOfConceptComCliente;
-    }
-
-    public Boolean getContratoLicençaFornecimento() {
-        return contratoLicençaFornecimento;
-    }
-
-    public void setContratoLicençaFornecimento(Boolean contratoLicençaFornecimento) {
-        this.contratoLicençaFornecimento = contratoLicençaFornecimento;
-    }
-
-    public BigDecimal getReceitaInicial() {
-        return receitaInicial;
-    }
-
-    public void setReceitaInicial(BigDecimal receitaInicial) {
-        this.receitaInicial = receitaInicial;
-    }
-
-    public Boolean getDossiesCertificacoes() {
-        return dossiesCertificacoes;
-    }
-
-    public void setDossiesCertificacoes(Boolean dossiesCertificacoes) {
-        this.dossiesCertificacoes = dossiesCertificacoes;
-    }
-
-    public Integer getTrl() {
-        return trl;
-    }
-
-    public void setTrl(Integer trl) {
-        this.trl = trl;
-    }
-
-    public Float getTrlScore() {
-        return trlScore;
-    }
-
-    public void setTrlScore(Float trlScore) {
-        this.trlScore = trlScore;
-    }
-
-    public Marca getMarca() {
-        return marca;
-    }
-
-    public void setMarca(Marca idMarca) {
-        this.marca = idMarca;
-    }
-
-    public Patente getPatente() {
-        return patente;
-    }
-
-    public void setPatente(Patente patente) {
-        this.patente = patente;
-    }
-
-    public ContratoFranquia getContratoFranquia() {
-        return contratoFranquia;
-    }
-
-    public void setContratoFranquia(ContratoFranquia contratoFranquia) {
-        this.contratoFranquia = contratoFranquia;
-    }
-
-    public DesenhoIndustrial getDesenhoIndustrial() {
-        return desenhoIndustrial;
-    }
-
-    public void setDesenhoIndustrial(DesenhoIndustrial desenhoIndustrial) {
-        this.desenhoIndustrial = desenhoIndustrial;
-    }
-
-    public IndicacaoGeografica getIndicacaoGeografica() {
-        return indicacaoGeografica;
-    }
-
-    public void setIndicacaoGeografica(IndicacaoGeografica indicacaoGeografica) {
-        this.indicacaoGeografica = indicacaoGeografica;
-    }
-
-    public DireitoAutor getDireitoAutor() {
-        return direitoAutor;
-    }
-
-    public void setDireitoAutor(DireitoAutor direitoAutor) {
-        this.direitoAutor = direitoAutor;
-    }
+    @ManyToOne
+    @JoinColumn(name = "id_registro_programa_computador")
+    private RegistroProgramaComputador registroProgramaComputador;
 }

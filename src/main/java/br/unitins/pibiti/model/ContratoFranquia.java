@@ -9,9 +9,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "contrato_franquia")
+@Getter
+@Setter
 public class ContratoFranquia {
 
     @Id
@@ -30,44 +34,4 @@ public class ContratoFranquia {
 
     @Column(nullable = false)
     private String descricao;
-
-    public Long getIdContratoFranquia() {
-        return idContratoFranquia;
-    }
-
-    public void setIdContratoFranquia(Long idContratoFranquia) {
-        this.idContratoFranquia = idContratoFranquia;
-    }
-
-    public TipoPropiedadeIntelectual getTipoPropiedadeIntelectual() {
-        return tipoPropiedadeIntelectual;
-    }
-
-    public void setTipoPropiedadeIntelectual(TipoPropiedadeIntelectual tipoPropiedadeIntelectual) {
-        this.tipoPropiedadeIntelectual = tipoPropiedadeIntelectual;
-    }
-
-    public Nit getNit() {
-        return nit;
-    }
-
-    public void setNit(Nit nit) {
-        this.nit = nit;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
 }
