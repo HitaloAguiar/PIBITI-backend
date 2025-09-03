@@ -73,6 +73,10 @@ public class AvaliacaoTRLPropiedadeIntelectual extends DefaultEntity {
     @JoinColumn(name = "id_indicacao_geografica")
     private IndicacaoGeografica indicacaoGeografica;
 
+    @ManyToOne
+    @JoinColumn(name = "id_direito_autor")
+    private DireitoAutor direitoAutor;
+
     public Long getIdAvaliacaoTrlPI() {
         return idAvaliacaoTrlPI;
     }
@@ -279,5 +283,13 @@ public class AvaliacaoTRLPropiedadeIntelectual extends DefaultEntity {
 
     public void setIndicacaoGeografica(IndicacaoGeografica indicacaoGeografica) {
         this.indicacaoGeografica = indicacaoGeografica;
+    }
+
+    public DireitoAutor getDireitoAutor() {
+        return direitoAutor;
+    }
+
+    public void setDireitoAutor(DireitoAutor direitoAutor) {
+        this.direitoAutor = direitoAutor;
     }
 }

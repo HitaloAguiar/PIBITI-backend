@@ -2,6 +2,7 @@ package br.unitins.pibiti.dto.avaliacao_trl_pi;
 
 import br.unitins.pibiti.dto.propiedade_intelectual.contato_franquia.ContratoFranquiaResponseDTO;
 import br.unitins.pibiti.dto.propiedade_intelectual.desenho_industrial.DesenhoIndustrialResponseDTO;
+import br.unitins.pibiti.dto.propiedade_intelectual.direito_autor.DireitoAutorResponseDTO;
 import br.unitins.pibiti.dto.propiedade_intelectual.indicacao_geografica.IndicacaoGeograficaResponseDTO;
 import br.unitins.pibiti.dto.propiedade_intelectual.marca.MarcaResponseDTO;
 import br.unitins.pibiti.dto.propiedade_intelectual.patente.PatenteResponseDTO;
@@ -16,7 +17,8 @@ public record AvaliacaoTrlPiResponseDTO(Long idAvaliacaoTrlPI,
                                         MarcaResponseDTO marca, PatenteResponseDTO patente,
                                         ContratoFranquiaResponseDTO contratoFranquia,
                                         DesenhoIndustrialResponseDTO desenhoIndustrial,
-                                        IndicacaoGeograficaResponseDTO indicacaoGeograficaResponseDTO,
+                                        IndicacaoGeograficaResponseDTO indicacaoGeografica,
+                                        DireitoAutorResponseDTO direitoAutor,
 
                                         // Variáveis Científicas/Técnicas
                                         String hipotese, String protocolo, String relatorio, String especificacoes,
@@ -41,7 +43,7 @@ public record AvaliacaoTrlPiResponseDTO(Long idAvaliacaoTrlPI,
 
     public AvaliacaoTrlPiResponseDTO(AvaliacaoTRLPropiedadeIntelectual avaliacao) {
         this(avaliacao.getIdAvaliacaoTrlPI(), new MarcaResponseDTO(avaliacao.getMarca()), new PatenteResponseDTO(avaliacao.getPatente()), new ContratoFranquiaResponseDTO(avaliacao.getContratoFranquia()), new DesenhoIndustrialResponseDTO(avaliacao.getDesenhoIndustrial()),
-                new IndicacaoGeograficaResponseDTO(avaliacao.getIndicacaoGeografica()),
+                new IndicacaoGeograficaResponseDTO(avaliacao.getIndicacaoGeografica()), new DireitoAutorResponseDTO(avaliacao.getDireitoAutor()),
                 avaliacao.getHipotese(), avaliacao.getProtocolo(), avaliacao.getRelatorio(), avaliacao.getEspecificacoes(), avaliacao.getDesignVerificationTest(), avaliacao.getDesignVerificationPlan(), avaliacao.getStatusPi(), avaliacao.getFreedomToOperate(),
                 avaliacao.getNonDisclosureAgreement(), avaliacao.getMaterialTransferAgreement(), avaliacao.getLicença(), avaliacao.getTipoOuAmbienteTeste(), avaliacao.getResultados(), avaliacao.getConformidades(), avaliacao.getProofOfConceptComCliente(),
                 avaliacao.getContratoLicençaFornecimento(), avaliacao.getReceitaInicial(), avaliacao.getDossiesCertificacoes(), avaliacao.getTrl(), avaliacao.getTrlScore(), avaliacao.getCreatedAt());

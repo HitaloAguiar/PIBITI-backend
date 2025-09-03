@@ -17,7 +17,7 @@ public record DesenhoIndustrialResponseDTO(
         TiposEnumResponseDTO tipoDesenhoIndustrial
 ) {
     public DesenhoIndustrialResponseDTO(DesenhoIndustrial desenhoIndustrial) {
-        this(desenhoIndustrial.getIdDesenhoIndustriaç(), new TiposEnumResponseDTO(desenhoIndustrial.getTipoPropiedadeIntelectual().getId(), desenhoIndustrial.getTipoPropiedadeIntelectual().getLabel()), new NitResponseDTO(desenhoIndustrial.getNit()),
+        this(desenhoIndustrial.getIdDesenhoIndustrial(), new TiposEnumResponseDTO(desenhoIndustrial.getTipoPropiedadeIntelectual().getId(), desenhoIndustrial.getTipoPropiedadeIntelectual().getLabel()), new NitResponseDTO(desenhoIndustrial.getNit()),
                 desenhoIndustrial.getTitulo(), desenhoIndustrial.getDescricao(), desenhoIndustrial.getDataConcessao(), desenhoIndustrial.getPeriodo(), new TiposEnumResponseDTO(desenhoIndustrial.getTipoDesenhoIndustrial().getId(), desenhoIndustrial.getTipoDesenhoIndustrial().getLabel()));
     }
 }

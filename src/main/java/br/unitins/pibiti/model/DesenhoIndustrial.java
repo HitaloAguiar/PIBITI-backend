@@ -20,7 +20,7 @@ public class DesenhoIndustrial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_desenho_industrial")
-    private Long idDesenhoIndustriaç;
+    private Long idDesenhoIndustrial;
 
     private TipoPropiedadeIntelectual tipoPropiedadeIntelectual;
 
@@ -45,12 +45,12 @@ public class DesenhoIndustrial {
 
     private TipoDesenhoIndustrial tipoDesenhoIndustrial;
 
-    public Long getIdDesenhoIndustriaç() {
-        return idDesenhoIndustriaç;
+    public Long getIdDesenhoIndustrial() {
+        return idDesenhoIndustrial;
     }
 
-    public void setIdDesenhoIndustriaç(Long idDesenhoIndustriaç) {
-        this.idDesenhoIndustriaç = idDesenhoIndustriaç;
+    public void setIdDesenhoIndustrial(Long idDesenhoIndustrial) {
+        this.idDesenhoIndustrial = idDesenhoIndustrial;
     }
 
     public TipoPropiedadeIntelectual getTipoPropiedadeIntelectual() {
