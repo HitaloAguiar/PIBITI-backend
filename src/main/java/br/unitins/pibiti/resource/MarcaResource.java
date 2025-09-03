@@ -30,7 +30,6 @@ public class MarcaResource {
 
     @Inject
     JsonWebToken jwt;
-    private Long idMarca;
 
     @GET
     @Path("/{id}")

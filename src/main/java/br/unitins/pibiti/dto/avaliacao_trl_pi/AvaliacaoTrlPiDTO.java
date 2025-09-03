@@ -1,0 +1,37 @@
+package br.unitins.pibiti.dto.avaliacao_trl_pi;
+
+import java.math.BigDecimal;
+
+public record AvaliacaoTrlPiDTO(
+        Long idMarca,
+
+        // Variáveis Científicas/Técnicas
+        String hipotese,
+        String protocolo,
+        String relatorio,
+        String especificacoes,
+        Boolean designVerificationTest,
+        Boolean designVerificationPlan,
+
+        // Variáveis de PI & Jurídico
+        String statusPi,
+        Boolean freedomToOperate,
+        Boolean nonDisclosureAgreement,
+        Boolean materialTransferAgreement,
+        Boolean licença,
+
+        // Variáveis de Testes & Qualidade
+        String tipoOuAmbienteTeste,
+        String resultados,
+        Boolean conformidades,
+
+        // Variáveis de Mercado & Parcerias
+        Boolean proofOfConceptComCliente,
+        Boolean contratoLicencaFornecimento,
+        BigDecimal receitaInicial,
+
+        // Variáveis de Regulatório
+        Boolean dossiesCertificacoes
+
+) {
+}

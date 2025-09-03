@@ -1,0 +1,141 @@
+package br.unitins.pibiti.service.avaliacao_trl_pi;
+
+import br.unitins.pibiti.dto.avaliacao_trl_pi.AvaliacaoTrlPiDTO;
+import br.unitins.pibiti.dto.avaliacao_trl_pi.AvaliacaoTrlPiResponseDTO;
+import br.unitins.pibiti.model.AvaliacaoTRLPropiedadeIntelectual;
+import br.unitins.pibiti.model.Marca;
+import br.unitins.pibiti.model.Nit;
+import br.unitins.pibiti.repository.AvaliacaoTrlPIRepository;
+import br.unitins.pibiti.repository.MarcaRepository;
+import br.unitins.pibiti.repository.NitRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.NotFoundException;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+@ApplicationScoped
+public class AvaliacaoTrlPropiedadeIntelectualServiceImpl implements AvaliacaoTrlPropiedadeIntelectualService {
+
+    @Inject
+    NitRepository nitRepository;
+
+    @Inject
+    MarcaRepository marcaRepository;
+
+    @Inject
+    AvaliacaoTrlPIRepository avaliacaoTrlPIRepository;
+
+    @Inject
+    Validator validator;
+
+    @Override
+    public AvaliacaoTrlPiResponseDTO getAvaliacao(Long id) {
+        AvaliacaoTRLPropiedadeIntelectual avaliacao = avaliacaoTrlPIRepository.findById(id);
+        return new AvaliacaoTrlPiResponseDTO(avaliacao);
+    }
+
+    @Override
+    @Transactional
+    public AvaliacaoTrlPiResponseDTO cadastrar(String cnpj, AvaliacaoTrlPiDTO avaliacaoDTO) {
+        Nit nit = nitRepository.findByCnpj(cnpj);
+        Marca marca = marcaRepository.findById(avaliacaoDTO.idMarca());
+
+        AvaliacaoTRLPropiedadeIntelectual avaliacaoTRL = new AvaliacaoTRLPropiedadeIntelectual();
+        avaliacaoTRL.setMarca(marca);
+
+        LinkedHashMap<Integer, List<Boolean>> criteriosPorNivel = construirCriteriosPorNivel(avaliacaoDTO);
+        int trl = calcularTrl(criteriosPorNivel);
+        float trlScore = calcularTrlScore(criteriosPorNivel, trl);
+
+        avaliacaoTRL.setTrl(trl);
+        avaliacaoTRL.setTrlScore(trlScore);
+
+        avaliacaoTrlPIRepository.persist(avaliacaoTRL);
+
+        return new AvaliacaoTrlPiResponseDTO(avaliacaoTRL);
+    }
+
+    @Override
+    @Transactional
+    public void deletarAvaliacao(String cnpj, Long idAvaliacao) {
+        Nit nit = nitRepository.findByCnpj(cnpj);
+        AvaliacaoTRLPropiedadeIntelectual avaliacao = avaliacaoTrlPIRepository.findById(idAvaliacao);
+
+        if (avaliacao == null) {
+            throw new NotFoundException("Nenhuma avaliação encontrada.");
+        }
+
+        if (avaliacao.getMarca().getNit().getIdNit() != nit.getIdNit())
+            throw new BadRequestException("A avaliação selecionada não pertence ao NIT informado.");
+
+    }
+
+    private void validar(AvaliacaoTrlPiDTO avaliacaoTrlPiDTO) throws ConstraintViolationException {
+        Set<ConstraintViolation<AvaliacaoTrlPiDTO>> violations = validator.validate(avaliacaoTrlPiDTO);
+
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
+    }
+
+    private boolean preenchido(String valor) {
+        return valor != null && !valor.isBlank();
+    }
+
+    private boolean verdadeiro(Boolean valor) {
+        return Boolean.TRUE.equals(valor);
+    }
+
+    private boolean maiorQueZero(java.math.BigDecimal valor) {
+        return valor != null && valor.compareTo(java.math.BigDecimal.ZERO) > 0;
+    }
+
+    private LinkedHashMap<Integer, List<Boolean>> construirCriteriosPorNivel(AvaliacaoTrlPiDTO dto) {
+        LinkedHashMap<Integer, List<Boolean>> criteriosPorNivel = new LinkedHashMap<>();
+
+        criteriosPorNivel.put(1, List.of(preenchido(dto.hipotese()), preenchido(dto.relatorio())));
+        criteriosPorNivel.put(2, List.of(preenchido(dto.especificacoes()), verdadeiro(dto.designVerificationPlan())));
+        criteriosPorNivel.put(3, List.of(preenchido(dto.protocolo()), preenchido(dto.resultados())));
+        criteriosPorNivel.put(4, List.of(verdadeiro(dto.designVerificationTest()), preenchido(dto.tipoOuAmbienteTeste()), preenchido(dto.relatorio())));
+        criteriosPorNivel.put(5, List.of(verdadeiro(dto.conformidades()), preenchido(dto.resultados())));
+        criteriosPorNivel.put(6, List.of(verdadeiro(dto.proofOfConceptComCliente()), preenchido(dto.resultados())));
+        criteriosPorNivel.put(7, List.of(verdadeiro(dto.contratoLicencaFornecimento()), preenchido(dto.resultados())));
+        criteriosPorNivel.put(8, List.of(preenchido(dto.relatorio()), verdadeiro(dto.dossiesCertificacoes())));
+        criteriosPorNivel.put(9, List.of(verdadeiro(dto.contratoLicencaFornecimento()), maiorQueZero(dto.receitaInicial())));
+
+        return criteriosPorNivel;
+    }
+
+    private int calcularTrl(LinkedHashMap<Integer, List<Boolean>> gates) {
+        int trl = 0;
+        for (Map.Entry<Integer, List<Boolean>> entry : gates.entrySet()) {
+            if (entry.getValue().stream().allMatch(Boolean.TRUE::equals)) {
+                trl = entry.getKey();
+            } else {
+                break;
+            }
+        }
+        return trl;
+    }
+
+    private float calcularTrlScore(LinkedHashMap<Integer, List<Boolean>> gates, int trl) {
+        int total = 0, cumpridas = 0;
+        for (Map.Entry<Integer, List<Boolean>> entry : gates.entrySet()) {
+            if (entry.getKey() > trl) break;
+            for (Boolean b : entry.getValue()) {
+                total++;
+                if (Boolean.TRUE.equals(b)) cumpridas++;
+            }
+        }
+        return total == 0 ? 0f : (cumpridas * 100f) / (float) total;
+    }
+
+}
