@@ -10,6 +10,7 @@ import br.unitins.pibiti.model.IndicacaoGeografica;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.repository.IndicacaoGeograficaRepository;
 import br.unitins.pibiti.repository.NitRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -19,6 +20,7 @@ import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.List;
 import java.util.Set;
 
 @ApplicationScoped
@@ -32,6 +34,8 @@ public class IndicacaoGeograficaServiceImpl implements IndicacaoGeograficaServic
 
     @Inject
     Validator validator;
+
+    Sort sort = Sort.by("idIndicacaoGeografica").ascending();
 
     @Override
     public IndicacaoGeograficaResponseDTO getIndicacaoGeografica(Long id) {
@@ -109,6 +113,18 @@ public class IndicacaoGeograficaServiceImpl implements IndicacaoGeograficaServic
             indicacaoGeograficaRepository.delete(indicacaoGeografica);
 
         else throw new NotFoundException("Nenhuma indicação geográfica encontrada.");
+    }
+
+    @Override
+    public List<IndicacaoGeograficaResponseDTO> getAllIndicacaoGeografica(Long idNit, int page, int pageSize) {
+
+        return indicacaoGeograficaRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(IndicacaoGeograficaResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<IndicacaoGeograficaResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+
+        return indicacaoGeograficaRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(IndicacaoGeograficaResponseDTO::new).toList();
     }
 
     private void validar(IndicacaoGeograficaDTO indicacaoGeograficaDTO) throws ConstraintViolationException {

@@ -8,6 +8,7 @@ import br.unitins.pibiti.model.Marca;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.repository.MarcaRepository;
 import br.unitins.pibiti.repository.NitRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -17,6 +18,7 @@ import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.List;
 import java.util.Set;
 
 @ApplicationScoped
@@ -30,6 +32,8 @@ public class MarcaServiceImpl implements MarcaService {
 
     @Inject
     Validator validator;
+
+    Sort sort = Sort.by("idMarca").ascending();
 
     @Override
     public MarcaResponseDTO getMarca(Long id) {
@@ -108,6 +112,18 @@ public class MarcaServiceImpl implements MarcaService {
 
         else
             throw new NotFoundException("Nenhuma marca encontrada.");
+    }
+
+    @Override
+    public List<MarcaResponseDTO> getAllMarca(Long idNit, int page, int pageSize) {
+
+        return marcaRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(MarcaResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<MarcaResponseDTO> getAllFiltradoPorNome(Long idNit, String nome, int page, int pageSize) {
+
+        return marcaRepository.findListByNitAndNome(nitRepository.findById(idNit), nome, sort).page(page, pageSize).list().stream().map(MarcaResponseDTO::new).toList();
     }
 
     private void validar(MarcaDTO marcaDTO) throws ConstraintViolationException {

@@ -9,6 +9,7 @@ import br.unitins.pibiti.model.DireitoAutor;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.repository.DireitoAutorRepository;
 import br.unitins.pibiti.repository.NitRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -32,6 +33,8 @@ public class DireitoAutorServiceImpl implements DireitoAutorService {
 
     @Inject
     Validator validator;
+
+    Sort sort = Sort.by("idDireitoAutor").ascending();
 
     @Override
     public DireitoAutorResponseDTO getDireitoAutor(Long id) {
@@ -118,6 +121,18 @@ public class DireitoAutorServiceImpl implements DireitoAutorService {
             direitoAutorRepository.delete(direitoAutor);
 
         else throw new NotFoundException("Nenhuma direito de autor encontrado.");
+    }
+
+    @Override
+    public List<DireitoAutorResponseDTO> getAllDireitoAutor(Long idNit, int page, int pageSize) {
+
+        return direitoAutorRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(DireitoAutorResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<DireitoAutorResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+
+        return direitoAutorRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(DireitoAutorResponseDTO::new).toList();
     }
 
     private void validar(DireitoAutorDTO direitoAutorDTO) throws ConstraintViolationException {

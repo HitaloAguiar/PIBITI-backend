@@ -9,6 +9,7 @@ import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
@@ -16,8 +17,12 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.List;
+
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 @Path("/propiedades-intelectuais/direitos-autor")
@@ -35,6 +40,25 @@ public class DireitoAutorResource {
     @Path("/{id}")
     public DireitoAutorResponseDTO getDireitoAutor(@PathParam("id") Long id) throws NotFoundException {
         return direitoAutorService.getDireitoAutor(id);
+    }
+
+    @GET
+    @Path("/nit/{id}")
+    public List<DireitoAutorResponseDTO> getAll(@PathParam("id") Long idNit,
+                                                                @QueryParam("page") @DefaultValue("0") int page,
+                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+
+        return direitoAutorService.getAllDireitoAutor(idNit, page, pageSize);
+    }
+
+    @GET
+    @Path("/nit/{id}/filtrado-por/{titulo}")
+    public List<DireitoAutorResponseDTO> getAllFiltradoPorTitulo(@PathParam("id") Long idNit,
+                                                                                @PathParam("titulo") String titulo,
+                                                                                @QueryParam("page") @DefaultValue("0") int page,
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+
+        return direitoAutorService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize);
     }
 
     @POST
