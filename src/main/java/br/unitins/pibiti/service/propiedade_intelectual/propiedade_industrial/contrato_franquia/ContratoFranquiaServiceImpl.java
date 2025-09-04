@@ -8,6 +8,7 @@ import br.unitins.pibiti.model.ContratoFranquia;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.repository.ContratoFranquiaRepository;
 import br.unitins.pibiti.repository.NitRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -17,6 +18,7 @@ import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.List;
 import java.util.Set;
 
 @ApplicationScoped
@@ -30,6 +32,8 @@ public class ContratoFranquiaServiceImpl implements ContratoFranquiaService {
 
     @Inject
     Validator validator;
+
+    Sort sort = Sort.by("idContratoFranquia").ascending();
 
     @Override
     public ContratoFranquiaResponseDTO getContratoFranquia(Long id) {
@@ -103,6 +107,18 @@ public class ContratoFranquiaServiceImpl implements ContratoFranquiaService {
 
         else
             throw new NotFoundException("Nenhuma Contrato/Franquia encontrada.");
+    }
+
+    @Override
+    public List<ContratoFranquiaResponseDTO> getAllContratoFranquia(Long idNit, int page, int pageSize) {
+
+        return contratoFranquiaRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(ContratoFranquiaResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<ContratoFranquiaResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+
+        return contratoFranquiaRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(ContratoFranquiaResponseDTO::new).toList();
     }
 
     private void validar(ContratoFranquiaDTO contratoFranquiaDTO) throws ConstraintViolationException {

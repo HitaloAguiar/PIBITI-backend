@@ -9,6 +9,7 @@ import br.unitins.pibiti.model.DesenhoIndustrial;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.repository.DesenhoIndustrialRepository;
 import br.unitins.pibiti.repository.NitRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -18,6 +19,7 @@ import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.List;
 import java.util.Set;
 
 @ApplicationScoped
@@ -31,6 +33,8 @@ public class DesenhoIndustrialServiceImpl implements DesenhoIndustrialService {
 
     @Inject
     Validator validator;
+
+    Sort sort = Sort.by("idDesenhoIndustrial").ascending();
 
     @Override
     public DesenhoIndustrialResponseDTO getDesenhoIndustrial(Long id) {
@@ -105,6 +109,18 @@ public class DesenhoIndustrialServiceImpl implements DesenhoIndustrialService {
             desenhoIndustrialRepository.delete(desenhoIndustrial);
 
         else throw new NotFoundException("Nenhuma desenho industrial encontrado.");
+    }
+
+    @Override
+    public List<DesenhoIndustrialResponseDTO> getAllDesenhoIndustrial(Long idNit, int page, int pageSize) {
+
+        return desenhoIndustrialRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(DesenhoIndustrialResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<DesenhoIndustrialResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+
+        return desenhoIndustrialRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(DesenhoIndustrialResponseDTO::new).toList();
     }
 
     private void validar(DesenhoIndustrialDTO desenhoIndustrialDTO) throws ConstraintViolationException {

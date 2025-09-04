@@ -9,6 +9,7 @@ import br.unitins.pibiti.model.Cultivar;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.repository.CultivarRepository;
 import br.unitins.pibiti.repository.NitRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -18,6 +19,7 @@ import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.List;
 import java.util.Set;
 
 @ApplicationScoped
@@ -31,6 +33,8 @@ public class CultivarServiceImpl implements CultivarService {
 
     @Inject
     Validator validator;
+
+    Sort sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
 
     @Override
     public CultivarResponseDTO getCultivar(Long id) {
@@ -103,6 +107,18 @@ public class CultivarServiceImpl implements CultivarService {
             cultivarRepository.delete(cultivar);
 
         else throw new NotFoundException("Nenhuma cultivar encontrado.");
+    }
+
+    @Override
+    public List<CultivarResponseDTO> getAllCultivar(Long idNit, int page, int pageSize) {
+
+        return cultivarRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(CultivarResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<CultivarResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+
+        return cultivarRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(CultivarResponseDTO::new).toList();
     }
 
     private void validar(CultivarDTO cultivarDTO) throws ConstraintViolationException {
