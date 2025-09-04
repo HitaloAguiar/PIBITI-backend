@@ -21,7 +21,7 @@ public interface NitService {
 
     NitResponseDTO getNitLogado(String login);
 
-    void enviarEmailRedefinirSenha(String email, String token);
+    void enviarEmailRedefinirSenha(String email);
 
     void redefinirSenha(String cnpj, SenhaDTO senhaDTO);
 }

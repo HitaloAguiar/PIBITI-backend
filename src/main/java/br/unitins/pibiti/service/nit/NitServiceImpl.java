@@ -1,5 +1,6 @@
 package br.unitins.pibiti.service.nit;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Set;
 
@@ -53,6 +54,9 @@ public class NitServiceImpl implements NitService {
 
     @Inject
     MailClient mailerClient;
+
+    private static final String CHARACTERS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private static SecureRandom random = new SecureRandom();
 
     @Override
     public NitResponseDTO getNit(Long id) {
@@ -202,14 +206,27 @@ public class NitServiceImpl implements NitService {
 
     @Override
     @Transactional
-    public void enviarEmailRedefinirSenha(String email, String token) {
+    public void enviarEmailRedefinirSenha(String email) throws NotFoundException {
+
+        Nit nit = nitRepository.findByEmail(email);
+
+        if (nit == null)
+            throw new NotFoundException("Não existe nenhum NIT cadastrado com esse email");
+
+        StringBuilder sb = new StringBuilder(12);
+        for (int i = 0; i < 12; i++) {
+            int randomIndex = random.nextInt(CHARACTERS.length());
+            sb.append(CHARACTERS.charAt(randomIndex));
+        }
+
+        nit.setSenha(hashService.getHashSenha(sb.toString()));
 
         MailMessage mailMessage = new MailMessage();
 
         mailMessage.setFrom("p53956275@gmail.com");
         mailMessage.setTo(email);
-        mailMessage.setSubject("Redefinição de Senha");
-        mailMessage.setText("Clique aqui para redefinir sua senha: "+"/nits/redefinir-senha/"+token);
+        mailMessage.setSubject("Senha de Acesso");
+        mailMessage.setText(sb.toString());
 
         mailerClient.sendMail(mailMessage);
     }
@@ -223,7 +240,7 @@ public class NitServiceImpl implements NitService {
         if(senhaDTO.senha().equals(senhaDTO.confirmarSenha())){
             nit.setSenha(hashService.getHashSenha(senhaDTO.senha()));
         } else
-        throw new NotAuthorizedException("Senhas divergentes");
+            throw new NotAuthorizedException("Senhas divergentes");
     }
 
     private Responsavel atualizarResponsavel(Responsavel responsavel, ResponsavelDTO responsavelDTO) {
