@@ -7,7 +7,7 @@ import br.unitins.pibiti.model.TopografiaCircuitoIntegrado;
 import java.util.List;
 
 public record TopografiaCircuitoIntegradoResponseDTO(
-        Long idTopografiaCircuitoIntegrado,
+        Long idTopografiaCircuitosIntegrados,
         TiposEnumResponseDTO tipoPropiedadeIntelectual,
         NitResponseDTO nit,
         String titulo,
