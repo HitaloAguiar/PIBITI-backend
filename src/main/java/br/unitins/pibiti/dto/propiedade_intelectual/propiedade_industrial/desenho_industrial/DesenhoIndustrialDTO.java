@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public record DesenhoIndustrialDTO(
         Long idNit,
         String titulo,
+        String titular,
         String descricao,
         LocalDate dataConcessao,
         String periodo,

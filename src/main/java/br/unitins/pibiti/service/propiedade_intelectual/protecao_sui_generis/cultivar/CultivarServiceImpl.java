@@ -34,7 +34,7 @@ public class CultivarServiceImpl implements CultivarService {
     @Inject
     Validator validator;
 
-    Sort sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
+    Sort sort = Sort.by("idCultivar").ascending();
 
     @Override
     public CultivarResponseDTO getCultivar(Long id) {

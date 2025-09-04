@@ -83,6 +83,7 @@ public class DesenhoIndustrialServiceImpl implements DesenhoIndustrialService {
 
     private DesenhoIndustrial inserirDadosDTONaClasse(DesenhoIndustrialDTO desenhoIndustrialDTO, DesenhoIndustrial desenhoIndustrial) {
         desenhoIndustrial.setTitulo(desenhoIndustrialDTO.titulo());
+        desenhoIndustrial.setTitular(desenhoIndustrialDTO.titular());
         desenhoIndustrial.setDescricao(desenhoIndustrialDTO.descricao());
         desenhoIndustrial.setDataConcessao(desenhoIndustrialDTO.dataConcessao());
         desenhoIndustrial.setPeriodo(desenhoIndustrialDTO.periodo());
