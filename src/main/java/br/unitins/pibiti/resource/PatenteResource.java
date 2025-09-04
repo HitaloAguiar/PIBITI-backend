@@ -1,9 +1,9 @@
 package br.unitins.pibiti.resource;
 
 import br.unitins.pibiti.application.Result;
-import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.patente.PatenteDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.patente.PatenteResponseDTO;
-import br.unitins.pibiti.service.propiedade_intelectual.propiedade_industrial.patente.PatenteService;
+import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.patente.PatenteDTO;
+import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.patente.PatenteResponseDTO;
+import br.unitins.pibiti.service.propriedade_intelectual.propriedade_industrial.patente.PatenteService;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-@Path("/propiedades-intelectuais/patentes")
+@Path("/propriedades-intelectuais/patentes")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class PatenteResource {

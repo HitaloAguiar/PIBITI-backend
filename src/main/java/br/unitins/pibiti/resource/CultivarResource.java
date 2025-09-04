@@ -1,9 +1,9 @@
 package br.unitins.pibiti.resource;
 
 import br.unitins.pibiti.application.Result;
-import br.unitins.pibiti.dto.propiedade_intelectual.protecao_sui_generis.cultivar.CultivarDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.protecao_sui_generis.cultivar.CultivarResponseDTO;
-import br.unitins.pibiti.service.propiedade_intelectual.protecao_sui_generis.cultivar.CultivarService;
+import br.unitins.pibiti.dto.propriedade_intelectual.protecao_sui_generis.cultivar.CultivarDTO;
+import br.unitins.pibiti.dto.propriedade_intelectual.protecao_sui_generis.cultivar.CultivarResponseDTO;
+import br.unitins.pibiti.service.propriedade_intelectual.protecao_sui_generis.cultivar.CultivarService;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-@Path("/propiedades-intelectuais/cultivares")
+@Path("/propriedades-intelectuais/cultivares")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CultivarResource {

@@ -1,9 +1,9 @@
 package br.unitins.pibiti.resource;
 
 import br.unitins.pibiti.application.Result;
-import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.marca.MarcaDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.marca.MarcaResponseDTO;
-import br.unitins.pibiti.service.propiedade_intelectual.propiedade_industrial.marca.MarcaService;
+import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.marca.MarcaDTO;
+import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.marca.MarcaResponseDTO;
+import br.unitins.pibiti.service.propriedade_intelectual.propriedade_industrial.marca.MarcaService;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-@Path("/propiedades-intelectuais/marcas")
+@Path("/propriedades-intelectuais/marcas")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class MarcaResource {

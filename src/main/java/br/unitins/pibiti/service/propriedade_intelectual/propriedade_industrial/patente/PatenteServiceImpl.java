@@ -1,0 +1,138 @@
+package br.unitins.pibiti.service.propriedade_intelectual.propriedade_industrial.patente;
+
+
+import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.patente.PatenteDTO;
+import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.patente.PatenteResponseDTO;
+import br.unitins.pibiti.enums.TipoPatente;
+import br.unitins.pibiti.enums.TipoPropriedadeIntelectual;
+import br.unitins.pibiti.model.Nit;
+import br.unitins.pibiti.model.Patente;
+import br.unitins.pibiti.repository.NitRepository;
+import br.unitins.pibiti.repository.PatenteRepository;
+import io.quarkus.panache.common.Sort;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.NotFoundException;
+
+import java.util.List;
+import java.util.Set;
+
+@ApplicationScoped
+public class PatenteServiceImpl implements PatenteService {
+
+    @Inject
+    NitRepository nitRepository;
+
+    @Inject
+    PatenteRepository patenteRepository;
+
+    @Inject
+    Validator validator;
+
+    Sort sort = Sort.by("idPatente").ascending();
+
+    @Override
+    public PatenteResponseDTO getPatente(Long id) {
+        Patente patente = patenteRepository.findById(id);
+
+        if (patente == null)
+            throw new NotFoundException("Patente não encontrada.");
+
+        return new PatenteResponseDTO(patente);
+    }
+
+    @Override
+    @Transactional
+    public PatenteResponseDTO cadastrar(PatenteDTO patenteDTO) {
+        validar(patenteDTO);
+
+        Nit nit = nitRepository.findById(patenteDTO.idNit());
+
+        Patente patente = new Patente();
+        inserirDadosDTONaClasse(patenteDTO, patente);
+        patente.setTipoPropriedadeIntelectual(TipoPropriedadeIntelectual.PRIPRIEDADE_INDUSTRIAL);
+        patente.setNit(nit);
+
+        patenteRepository.persist(patente);
+        return new PatenteResponseDTO(patente);
+    }
+
+    @Override
+    @Transactional
+    public PatenteResponseDTO atualizar(String cnpj, Long idPatente, PatenteDTO patenteDTO) {
+        validar(patenteDTO);
+
+        Patente patente = patenteRepository.findById(idPatente);
+        Nit nit = nitRepository.findByCnpj(cnpj);
+
+        if (patente == null) {
+            throw new NotFoundException("Nenhuma patente encontrada.");
+        }
+
+        if (patente.getNit().getIdNit() != nit.getIdNit())
+            throw new BadRequestException("A patente selecionada não pertence ao NIT informado.");
+
+        inserirDadosDTONaClasse(patenteDTO, patente);
+
+        return new PatenteResponseDTO(patente);
+    }
+
+    private Patente inserirDadosDTONaClasse(PatenteDTO patenteDTO, Patente patente) {
+        patente.setTitulo(patenteDTO.titulo());
+        patente.setResumo(patenteDTO.resumo());
+        patente.setDataConcessao(patenteDTO.dataConcessao());
+        patente.setPeriodo(patenteDTO.periodo());
+        patente.setTipo(TipoPatente.fromId(patenteDTO.idTipoPatente()));
+        patente.setCategorias(patenteDTO.categorias());
+        patente.setClassificacao(patenteDTO.classificacao());
+        patente.setVisualizacaoPublica(patenteDTO.visualizacaoPublica());
+
+        return patente;
+    }
+
+    @Override
+    @Transactional
+    public void deletarPatente(String cnpj, Long idPatente) {
+        Nit nit = nitRepository.findByCnpj(cnpj);
+        Patente patente = patenteRepository.findById(idPatente);
+
+        if (patente == null) {
+            throw new NotFoundException("Nenhuma patente encontrada.");
+        }
+
+        if (patente.getNit().getIdNit() != nit.getIdNit())
+            throw new BadRequestException("A patente selecionada não pertence ao NIT informado.");
+
+        if (patenteRepository.isPersistent(patente))
+            patenteRepository.delete(patente);
+
+        else
+            throw new NotFoundException("Nenhuma patente encontrada.");
+    }
+
+    @Override
+    public List<PatenteResponseDTO> getAllPatente(Long idNit, int page, int pageSize) {
+
+        return patenteRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<PatenteResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+
+        return patenteRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();
+    }
+
+    private void validar(PatenteDTO patenteDTO) throws ConstraintViolationException {
+
+        Set<ConstraintViolation<PatenteDTO>> violations = validator.validate(patenteDTO);
+
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
+    }
+
+}

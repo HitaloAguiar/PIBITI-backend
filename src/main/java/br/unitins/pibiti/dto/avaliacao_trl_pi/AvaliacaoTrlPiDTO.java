@@ -3,7 +3,7 @@ package br.unitins.pibiti.dto.avaliacao_trl_pi;
 import java.math.BigDecimal;
 
 public record AvaliacaoTrlPiDTO(
-        // Propiedade Intelectual da Avaliação
+        // Propriedade Intelectual da Avaliação
         Long idMarca, Long idPatente, Long idContratoFranquia, Long idDesenhoIndustrial, Long idIndicacaoGeografica,
         Long idDireitoAutor, Long idRegistroProgramaComputador, Long idCultivar, Long idTopografiaCircuitoIntegrado,
 

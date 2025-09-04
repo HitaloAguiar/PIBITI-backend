@@ -1,6 +1,6 @@
 package br.unitins.pibiti.model;
 
-import br.unitins.pibiti.enums.TipoPropiedadeIntelectual;
+import br.unitins.pibiti.enums.TipoPropriedadeIntelectual;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,8 +26,8 @@ public class ContratoFranquia {
     private Long idContratoFranquia;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_propiedade_intelectual", nullable = false)
-    private TipoPropiedadeIntelectual tipoPropiedadeIntelectual;
+    @Column(name = "tipo_propriedade_intelectual", nullable = false)
+    private TipoPropriedadeIntelectual tipoPropriedadeIntelectual;
 
     @ManyToOne
     @JoinColumn(name = "id_nit")

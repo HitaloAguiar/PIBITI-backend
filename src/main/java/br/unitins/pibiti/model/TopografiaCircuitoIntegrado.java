@@ -1,6 +1,6 @@
 package br.unitins.pibiti.model;
 
-import br.unitins.pibiti.enums.TipoPropiedadeIntelectual;
+import br.unitins.pibiti.enums.TipoPropriedadeIntelectual;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -30,8 +30,8 @@ public class TopografiaCircuitoIntegrado {
     private Long idTopografiaCircuitoIntegrado;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_propiedade_intelectual", nullable = false)
-    private TipoPropiedadeIntelectual tipoPropiedadeIntelectual;
+    @Column(name = "tipo_propriedade_intelectual", nullable = false)
+    private TipoPropriedadeIntelectual tipoPropriedadeIntelectual;
 
     @ManyToOne
     @JoinColumn(name = "id_nit")
@@ -45,7 +45,7 @@ public class TopografiaCircuitoIntegrado {
 
     @ElementCollection
     @CollectionTable(name = "topografia_circuitos_integrados_autor",
-            joinColumns = @JoinColumn(name = "id_topografia_circuitos_integrados_autor"))
+            joinColumns = @JoinColumn(name = "id_topografia_circuito_integrado"))
     @Column(name = "autor", nullable = false)
     private List<String> autores;
 

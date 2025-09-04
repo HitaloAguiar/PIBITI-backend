@@ -1,9 +1,9 @@
 package br.unitins.pibiti.repository;
 
-import br.unitins.pibiti.model.AvaliacaoTRLPropiedadeIntelectual;
+import br.unitins.pibiti.model.AvaliacaoTRLPropriedadeIntelectual;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class AvaliacaoTrlPIRepository implements PanacheRepository<AvaliacaoTRLPropiedadeIntelectual> {
+public class AvaliacaoTrlPIRepository implements PanacheRepository<AvaliacaoTRLPropriedadeIntelectual> {
 }
