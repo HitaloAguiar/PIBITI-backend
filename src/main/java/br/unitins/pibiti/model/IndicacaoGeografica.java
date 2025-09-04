@@ -5,6 +5,8 @@ import br.unitins.pibiti.enums.NaturezaIndicacaoGeografica;
 import br.unitins.pibiti.enums.TipoPropiedadeIntelectual;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,6 +29,8 @@ public class IndicacaoGeografica {
     @Column(name = "id_indicacao_geografica")
     private Long idIndicacaoGeografica;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_propiedade_intelectual", nullable = false)
     private TipoPropiedadeIntelectual tipoPropiedadeIntelectual;
 
     @ManyToOne
@@ -42,9 +46,11 @@ public class IndicacaoGeografica {
     @Column(name = "data_concessao", nullable = false)
     private LocalDate dataConcessao;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EspecieIndicacaoGeografica especie;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private NaturezaIndicacaoGeografica natureza;
 

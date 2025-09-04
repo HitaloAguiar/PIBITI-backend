@@ -3,6 +3,8 @@ package br.unitins.pibiti.model;
 import br.unitins.pibiti.enums.TipoPropiedadeIntelectual;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,6 +25,8 @@ public class ContratoFranquia {
     @Column(name = "id_contrato_franquia")
     private Long idContratoFranquia;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_propiedade_intelectual", nullable = false)
     private TipoPropiedadeIntelectual tipoPropiedadeIntelectual;
 
     @ManyToOne

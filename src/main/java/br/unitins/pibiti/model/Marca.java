@@ -4,6 +4,8 @@ import br.unitins.pibiti.enums.NaturezaMarca;
 import br.unitins.pibiti.enums.TipoPropiedadeIntelectual;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,6 +28,8 @@ public class Marca {
     @Column(name = "id_marca")
     private Long idMarca;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_propiedade_intelectual", nullable = false)
     private TipoPropiedadeIntelectual tipoPropiedadeIntelectual;
 
     @ManyToOne
@@ -44,6 +48,7 @@ public class Marca {
     @Column(nullable = false)
     private String periodo;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private NaturezaMarca natureza;
 

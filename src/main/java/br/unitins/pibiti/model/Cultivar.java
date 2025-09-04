@@ -4,6 +4,8 @@ import br.unitins.pibiti.enums.CategoriaCultivar;
 import br.unitins.pibiti.enums.TipoPropiedadeIntelectual;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,6 +26,8 @@ public class Cultivar {
     @Column(name = "id_cultivar")
     private Long idCultivar;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_propiedade_intelectual", nullable = false)
     private TipoPropiedadeIntelectual tipoPropiedadeIntelectual;
 
     @ManyToOne
@@ -36,6 +40,7 @@ public class Cultivar {
     @Column(nullable = false)
     private String descricao;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CategoriaCultivar categoria;
 

@@ -30,6 +30,8 @@ public class DireitoAutor {
     @Column(name = "id_direito_autor")
     private Long idDireitoAutor;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_propiedade_intelectual", nullable = false)
     private TipoPropiedadeIntelectual tipoPropiedadeIntelectual;
 
     @ManyToOne
