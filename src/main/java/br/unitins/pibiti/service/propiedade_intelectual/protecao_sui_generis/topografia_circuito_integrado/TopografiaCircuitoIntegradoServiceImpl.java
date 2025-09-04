@@ -8,6 +8,7 @@ import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.TopografiaCircuitoIntegrado;
 import br.unitins.pibiti.repository.NitRepository;
 import br.unitins.pibiti.repository.TopografiaCircuitoIntegradoRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -17,6 +18,7 @@ import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.List;
 import java.util.Set;
 
 @ApplicationScoped
@@ -30,6 +32,8 @@ public class TopografiaCircuitoIntegradoServiceImpl implements TopografiaCircuit
 
     @Inject
     Validator validator;
+
+    Sort sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
 
     @Override
     public TopografiaCircuitoIntegradoResponseDTO getTopografiaCircuitoIntegrado(Long id) {
@@ -104,6 +108,18 @@ public class TopografiaCircuitoIntegradoServiceImpl implements TopografiaCircuit
             topografiaCircuitoIntegradoRepository.delete(topografiaCircuitoIntegrado);
 
         else throw new NotFoundException("Nenhuma topografia de circuito integrado encontrada.");
+    }
+
+    @Override
+    public List<TopografiaCircuitoIntegradoResponseDTO> getAllTopografiaCircuitoIntegrado(Long idNit, int page, int pageSize) {
+
+        return topografiaCircuitoIntegradoRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(TopografiaCircuitoIntegradoResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<TopografiaCircuitoIntegradoResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+
+        return topografiaCircuitoIntegradoRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(TopografiaCircuitoIntegradoResponseDTO::new).toList();
     }
 
     private void validar(TopografiaCircuitoIntegradoDTO topografiaCircuitoIntegradoDTO) throws ConstraintViolationException {

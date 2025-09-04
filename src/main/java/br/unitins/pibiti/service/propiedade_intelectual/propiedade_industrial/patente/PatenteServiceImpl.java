@@ -9,6 +9,7 @@ import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.Patente;
 import br.unitins.pibiti.repository.NitRepository;
 import br.unitins.pibiti.repository.PatenteRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -18,6 +19,7 @@ import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.List;
 import java.util.Set;
 
 @ApplicationScoped
@@ -31,6 +33,8 @@ public class PatenteServiceImpl implements PatenteService {
 
     @Inject
     Validator validator;
+
+    Sort sort = Sort.by("idPatente").ascending();
 
     @Override
     public PatenteResponseDTO getPatente(Long id) {
@@ -109,6 +113,18 @@ public class PatenteServiceImpl implements PatenteService {
 
         else
             throw new NotFoundException("Nenhuma patente encontrada.");
+    }
+
+    @Override
+    public List<PatenteResponseDTO> getAllPatente(Long idNit, int page, int pageSize) {
+
+        return patenteRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<PatenteResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+
+        return patenteRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();
     }
 
     private void validar(PatenteDTO patenteDTO) throws ConstraintViolationException {

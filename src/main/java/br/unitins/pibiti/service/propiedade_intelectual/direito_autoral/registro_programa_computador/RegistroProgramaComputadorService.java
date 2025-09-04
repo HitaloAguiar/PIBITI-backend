@@ -1,6 +1,8 @@
 package br.unitins.pibiti.service.propiedade_intelectual.direito_autoral.registro_programa_computador;
 
 
+import java.util.List;
+
 import br.unitins.pibiti.dto.propiedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorDTO;
 import br.unitins.pibiti.dto.propiedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorResponseDTO;
 
@@ -14,4 +16,7 @@ public interface RegistroProgramaComputadorService {
 
     void deletarRegistroProgramaComputador(String cnpj, Long idRegistroProgramaComputador);
 
+    List<RegistroProgramaComputadorResponseDTO> getAllRegistroProgramaComputador(Long idNit, int page, int pageSize);
+
+    List<RegistroProgramaComputadorResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize);
 }

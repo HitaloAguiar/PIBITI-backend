@@ -1,6 +1,8 @@
 package br.unitins.pibiti.service.propiedade_intelectual.propiedade_industrial.patente;
 
 
+import java.util.List;
+
 import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.patente.PatenteDTO;
 import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.patente.PatenteResponseDTO;
 
@@ -14,4 +16,7 @@ public interface PatenteService {
 
     void deletarPatente(String cnpj, Long idPatente);
 
+    List<PatenteResponseDTO> getAllPatente(Long idNit, int page, int pageSize);
+
+    List<PatenteResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize);
 }

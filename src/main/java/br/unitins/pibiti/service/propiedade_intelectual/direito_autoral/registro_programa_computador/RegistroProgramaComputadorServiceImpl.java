@@ -8,6 +8,7 @@ import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.RegistroProgramaComputador;
 import br.unitins.pibiti.repository.NitRepository;
 import br.unitins.pibiti.repository.RegistroProgramaComputadorRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -17,6 +18,7 @@ import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.List;
 import java.util.Set;
 
 @ApplicationScoped
@@ -30,6 +32,8 @@ public class RegistroProgramaComputadorServiceImpl implements RegistroProgramaCo
 
     @Inject
     Validator validator;
+
+    Sort sort = Sort.by("idRegistroProgramaComputador").ascending();
 
     @Override
     public RegistroProgramaComputadorResponseDTO getRegistroProgramaComputador(Long id) {
@@ -74,6 +78,18 @@ public class RegistroProgramaComputadorServiceImpl implements RegistroProgramaCo
         inserirDadosDTONaClasse(registroProgramaDTO, registroPrograma);
 
         return new RegistroProgramaComputadorResponseDTO(registroPrograma);
+    }
+
+    @Override
+    public List<RegistroProgramaComputadorResponseDTO> getAllRegistroProgramaComputador(Long idNit, int page, int pageSize) {
+
+        return registroProgramaRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(RegistroProgramaComputadorResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<RegistroProgramaComputadorResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+
+        return registroProgramaRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(RegistroProgramaComputadorResponseDTO::new).toList();
     }
 
     private RegistroProgramaComputador inserirDadosDTONaClasse(RegistroProgramaComputadorDTO registroProgramaDTO, RegistroProgramaComputador registroPrograma) {
