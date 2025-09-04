@@ -38,7 +38,7 @@ public class DireitoAutor {
     @JoinColumn(name = "id_nit")
     private Nit nit;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String titulo;
 
     @ElementCollection
@@ -47,7 +47,7 @@ public class DireitoAutor {
     @Column(name = "autor", nullable = false)
     private List<String> autores;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1800)
     private String descricao;
 
     @ElementCollection
@@ -61,6 +61,7 @@ public class DireitoAutor {
 
     private Boolean adapatacaoOuTraducao;
 
+    @Column(length = 1000)
     private String tituloObraOriginal;
 
     private String autoresObraOriginal;

@@ -33,10 +33,10 @@ public class ContratoFranquia {
     @JoinColumn(name = "id_nit")
     private Nit nit;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String titulo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1800)
     private String descricao;
 
     @Column(nullable = false)

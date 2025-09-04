@@ -40,7 +40,7 @@ public class IndicacaoGeografica {
     @Column(nullable = false)
     private String titulo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1800)
     private String descricao;
 
     @Column(name = "data_concessao", nullable = false)
@@ -57,9 +57,10 @@ public class IndicacaoGeografica {
     @Column(nullable = false)
     private String tituloProdutoServico;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String delimitacao;
 
+    @Column(length = 800)
     private String requerente;
 
     @Column(nullable = false)

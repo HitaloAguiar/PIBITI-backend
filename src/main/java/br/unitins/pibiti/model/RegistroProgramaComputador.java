@@ -37,10 +37,10 @@ public class RegistroProgramaComputador {
     @JoinColumn(name = "id_nit")
     private Nit nit;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String titulo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1800)
     private String descricao;
 
     @ElementCollection
@@ -55,8 +55,10 @@ public class RegistroProgramaComputador {
     @Column(name = "linguagem", nullable = false)
     private List<String> linguagens;
 
+    @Column(length = 800)
     private String campoAplicacao;
 
+    @Column(length = 800)
     private String tipoPrograma;
 
     @Column(nullable = false)

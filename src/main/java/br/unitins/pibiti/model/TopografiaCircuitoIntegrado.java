@@ -40,7 +40,7 @@ public class TopografiaCircuitoIntegrado {
     @Column(nullable = false)
     private String titulo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1800)
     private String descricao;
 
     @ElementCollection

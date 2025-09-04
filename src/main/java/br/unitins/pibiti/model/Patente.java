@@ -39,7 +39,7 @@ public class Patente {
     @Column(nullable = false)
     private String titulo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1800)
     private String resumo;
 
     @Column(name = "data_concessao", nullable = false)
@@ -52,8 +52,10 @@ public class Patente {
     @Column(nullable = false)
     private TipoPatente tipo;
 
+    @Column(length = 800)
     private String classificacao;
 
+    @Column(length = 800)
     private String categorias;
 
     @Column(nullable = false)

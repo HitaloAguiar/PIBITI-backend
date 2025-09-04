@@ -52,6 +52,7 @@ public class Marca {
     @Column(nullable = false)
     private NaturezaMarca natureza;
 
+    @Column(length = 800)
     private String classes;
 
     @Column(nullable = false)
