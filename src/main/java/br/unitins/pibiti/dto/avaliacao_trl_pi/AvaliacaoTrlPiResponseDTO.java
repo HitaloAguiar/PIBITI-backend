@@ -1,22 +1,22 @@
 package br.unitins.pibiti.dto.avaliacao_trl_pi;
 
-import br.unitins.pibiti.dto.propiedade_intelectual.direito_autoral.direito_autor.DireitoAutorResponseDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorResponseDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.contato_franquia.ContratoFranquiaResponseDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.desenho_industrial.DesenhoIndustrialResponseDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.indicacao_geografica.IndicacaoGeograficaResponseDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.marca.MarcaResponseDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.patente.PatenteResponseDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.protecao_sui_generis.cultivar.CultivarResponseDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.protecao_sui_generis.topografia_circuito_integrado.TopografiaCircuitoIntegradoResponseDTO;
-import br.unitins.pibiti.model.AvaliacaoTRLPropiedadeIntelectual;
+import br.unitins.pibiti.dto.propriedade_intelectual.direito_autoral.direito_autor.DireitoAutorResponseDTO;
+import br.unitins.pibiti.dto.propriedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorResponseDTO;
+import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.contato_franquia.ContratoFranquiaResponseDTO;
+import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.desenho_industrial.DesenhoIndustrialResponseDTO;
+import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.indicacao_geografica.IndicacaoGeograficaResponseDTO;
+import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.marca.MarcaResponseDTO;
+import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.patente.PatenteResponseDTO;
+import br.unitins.pibiti.dto.propriedade_intelectual.protecao_sui_generis.cultivar.CultivarResponseDTO;
+import br.unitins.pibiti.dto.propriedade_intelectual.protecao_sui_generis.topografia_circuito_integrado.TopografiaCircuitoIntegradoResponseDTO;
+import br.unitins.pibiti.model.AvaliacaoTRLPropriedadeIntelectual;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record AvaliacaoTrlPiResponseDTO(Long idAvaliacaoTrlPI,
 
-                                        // Propiedade Intelectual Relacionada
+                                        // Propriedade Intelectual Relacionada
                                         MarcaResponseDTO marca, PatenteResponseDTO patente,
                                         ContratoFranquiaResponseDTO contratoFranquia,
                                         DesenhoIndustrialResponseDTO desenhoIndustrial,
@@ -47,7 +47,7 @@ public record AvaliacaoTrlPiResponseDTO(Long idAvaliacaoTrlPI,
                                         // Cálculo TRL
                                         Integer trl, Float trlScore, LocalDateTime dataAvaliacao) {
 
-    public AvaliacaoTrlPiResponseDTO(AvaliacaoTRLPropiedadeIntelectual avaliacao) {
+    public AvaliacaoTrlPiResponseDTO(AvaliacaoTRLPropriedadeIntelectual avaliacao) {
         this(avaliacao.getIdAvaliacaoTrlPI(), new MarcaResponseDTO(avaliacao.getMarca()), new PatenteResponseDTO(avaliacao.getPatente()), new ContratoFranquiaResponseDTO(avaliacao.getContratoFranquia()), new DesenhoIndustrialResponseDTO(avaliacao.getDesenhoIndustrial()),
                 new IndicacaoGeograficaResponseDTO(avaliacao.getIndicacaoGeografica()), new DireitoAutorResponseDTO(avaliacao.getDireitoAutor()), new RegistroProgramaComputadorResponseDTO(avaliacao.getRegistroProgramaComputador()),
                 new CultivarResponseDTO(avaliacao.getCultivar()), new TopografiaCircuitoIntegradoResponseDTO(avaliacao.getTopografiaCircuitoIntegrado()),

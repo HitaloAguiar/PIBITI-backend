@@ -1,9 +1,9 @@
 package br.unitins.pibiti.resource;
 
 import br.unitins.pibiti.application.Result;
-import br.unitins.pibiti.dto.propiedade_intelectual.direito_autoral.direito_autor.DireitoAutorDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.direito_autoral.direito_autor.DireitoAutorResponseDTO;
-import br.unitins.pibiti.service.propiedade_intelectual.direito_autoral.direito_autor.DireitoAutorService;
+import br.unitins.pibiti.dto.propriedade_intelectual.direito_autoral.direito_autor.DireitoAutorDTO;
+import br.unitins.pibiti.dto.propriedade_intelectual.direito_autoral.direito_autor.DireitoAutorResponseDTO;
+import br.unitins.pibiti.service.propriedade_intelectual.direito_autoral.direito_autor.DireitoAutorService;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-@Path("/propiedades-intelectuais/direitos-autor")
+@Path("/propriedades-intelectuais/direitos-autor")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class DireitoAutorResource {

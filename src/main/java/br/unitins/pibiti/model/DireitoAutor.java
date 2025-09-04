@@ -1,7 +1,7 @@
 package br.unitins.pibiti.model;
 
 import br.unitins.pibiti.enums.Genero;
-import br.unitins.pibiti.enums.TipoPropiedadeIntelectual;
+import br.unitins.pibiti.enums.TipoPropriedadeIntelectual;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -31,8 +31,8 @@ public class DireitoAutor {
     private Long idDireitoAutor;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_propiedade_intelectual", nullable = false)
-    private TipoPropiedadeIntelectual tipoPropiedadeIntelectual;
+    @Column(name = "tipo_propriedade_intelectual", nullable = false)
+    private TipoPropriedadeIntelectual tipoPropriedadeIntelectual;
 
     @ManyToOne
     @JoinColumn(name = "id_nit")
@@ -64,7 +64,11 @@ public class DireitoAutor {
     @Column(length = 1000)
     private String tituloObraOriginal;
 
-    private String autoresObraOriginal;
+    @ElementCollection
+    @CollectionTable(name = "direito_autor_autores_obra_original",
+            joinColumns = @JoinColumn(name = "id_direito_autor"))
+    @Column(name = "autor_obra_original", nullable = true)
+    private List<String> autoresObraOriginal;
 
     @Column(nullable = false)
     private Boolean visualizacaoPublica;

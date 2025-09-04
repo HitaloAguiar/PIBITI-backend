@@ -1,9 +1,9 @@
 package br.unitins.pibiti.resource;
 
 import br.unitins.pibiti.application.Result;
-import br.unitins.pibiti.dto.propiedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorDTO;
-import br.unitins.pibiti.dto.propiedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorResponseDTO;
-import br.unitins.pibiti.service.propiedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorService;
+import br.unitins.pibiti.dto.propriedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorDTO;
+import br.unitins.pibiti.dto.propriedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorResponseDTO;
+import br.unitins.pibiti.service.propriedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorService;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-@Path("/propiedades-intelectuais/registros-programa-computador")
+@Path("/propriedades-intelectuais/registros-programa-computador")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class RegistroProgramaComputadorResource {
