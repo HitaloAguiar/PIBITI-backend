@@ -10,7 +10,8 @@ public record CultivarResponseDTO(
         NitResponseDTO nit,
         String titulo,
         String descricao,
-        TiposEnumResponseDTO categoria
+        TiposEnumResponseDTO categoria,
+        Boolean visualizacaoPublica
 ) {
     public CultivarResponseDTO(Cultivar cultivar) {
         this(
@@ -25,7 +26,8 @@ public record CultivarResponseDTO(
                 new TiposEnumResponseDTO(
                         cultivar.getCategoria().getId(),
                         cultivar.getCategoria().getLabel()
-                )
+                ),
+                cultivar.getVisualizacaoPublica()
         );
     }
 

@@ -3,6 +3,7 @@ package br.unitins.pibiti.dto.propiedade_intelectual.propiedade_industrial.conta
 public record ContratoFranquiaDTO(
         Long idNit,
         String titulo,
-        String descricao
+        String descricao,
+        Boolean visualizacaoPublica
 ) {
 }

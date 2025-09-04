@@ -17,12 +17,13 @@ public record IndicacaoGeograficaResponseDTO(
         TiposEnumResponseDTO natureza,
         String tituloProdutoServico,
         String delimitacao,
-        String requerente
+        String requerente,
+        Boolean visualizacaoPublica
 ) {
     public IndicacaoGeograficaResponseDTO(IndicacaoGeografica indicacaoGeografica) {
         this(indicacaoGeografica.getIdIndicacaoGeografica(), new TiposEnumResponseDTO(indicacaoGeografica.getTipoPropiedadeIntelectual().getId(), indicacaoGeografica.getTipoPropiedadeIntelectual().getLabel()), new NitResponseDTO(indicacaoGeografica.getNit()),
                 indicacaoGeografica.getTitulo(), indicacaoGeografica.getDescricao(), indicacaoGeografica.getDataConcessao(), new TiposEnumResponseDTO(indicacaoGeografica.getEspecie().getId(), indicacaoGeografica.getEspecie().getLabel()),
                 new TiposEnumResponseDTO(indicacaoGeografica.getNatureza().getId(), indicacaoGeografica.getNatureza().getLabel()), indicacaoGeografica.getTituloProdutoServico(),
-                indicacaoGeografica.getDelimitacao(), indicacaoGeografica.getRequerente());
+                indicacaoGeografica.getDelimitacao(), indicacaoGeografica.getRequerente(), indicacaoGeografica.getVisualizacaoPublica());
     }
 }

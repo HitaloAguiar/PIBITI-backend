@@ -48,4 +48,7 @@ public class DesenhoIndustrial {
     private String periodo;
 
     private TipoDesenhoIndustrial tipoDesenhoIndustrial;
+
+    @Column(nullable = false)
+    private Boolean visualizacaoPublica;
 }

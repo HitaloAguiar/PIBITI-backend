@@ -96,6 +96,7 @@ public class DireitoAutorServiceImpl implements DireitoAutorService {
         direitoAutor.setAdapatacaoOuTraducao(direitoAutorDTO.adapatacaoOuTraducao());
         direitoAutor.setTituloObraOriginal(direitoAutorDTO.tituloObraOriginal());
         direitoAutor.setAutoresObraOriginal(direitoAutorDTO.autoresObraOriginal());
+        direitoAutor.setVisualizacaoPublica(direitoAutorDTO.visualizacaoPublica());
 
         return direitoAutor;
     }

@@ -10,6 +10,7 @@ public record PatenteDTO(
         String periodo,
         Long idTipoPatente,
         String classificacao,
-        String categorias
+        String categorias,
+        Boolean visualizacaoPublica
 ) {
 }

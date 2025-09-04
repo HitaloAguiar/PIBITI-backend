@@ -49,4 +49,7 @@ public class Marca {
 
     private String classes;
 
+    @Column(nullable = false)
+    private Boolean visualizacaoPublica;
+
 }

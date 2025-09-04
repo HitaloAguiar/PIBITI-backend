@@ -51,4 +51,7 @@ public class Patente {
 
     private String categorias;
 
+    @Column(nullable = false)
+    private Boolean visualizacaoPublica;
+
 }

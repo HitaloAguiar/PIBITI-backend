@@ -87,6 +87,7 @@ public class IndicacaoGeograficaServiceImpl implements IndicacaoGeograficaServic
         indicacaoGeografica.setTituloProdutoServico(indicacaoGeograficaDTO.tituloProdutoServico());
         indicacaoGeografica.setDelimitacao(indicacaoGeograficaDTO.delimitacao());
         indicacaoGeografica.setRequerente(indicacaoGeograficaDTO.requerente());
+        indicacaoGeografica.setVisualizacaoPublica(indicacaoGeograficaDTO.visualizacaoPublica());
 
         return indicacaoGeografica;
     }

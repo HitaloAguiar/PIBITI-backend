@@ -4,6 +4,7 @@ public record CultivarDTO(
         Long idNit,
         String titulo,
         String descricao,
-        Long idCategoria
+        Long idCategoria,
+        Boolean visualizacaoPublica
 ) {
 }

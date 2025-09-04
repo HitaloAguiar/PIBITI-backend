@@ -15,7 +15,8 @@ public record RegistroProgramaComputadorResponseDTO(
         List<String> autores,
         List<String> linguagens,
         String campoAplicacao,
-        String tipoPrograma
+        String tipoPrograma,
+        Boolean visualizacaoPublica
 ) {
     public RegistroProgramaComputadorResponseDTO(RegistroProgramaComputador registroProgramaComputador) {
         this(
@@ -30,7 +31,8 @@ public record RegistroProgramaComputadorResponseDTO(
                 registroProgramaComputador.getAutores(),
                 registroProgramaComputador.getLinguagens(),
                 registroProgramaComputador.getCampoAplicacao(),
-                registroProgramaComputador.getTipoPrograma()
+                registroProgramaComputador.getTipoPrograma(),
+                registroProgramaComputador.getVisualizacaoPublica()
         );
     }
 

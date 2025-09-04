@@ -83,6 +83,7 @@ public class DesenhoIndustrialServiceImpl implements DesenhoIndustrialService {
         desenhoIndustrial.setDataConcessao(desenhoIndustrialDTO.dataConcessao());
         desenhoIndustrial.setPeriodo(desenhoIndustrialDTO.periodo());
         desenhoIndustrial.setTipoDesenhoIndustrial(TipoDesenhoIndustrial.fromId(desenhoIndustrialDTO.idTipoDesenhoIndustrial()));
+        desenhoIndustrial.setVisualizacaoPublica(desenhoIndustrialDTO.visualizacaoPublica());
 
         return desenhoIndustrial;
     }

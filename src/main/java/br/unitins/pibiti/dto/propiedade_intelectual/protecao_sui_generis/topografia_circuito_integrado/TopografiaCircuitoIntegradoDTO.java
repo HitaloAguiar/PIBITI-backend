@@ -6,6 +6,7 @@ public record TopografiaCircuitoIntegradoDTO(
         Long idNit,
         String titulo,
         String descricao,
-        List<String> autores
+        List<String> autores,
+        Boolean visualizacaoPublica
 ) {
 }

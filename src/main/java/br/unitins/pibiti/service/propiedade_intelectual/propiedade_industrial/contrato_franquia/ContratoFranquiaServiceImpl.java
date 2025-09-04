@@ -80,6 +80,7 @@ public class ContratoFranquiaServiceImpl implements ContratoFranquiaService {
     private ContratoFranquia inserirDadosDTONaClasse(ContratoFranquiaDTO contratoFranquiaDTO, ContratoFranquia contratoFranquia) {
         contratoFranquia.setTitulo(contratoFranquiaDTO.titulo());
         contratoFranquia.setDescricao(contratoFranquiaDTO.descricao());
+        contratoFranquia.setVisualizacaoPublica(contratoFranquiaDTO.visualizacaoPublica());
 
         return contratoFranquia;
     }

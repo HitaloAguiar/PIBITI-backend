@@ -16,11 +16,12 @@ public record PatenteResponseDTO(
         String periodo,
         TiposEnumResponseDTO tipoPatente,
         String classificacao,
-        String categorias
+        String categorias,
+        Boolean visualizacaoPublica
 ) {
     public PatenteResponseDTO(Patente patente) {
         this(patente.getIdPatente(), new TiposEnumResponseDTO(patente.getTipoPropiedadeIntelectual().getId(), patente.getTipoPropiedadeIntelectual().getLabel()), new NitResponseDTO(patente.getNit()),
                 patente.getTitulo(), patente.getResumo(), patente.getDataConcessao(), patente.getPeriodo(), new TiposEnumResponseDTO(patente.getTipo().getId(), patente.getTipo().getLabel()),
-                patente.getClassificacao(), patente.getCategorias());
+                patente.getClassificacao(), patente.getCategorias(), patente.getVisualizacaoPublica());
     }
 }

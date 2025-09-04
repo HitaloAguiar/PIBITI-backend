@@ -8,6 +8,7 @@ public record DesenhoIndustrialDTO(
         String descricao,
         LocalDate dataConcessao,
         String periodo,
-        Long idTipoDesenhoIndustrial
+        Long idTipoDesenhoIndustrial,
+        Boolean visualizacaoPublica
 ) {
 }

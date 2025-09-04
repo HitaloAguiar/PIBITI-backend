@@ -83,6 +83,7 @@ public class RegistroProgramaComputadorServiceImpl implements RegistroProgramaCo
         registroPrograma.setLinguagens(registroProgramaDTO.linguagens());
         registroPrograma.setTipoPrograma(registroProgramaDTO.tipoPrograma());
         registroPrograma.setCampoAplicacao(registroProgramaDTO.campoAplicacao());
+        registroPrograma.setVisualizacaoPublica(registroProgramaDTO.visualizacaoPublica());
 
         return registroPrograma;
     }

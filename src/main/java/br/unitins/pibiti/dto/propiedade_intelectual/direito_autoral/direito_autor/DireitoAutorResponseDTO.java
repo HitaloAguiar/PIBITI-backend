@@ -17,7 +17,8 @@ public record DireitoAutorResponseDTO(
         Integer numeroTotalPaginasObra,
         Boolean adapatacaoOuTraducao,
         String tituloObraOriginal,
-        String autoresObraOriginal
+        String autoresObraOriginal,
+        Boolean visualizacaoPublica
 ) {
     public DireitoAutorResponseDTO(DireitoAutor direitoAutor) {
         this(
@@ -38,7 +39,8 @@ public record DireitoAutorResponseDTO(
                 direitoAutor.getNumeroTotalPaginasObra(),
                 direitoAutor.getAdapatacaoOuTraducao(),
                 direitoAutor.getTituloObraOriginal(),
-                direitoAutor.getAutoresObraOriginal()
+                direitoAutor.getAutoresObraOriginal(),
+                direitoAutor.getVisualizacaoPublica()
         );
     }
 

@@ -9,10 +9,11 @@ public record ContratoFranquiaResponseDTO(
         TiposEnumResponseDTO tipoPropiedadeIntelectual,
         NitResponseDTO nit,
         String titulo,
-        String descricao
+        String descricao,
+        Boolean visualizacaoPublica
 ) {
     public ContratoFranquiaResponseDTO(ContratoFranquia contratoFranquia) {
         this(contratoFranquia.getIdContratoFranquia(), new TiposEnumResponseDTO(contratoFranquia.getTipoPropiedadeIntelectual().getId(), contratoFranquia.getTipoPropiedadeIntelectual().getLabel()), new NitResponseDTO(contratoFranquia.getNit()),
-                contratoFranquia.getTitulo(), contratoFranquia.getDescricao());
+                contratoFranquia.getTitulo(), contratoFranquia.getDescricao(), contratoFranquia.getVisualizacaoPublica());
     }
 }

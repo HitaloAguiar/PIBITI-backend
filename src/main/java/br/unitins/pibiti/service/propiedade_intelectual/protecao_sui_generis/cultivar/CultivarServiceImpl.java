@@ -81,6 +81,7 @@ public class CultivarServiceImpl implements CultivarService {
         cultivar.setTitulo(cultivarDTO.titulo());
         cultivar.setDescricao(cultivarDTO.descricao());
         cultivar.setCategoria(CategoriaCultivar.fromId(cultivarDTO.idCategoria()));
+        cultivar.setVisualizacaoPublica(cultivarDTO.visualizacaoPublica());
 
         return cultivar;
     }

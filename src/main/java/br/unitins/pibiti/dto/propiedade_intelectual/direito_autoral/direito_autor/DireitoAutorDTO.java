@@ -11,6 +11,7 @@ public record DireitoAutorDTO(
         Integer numeroTotalPaginasObra,
         Boolean adapatacaoOuTraducao,
         String tituloObraOriginal,
-        String autoresObraOriginal
+        String autoresObraOriginal,
+        Boolean visualizacaoPublica
 ) {
 }

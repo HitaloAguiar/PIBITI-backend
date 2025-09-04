@@ -63,4 +63,7 @@ public class DireitoAutor {
 
     private String autoresObraOriginal;
 
+    @Column(nullable = false)
+    private Boolean visualizacaoPublica;
+
 }

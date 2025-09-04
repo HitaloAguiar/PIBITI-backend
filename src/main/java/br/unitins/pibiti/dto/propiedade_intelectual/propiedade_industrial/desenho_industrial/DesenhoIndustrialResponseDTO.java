@@ -14,10 +14,11 @@ public record DesenhoIndustrialResponseDTO(
         String descricao,
         LocalDate dataConcessao,
         String periodo,
-        TiposEnumResponseDTO tipoDesenhoIndustrial
+        TiposEnumResponseDTO tipoDesenhoIndustrial,
+        Boolean visualizacaoPublica
 ) {
     public DesenhoIndustrialResponseDTO(DesenhoIndustrial desenhoIndustrial) {
         this(desenhoIndustrial.getIdDesenhoIndustrial(), new TiposEnumResponseDTO(desenhoIndustrial.getTipoPropiedadeIntelectual().getId(), desenhoIndustrial.getTipoPropiedadeIntelectual().getLabel()), new NitResponseDTO(desenhoIndustrial.getNit()),
-                desenhoIndustrial.getTitulo(), desenhoIndustrial.getDescricao(), desenhoIndustrial.getDataConcessao(), desenhoIndustrial.getPeriodo(), new TiposEnumResponseDTO(desenhoIndustrial.getTipoDesenhoIndustrial().getId(), desenhoIndustrial.getTipoDesenhoIndustrial().getLabel()));
+                desenhoIndustrial.getTitulo(), desenhoIndustrial.getDescricao(), desenhoIndustrial.getDataConcessao(), desenhoIndustrial.getPeriodo(), new TiposEnumResponseDTO(desenhoIndustrial.getTipoDesenhoIndustrial().getId(), desenhoIndustrial.getTipoDesenhoIndustrial().getLabel()), desenhoIndustrial.getVisualizacaoPublica());
     }
 }

@@ -45,4 +45,7 @@ public class TopografiaCircuitoIntegrado {
     @Column(name = "autor", nullable = false)
     private List<String> autores;
 
+    @Column(nullable = false)
+    private Boolean visualizacaoPublica;
+
 }

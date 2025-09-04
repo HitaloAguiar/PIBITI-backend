@@ -55,4 +55,7 @@ public class IndicacaoGeografica {
     private String delimitacao;
 
     private String requerente;
+
+    @Column(nullable = false)
+    private Boolean visualizacaoPublica;
 }

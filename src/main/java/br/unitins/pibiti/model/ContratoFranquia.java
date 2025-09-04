@@ -34,4 +34,7 @@ public class ContratoFranquia {
 
     @Column(nullable = false)
     private String descricao;
+
+    @Column(nullable = false)
+    private Boolean visualizacaoPublica;
 }

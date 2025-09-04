@@ -39,4 +39,7 @@ public class Cultivar {
     @Column(nullable = false)
     private CategoriaCultivar categoria;
 
+    @Column(nullable = false)
+    private Boolean visualizacaoPublica;
+
 }

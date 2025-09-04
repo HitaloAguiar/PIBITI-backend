@@ -9,6 +9,7 @@ public record RegistroProgramaComputadorDTO(
         List<String> autores,
         List<String> linguagens,
         String campoAplicacao,
-        String tipoPrograma
+        String tipoPrograma,
+        Boolean visualizacaoPublica
 ) {
 }

@@ -15,9 +15,12 @@ public record MarcaResponseDTO(
         LocalDate dataConcessao,
         String periodo,
         TiposEnumResponseDTO natureza,
-        String classes
+        String classes,
+        Boolean visualizacaoPublica
 ) {
     public MarcaResponseDTO(Marca marca) {
-        this(marca.getIdMarca(), new TiposEnumResponseDTO(marca.getTipoPropiedadeIntelectual().getId(), marca.getTipoPropiedadeIntelectual().getLabel()), new NitResponseDTO(marca.getNit()), marca.getNome(), marca.getTitular(), marca.getDataConcessao(), marca.getPeriodo(), new TiposEnumResponseDTO(marca.getNatureza().getId(), marca.getNatureza().getLabel()), marca.getClasses());
+        this(marca.getIdMarca(), new TiposEnumResponseDTO(marca.getTipoPropiedadeIntelectual().getId(),
+                        marca.getTipoPropiedadeIntelectual().getLabel()), new NitResponseDTO(marca.getNit()), marca.getNome(), marca.getTitular(),
+                marca.getDataConcessao(), marca.getPeriodo(), new TiposEnumResponseDTO(marca.getNatureza().getId(), marca.getNatureza().getLabel()), marca.getClasses(), marca.getVisualizacaoPublica());
     }
 }

@@ -86,6 +86,7 @@ public class PatenteServiceImpl implements PatenteService {
         patente.setTipo(TipoPatente.fromId(patenteDTO.idTipoPatente()));
         patente.setCategorias(patenteDTO.categorias());
         patente.setClassificacao(patenteDTO.classificacao());
+        patente.setVisualizacaoPublica(patenteDTO.visualizacaoPublica());
 
         return patente;
     }

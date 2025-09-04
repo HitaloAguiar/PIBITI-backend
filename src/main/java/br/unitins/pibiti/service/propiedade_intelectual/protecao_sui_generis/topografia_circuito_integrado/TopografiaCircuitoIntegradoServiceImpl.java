@@ -82,6 +82,7 @@ public class TopografiaCircuitoIntegradoServiceImpl implements TopografiaCircuit
         topografiaCircuitoIntegrado.setTitulo(topografiaCircuitoIntegradoDTO.titulo());
         topografiaCircuitoIntegrado.setDescricao(topografiaCircuitoIntegradoDTO.descricao());
         topografiaCircuitoIntegrado.setAutores(topografiaCircuitoIntegradoDTO.autores());
+        topografiaCircuitoIntegrado.setVisualizacaoPublica(topografiaCircuitoIntegradoDTO.visualizacaoPublica());
 
         return topografiaCircuitoIntegrado;
     }

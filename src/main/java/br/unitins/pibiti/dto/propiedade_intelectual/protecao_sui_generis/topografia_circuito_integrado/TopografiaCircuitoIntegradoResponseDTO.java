@@ -12,7 +12,8 @@ public record TopografiaCircuitoIntegradoResponseDTO(
         NitResponseDTO nit,
         String titulo,
         String descricao,
-        List<String> autores
+        List<String> autores,
+        Boolean visualizacaoPublica
 ) {
     public TopografiaCircuitoIntegradoResponseDTO(TopografiaCircuitoIntegrado topografiaCircuitoIntegrado) {
         this(
@@ -24,7 +25,8 @@ public record TopografiaCircuitoIntegradoResponseDTO(
                 new NitResponseDTO(topografiaCircuitoIntegrado.getNit()),
                 topografiaCircuitoIntegrado.getTitulo(),
                 topografiaCircuitoIntegrado.getDescricao(),
-                topografiaCircuitoIntegrado.getAutores()
+                topografiaCircuitoIntegrado.getAutores(),
+                topografiaCircuitoIntegrado.getVisualizacaoPublica()
         );
     }
 

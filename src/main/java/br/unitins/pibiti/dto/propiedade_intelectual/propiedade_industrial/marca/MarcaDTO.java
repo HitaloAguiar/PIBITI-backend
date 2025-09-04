@@ -9,6 +9,7 @@ public record MarcaDTO(
         LocalDate dataConcessao,
         String periodo,
         Long idNatureza,
-        String classes
+        String classes,
+        Boolean visualizacaoPublica
 ) {
 }

@@ -11,6 +11,7 @@ public record IndicacaoGeograficaDTO(
         Long idNatureza,
         String tituloProdutoServico,
         String delimitacao,
-        String requerente
+        String requerente,
+        Boolean visualizacaoPublica
 ) {
 }

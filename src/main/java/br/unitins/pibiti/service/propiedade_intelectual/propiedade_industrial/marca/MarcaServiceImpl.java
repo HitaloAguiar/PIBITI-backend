@@ -49,14 +49,10 @@ public class MarcaServiceImpl implements MarcaService {
         Nit nit = nitRepository.findById(marcaDTO.idNit());
 
         Marca marca = new Marca();
-        marca.setNome(marcaDTO.nome());
-        marca.setTitular(marcaDTO.titular());
-        marca.setDataConcessao(marcaDTO.dataConcessao());
-        marca.setPeriodo(marcaDTO.periodo());
-        marca.setNatureza(NaturezaMarca.fromId(marcaDTO.idNatureza()));
-        marca.setClasses(marcaDTO.classes());
         marca.setTipoPropiedadeIntelectual(TipoPropiedadeIntelectual.PRIPIEDADE_INDUSTRIAL);
         marca.setNit(nit);
+
+        inserirDadosDTONaClasse(marcaDTO, marca);
 
         marcaRepository.persist(marca);
         return new MarcaResponseDTO(marca);
@@ -77,14 +73,21 @@ public class MarcaServiceImpl implements MarcaService {
         if (marca.getNit().getIdNit() != nit.getIdNit())
             throw new BadRequestException("A marca selecionada não pertence ao NIT informado.");
 
+        inserirDadosDTONaClasse(marcaDTO, marca);
+
+        return new MarcaResponseDTO(marca);
+    }
+
+    private Marca inserirDadosDTONaClasse(MarcaDTO marcaDTO, Marca marca) {
         marca.setNome(marcaDTO.nome());
         marca.setTitular(marcaDTO.titular());
         marca.setDataConcessao(marcaDTO.dataConcessao());
         marca.setPeriodo(marcaDTO.periodo());
         marca.setNatureza(NaturezaMarca.fromId(marcaDTO.idNatureza()));
         marca.setClasses(marcaDTO.classes());
+        marca.setVisualizacaoPublica(marcaDTO.visualizacaoPublica());
 
-        return new MarcaResponseDTO(marca);
+        return marca;
     }
 
     @Override

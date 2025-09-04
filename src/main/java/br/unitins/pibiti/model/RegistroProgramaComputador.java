@@ -52,5 +52,9 @@ public class RegistroProgramaComputador {
     private List<String> linguagens;
 
     private String campoAplicacao;
+
     private String tipoPrograma;
+
+    @Column(nullable = false)
+    private Boolean visualizacaoPublica;
 }
