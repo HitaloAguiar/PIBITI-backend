@@ -72,7 +72,7 @@ public class PatenteResource {
 
     @GET
     @Path("/nit/{id}/filtrado-por/{titulo}")
-    public List<PatenteResponseDTO> getAllFiltradoPorTitulo(@PathParam("id") Long idNit,
+    public List<PatenteResponseDTO> getAllByNitFiltradoPorTitulo(@PathParam("id") Long idNit,
                                                                                 @PathParam("titulo") String titulo,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
                                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,

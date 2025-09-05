@@ -1,5 +1,8 @@
 package br.unitins.pibiti.service.propriedade_intelectual.propriedade_industrial.marca;
 
+import java.util.List;
+import java.util.Set;
+
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.marca.MarcaDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.marca.MarcaResponseDTO;
 import br.unitins.pibiti.enums.NaturezaMarca;
@@ -17,9 +20,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
-
-import java.util.List;
-import java.util.Set;
 
 @ApplicationScoped
 public class MarcaServiceImpl implements MarcaService {
@@ -113,7 +113,7 @@ public class MarcaServiceImpl implements MarcaService {
     }
 
     @Override
-    public List<MarcaResponseDTO> getAllMarca(Long idNit, int page, int pageSize, Boolean isAscending) {
+    public List<MarcaResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -129,7 +129,7 @@ public class MarcaServiceImpl implements MarcaService {
     }
 
     @Override
-    public List<MarcaResponseDTO> getAllFiltradoPorNome(Long idNit, String nome, int page, int pageSize, Boolean isAscending) {
+    public List<MarcaResponseDTO> getAllByNitFiltradoPorNome(Long idNit, String nome, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -142,6 +142,38 @@ public class MarcaServiceImpl implements MarcaService {
         }
 
         return marcaRepository.findListByNitAndNome(nitRepository.findById(idNit), nome, sort).page(page, pageSize).list().stream().map(MarcaResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<MarcaResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idMarca").ascending();
+        } else {
+
+            sort = Sort.by("idMarca").descending();
+        }
+
+        return marcaRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(MarcaResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<MarcaResponseDTO> getAllPublicoFiltradoPorNome(String nome, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idMarca").ascending();
+        } else {
+
+            sort = Sort.by("idMarca").descending();
+        }
+
+        return marcaRepository.findAllPublicoFiltradoNome(sort, nome).page(page, pageSize).list().stream().map(MarcaResponseDTO::new).toList();
     }
 
     private void validar(MarcaDTO marcaDTO) throws ConstraintViolationException {

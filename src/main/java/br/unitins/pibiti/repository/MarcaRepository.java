@@ -25,4 +25,17 @@ public class MarcaRepository implements PanacheRepository<Marca> {
 
         return find("nit = ?1 AND UPPER(nome) LIKE ?2", sort, nit, "%" + nome.toUpperCase() + "%");
     }
+
+    public PanacheQuery<Marca> findAllPublico(Sort sort) {
+
+        return find("visualizacaoPublica = ?1", sort, true);
+    }
+
+    public PanacheQuery<Marca> findAllPublicoFiltradoNome(Sort sort, String nome) {
+
+        if (nome == null)
+            return null;
+
+        return find("visualizacaoPublica = ?1 AND UPPER(nome) LIKE ?2", sort, true, "%" + nome.toUpperCase() + "%");
+    }
 }

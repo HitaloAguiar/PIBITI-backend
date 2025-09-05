@@ -152,10 +152,10 @@ public class PatenteServiceImpl implements PatenteService {
 
         if (isAscending) {
 
-            sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
+            sort = Sort.by("idPatente").ascending();
         } else {
 
-            sort = Sort.by("idTopografiaCircuitoIntegrado").descending();
+            sort = Sort.by("idPatente").descending();
         }
 
         return patenteRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();
@@ -168,10 +168,10 @@ public class PatenteServiceImpl implements PatenteService {
 
         if (isAscending) {
 
-            sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
+            sort = Sort.by("idPatente").ascending();
         } else {
 
-            sort = Sort.by("idTopografiaCircuitoIntegrado").descending();
+            sort = Sort.by("idPatente").descending();
         }
 
         return patenteRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();

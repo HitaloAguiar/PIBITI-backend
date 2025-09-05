@@ -1,5 +1,9 @@
 package br.unitins.pibiti.resource;
 
+import java.util.List;
+
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
 import br.unitins.pibiti.application.Result;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.marca.MarcaDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.marca.MarcaResponseDTO;
@@ -21,10 +25,6 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.util.List;
-
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
 @Path("/propriedades-intelectuais/marcas")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -43,24 +43,42 @@ public class MarcaResource {
     }
 
     @GET
+    public List<MarcaResponseDTO> getAllPublico(@QueryParam("page") @DefaultValue("0") int page,
+                                                                        @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                        @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
+
+        return marcaService.getAllPublico(page, pageSize, isAscending);
+    }
+
+    @GET
+    @Path("/filtrado-por/{nome}")
+    public List<MarcaResponseDTO> getAllPublicoFiltradoPorNome(@PathParam("nome") String nome,
+                                                                                @QueryParam("page") @DefaultValue("0") int page,
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
+
+        return marcaService.getAllPublicoFiltradoPorNome(nome, page, pageSize, isAscending);
+    }
+
+    @GET
     @Path("/nit/{id}")
-    public List<MarcaResponseDTO> getAll(@PathParam("id") Long idNit,
+    public List<MarcaResponseDTO> getAllByNit(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return marcaService.getAllMarca(idNit, page, pageSize, isAscending);
+        return marcaService.getAllByNit(idNit, page, pageSize, isAscending);
     }
 
     @GET
     @Path("/nit/{id}/filtrado-por/{nome}")
-    public List<MarcaResponseDTO> getAllFiltradoPorNome(@PathParam("id") Long idNit,
+    public List<MarcaResponseDTO> getAllByNitFiltradoPorNome(@PathParam("id") Long idNit,
                                                                                 @PathParam("nome") String nome,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
                                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return marcaService.getAllFiltradoPorNome(idNit, nome, page, pageSize, isAscending);
+        return marcaService.getAllByNitFiltradoPorNome(idNit, nome, page, pageSize, isAscending);
     }
 
     @POST

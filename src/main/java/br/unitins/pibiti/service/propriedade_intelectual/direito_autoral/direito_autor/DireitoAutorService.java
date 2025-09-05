@@ -16,7 +16,11 @@ public interface DireitoAutorService {
 
     void deletarDireitoAutor(String cnpj, Long idDireitoAutor);
 
-    List<DireitoAutorResponseDTO> getAllDireitoAutor(Long idNit, int page, int pageSize, Boolean isAscending);
+    List<DireitoAutorResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending);
 
-    List<DireitoAutorResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending);
+    List<DireitoAutorResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending);
+
+    List<DireitoAutorResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending);
+
+    List<DireitoAutorResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending);
 }

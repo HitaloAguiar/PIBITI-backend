@@ -72,7 +72,7 @@ public class RegistroProgramaComputadorResource {
 
     @GET
     @Path("/nit/{id}/filtrado-por/{titulo}")
-    public List<RegistroProgramaComputadorResponseDTO> getAllFiltradoPorTitulo(@PathParam("id") Long idNit,
+    public List<RegistroProgramaComputadorResponseDTO> getAllByNitFiltradoPorTitulo(@PathParam("id") Long idNit,
                                                                                 @PathParam("titulo") String titulo,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
                                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,

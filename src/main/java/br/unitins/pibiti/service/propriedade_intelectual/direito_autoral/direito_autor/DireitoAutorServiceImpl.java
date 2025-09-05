@@ -1,6 +1,9 @@
 package br.unitins.pibiti.service.propriedade_intelectual.direito_autoral.direito_autor;
 
 
+import java.util.List;
+import java.util.Set;
+
 import br.unitins.pibiti.dto.propriedade_intelectual.direito_autoral.direito_autor.DireitoAutorDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.direito_autoral.direito_autor.DireitoAutorResponseDTO;
 import br.unitins.pibiti.enums.Genero;
@@ -18,9 +21,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
-
-import java.util.List;
-import java.util.Set;
 
 @ApplicationScoped
 public class DireitoAutorServiceImpl implements DireitoAutorService {
@@ -122,7 +122,7 @@ public class DireitoAutorServiceImpl implements DireitoAutorService {
     }
 
     @Override
-    public List<DireitoAutorResponseDTO> getAllDireitoAutor(Long idNit, int page, int pageSize, Boolean isAscending) {
+    public List<DireitoAutorResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -138,7 +138,7 @@ public class DireitoAutorServiceImpl implements DireitoAutorService {
     }
 
     @Override
-    public List<DireitoAutorResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+    public List<DireitoAutorResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -151,6 +151,38 @@ public class DireitoAutorServiceImpl implements DireitoAutorService {
         }
 
         return direitoAutorRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(DireitoAutorResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<DireitoAutorResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idDireitoAutor").ascending();
+        } else {
+
+            sort = Sort.by("idDireitoAutor").descending();
+        }
+
+        return direitoAutorRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(DireitoAutorResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<DireitoAutorResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idDireitoAutor").ascending();
+        } else {
+
+            sort = Sort.by("idDireitoAutor").descending();
+        }
+
+        return direitoAutorRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(DireitoAutorResponseDTO::new).toList();
     }
 
     private void validar(DireitoAutorDTO direitoAutorDTO) throws ConstraintViolationException {

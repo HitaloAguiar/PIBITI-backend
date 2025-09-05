@@ -1,6 +1,9 @@
 package br.unitins.pibiti.service.propriedade_intelectual.propriedade_industrial.indicacao_geografica;
 
 
+import java.util.List;
+import java.util.Set;
+
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.indicacao_geografica.IndicacaoGeograficaDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.indicacao_geografica.IndicacaoGeograficaResponseDTO;
 import br.unitins.pibiti.enums.EspecieIndicacaoGeografica;
@@ -19,9 +22,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
-
-import java.util.List;
-import java.util.Set;
 
 @ApplicationScoped
 public class IndicacaoGeograficaServiceImpl implements IndicacaoGeograficaService {
@@ -114,7 +114,7 @@ public class IndicacaoGeograficaServiceImpl implements IndicacaoGeograficaServic
     }
 
     @Override
-    public List<IndicacaoGeograficaResponseDTO> getAllIndicacaoGeografica(Long idNit, int page, int pageSize, Boolean isAscending) {
+    public List<IndicacaoGeograficaResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -130,7 +130,7 @@ public class IndicacaoGeograficaServiceImpl implements IndicacaoGeograficaServic
     }
 
     @Override
-    public List<IndicacaoGeograficaResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+    public List<IndicacaoGeograficaResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -143,6 +143,38 @@ public class IndicacaoGeograficaServiceImpl implements IndicacaoGeograficaServic
         }
 
         return indicacaoGeograficaRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(IndicacaoGeograficaResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<IndicacaoGeograficaResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idIndicacaoGeografica").ascending();
+        } else {
+
+            sort = Sort.by("idIndicacaoGeografica").descending();
+        }
+
+        return indicacaoGeograficaRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(IndicacaoGeograficaResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<IndicacaoGeograficaResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idIndicacaoGeografica").ascending();
+        } else {
+
+            sort = Sort.by("idIndicacaoGeografica").descending();
+        }
+
+        return indicacaoGeograficaRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(IndicacaoGeograficaResponseDTO::new).toList();
     }
 
     private void validar(IndicacaoGeograficaDTO indicacaoGeograficaDTO) throws ConstraintViolationException {
