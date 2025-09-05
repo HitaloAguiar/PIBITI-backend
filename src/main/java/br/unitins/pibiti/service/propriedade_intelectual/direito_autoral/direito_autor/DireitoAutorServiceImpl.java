@@ -34,8 +34,6 @@ public class DireitoAutorServiceImpl implements DireitoAutorService {
     @Inject
     Validator validator;
 
-    Sort sort = Sort.by("idDireitoAutor").ascending();
-
     @Override
     public DireitoAutorResponseDTO getDireitoAutor(Long id) {
         DireitoAutor direitoAutor = direitoAutorRepository.findById(id);
@@ -124,13 +122,33 @@ public class DireitoAutorServiceImpl implements DireitoAutorService {
     }
 
     @Override
-    public List<DireitoAutorResponseDTO> getAllDireitoAutor(Long idNit, int page, int pageSize) {
+    public List<DireitoAutorResponseDTO> getAllDireitoAutor(Long idNit, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idDireitoAutor").ascending();
+        } else {
+
+            sort = Sort.by("idDireitoAutor").descending();
+        }
 
         return direitoAutorRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(DireitoAutorResponseDTO::new).toList();
     }
 
     @Override
-    public List<DireitoAutorResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+    public List<DireitoAutorResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idDireitoAutor").ascending();
+        } else {
+
+            sort = Sort.by("idDireitoAutor").descending();
+        }
 
         return direitoAutorRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(DireitoAutorResponseDTO::new).toList();
     }

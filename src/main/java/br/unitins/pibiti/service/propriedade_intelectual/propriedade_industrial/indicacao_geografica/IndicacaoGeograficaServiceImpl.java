@@ -35,8 +35,6 @@ public class IndicacaoGeograficaServiceImpl implements IndicacaoGeograficaServic
     @Inject
     Validator validator;
 
-    Sort sort = Sort.by("idIndicacaoGeografica").ascending();
-
     @Override
     public IndicacaoGeograficaResponseDTO getIndicacaoGeografica(Long id) {
         IndicacaoGeografica indicacaoGeografica = indicacaoGeograficaRepository.findById(id);
@@ -116,13 +114,33 @@ public class IndicacaoGeograficaServiceImpl implements IndicacaoGeograficaServic
     }
 
     @Override
-    public List<IndicacaoGeograficaResponseDTO> getAllIndicacaoGeografica(Long idNit, int page, int pageSize) {
+    public List<IndicacaoGeograficaResponseDTO> getAllIndicacaoGeografica(Long idNit, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idIndicacaoGeografica").ascending();
+        } else {
+
+            sort = Sort.by("idIndicacaoGeografica").descending();
+        }
 
         return indicacaoGeograficaRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(IndicacaoGeograficaResponseDTO::new).toList();
     }
 
     @Override
-    public List<IndicacaoGeograficaResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+    public List<IndicacaoGeograficaResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idIndicacaoGeografica").ascending();
+        } else {
+
+            sort = Sort.by("idIndicacaoGeografica").descending();
+        }
 
         return indicacaoGeograficaRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(IndicacaoGeograficaResponseDTO::new).toList();
     }

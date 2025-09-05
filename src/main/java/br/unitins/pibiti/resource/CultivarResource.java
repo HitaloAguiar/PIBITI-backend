@@ -46,9 +46,10 @@ public class CultivarResource {
     @Path("/nit/{id}")
     public List<CultivarResponseDTO> getAll(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return cultivarService.getAllCultivar(idNit, page, pageSize);
+        return cultivarService.getAllCultivar(idNit, page, pageSize, isAscending);
     }
 
     @GET
@@ -56,9 +57,10 @@ public class CultivarResource {
     public List<CultivarResponseDTO> getAllFiltradoPorTitulo(@PathParam("id") Long idNit,
                                                                                 @PathParam("titulo") String titulo,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return cultivarService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize);
+        return cultivarService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
     }
 
     @POST

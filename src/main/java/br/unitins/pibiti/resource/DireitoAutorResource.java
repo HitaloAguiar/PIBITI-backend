@@ -46,9 +46,10 @@ public class DireitoAutorResource {
     @Path("/nit/{id}")
     public List<DireitoAutorResponseDTO> getAll(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return direitoAutorService.getAllDireitoAutor(idNit, page, pageSize);
+        return direitoAutorService.getAllDireitoAutor(idNit, page, pageSize, isAscending);
     }
 
     @GET
@@ -56,9 +57,10 @@ public class DireitoAutorResource {
     public List<DireitoAutorResponseDTO> getAllFiltradoPorTitulo(@PathParam("id") Long idNit,
                                                                                 @PathParam("titulo") String titulo,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return direitoAutorService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize);
+        return direitoAutorService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
     }
 
     @POST

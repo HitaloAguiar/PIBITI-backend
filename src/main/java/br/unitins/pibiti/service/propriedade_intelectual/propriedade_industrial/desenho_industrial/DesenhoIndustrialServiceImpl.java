@@ -34,8 +34,6 @@ public class DesenhoIndustrialServiceImpl implements DesenhoIndustrialService {
     @Inject
     Validator validator;
 
-    Sort sort = Sort.by("idDesenhoIndustrial").ascending();
-
     @Override
     public DesenhoIndustrialResponseDTO getDesenhoIndustrial(Long id) {
         DesenhoIndustrial desenhoIndustrial = desenhoIndustrialRepository.findById(id);
@@ -113,13 +111,33 @@ public class DesenhoIndustrialServiceImpl implements DesenhoIndustrialService {
     }
 
     @Override
-    public List<DesenhoIndustrialResponseDTO> getAllDesenhoIndustrial(Long idNit, int page, int pageSize) {
+    public List<DesenhoIndustrialResponseDTO> getAllDesenhoIndustrial(Long idNit, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idDesenhoIndustrial").ascending();
+        } else {
+
+            sort = Sort.by("idDesenhoIndustrial").descending();
+        }
 
         return desenhoIndustrialRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(DesenhoIndustrialResponseDTO::new).toList();
     }
 
     @Override
-    public List<DesenhoIndustrialResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+    public List<DesenhoIndustrialResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idDesenhoIndustrial").ascending();
+        } else {
+
+            sort = Sort.by("idDesenhoIndustrial").descending();
+        }
 
         return desenhoIndustrialRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(DesenhoIndustrialResponseDTO::new).toList();
     }

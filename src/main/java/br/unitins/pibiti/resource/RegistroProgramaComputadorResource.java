@@ -46,9 +46,10 @@ public class RegistroProgramaComputadorResource {
     @Path("/nit/{id}")
     public List<RegistroProgramaComputadorResponseDTO> getAll(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return registroProgramaService.getAllRegistroProgramaComputador(idNit, page, pageSize);
+        return registroProgramaService.getAllRegistroProgramaComputador(idNit, page, pageSize, isAscending);
     }
 
     @GET
@@ -56,9 +57,10 @@ public class RegistroProgramaComputadorResource {
     public List<RegistroProgramaComputadorResponseDTO> getAllFiltradoPorTitulo(@PathParam("id") Long idNit,
                                                                                 @PathParam("titulo") String titulo,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return registroProgramaService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize);
+        return registroProgramaService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
     }
 
     @POST

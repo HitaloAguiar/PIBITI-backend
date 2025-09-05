@@ -33,8 +33,6 @@ public class ContratoFranquiaServiceImpl implements ContratoFranquiaService {
     @Inject
     Validator validator;
 
-    Sort sort = Sort.by("idContratoFranquia").ascending();
-
     @Override
     public ContratoFranquiaResponseDTO getContratoFranquia(Long id) {
         ContratoFranquia contratoFranquia = contratoFranquiaRepository.findById(id);
@@ -110,13 +108,33 @@ public class ContratoFranquiaServiceImpl implements ContratoFranquiaService {
     }
 
     @Override
-    public List<ContratoFranquiaResponseDTO> getAllContratoFranquia(Long idNit, int page, int pageSize) {
+    public List<ContratoFranquiaResponseDTO> getAllContratoFranquia(Long idNit, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idContratoFranquia").ascending();
+        } else {
+
+            sort = Sort.by("idContratoFranquia").descending();
+        }
 
         return contratoFranquiaRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(ContratoFranquiaResponseDTO::new).toList();
     }
 
     @Override
-    public List<ContratoFranquiaResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+    public List<ContratoFranquiaResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idContratoFranquia").ascending();
+        } else {
+
+            sort = Sort.by("idContratoFranquia").descending();
+        }
 
         return contratoFranquiaRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(ContratoFranquiaResponseDTO::new).toList();
     }

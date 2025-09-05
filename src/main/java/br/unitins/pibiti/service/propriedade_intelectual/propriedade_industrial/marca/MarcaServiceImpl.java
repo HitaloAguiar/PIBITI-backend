@@ -33,8 +33,6 @@ public class MarcaServiceImpl implements MarcaService {
     @Inject
     Validator validator;
 
-    Sort sort = Sort.by("idMarca").ascending();
-
     @Override
     public MarcaResponseDTO getMarca(Long id) {
         Marca marca = marcaRepository.findById(id);
@@ -115,13 +113,33 @@ public class MarcaServiceImpl implements MarcaService {
     }
 
     @Override
-    public List<MarcaResponseDTO> getAllMarca(Long idNit, int page, int pageSize) {
+    public List<MarcaResponseDTO> getAllMarca(Long idNit, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idMarca").ascending();
+        } else {
+
+            sort = Sort.by("idMarca").descending();
+        }
 
         return marcaRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(MarcaResponseDTO::new).toList();
     }
 
     @Override
-    public List<MarcaResponseDTO> getAllFiltradoPorNome(Long idNit, String nome, int page, int pageSize) {
+    public List<MarcaResponseDTO> getAllFiltradoPorNome(Long idNit, String nome, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idMarca").ascending();
+        } else {
+
+            sort = Sort.by("idMarca").descending();
+        }
 
         return marcaRepository.findListByNitAndNome(nitRepository.findById(idNit), nome, sort).page(page, pageSize).list().stream().map(MarcaResponseDTO::new).toList();
     }

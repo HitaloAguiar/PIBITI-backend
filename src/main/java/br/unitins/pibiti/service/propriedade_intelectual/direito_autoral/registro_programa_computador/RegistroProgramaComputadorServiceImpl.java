@@ -33,8 +33,6 @@ public class RegistroProgramaComputadorServiceImpl implements RegistroProgramaCo
     @Inject
     Validator validator;
 
-    Sort sort = Sort.by("idRegistroProgramaComputador").ascending();
-
     @Override
     public RegistroProgramaComputadorResponseDTO getRegistroProgramaComputador(Long id) {
         RegistroProgramaComputador registroPrograma = registroProgramaRepository.findById(id);
@@ -81,13 +79,33 @@ public class RegistroProgramaComputadorServiceImpl implements RegistroProgramaCo
     }
 
     @Override
-    public List<RegistroProgramaComputadorResponseDTO> getAllRegistroProgramaComputador(Long idNit, int page, int pageSize) {
+    public List<RegistroProgramaComputadorResponseDTO> getAllRegistroProgramaComputador(Long idNit, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idRegistroProgramaComputador").ascending();
+        } else {
+
+            sort = Sort.by("idRegistroProgramaComputador").descending();
+        }
 
         return registroProgramaRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(RegistroProgramaComputadorResponseDTO::new).toList();
     }
 
     @Override
-    public List<RegistroProgramaComputadorResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+    public List<RegistroProgramaComputadorResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idRegistroProgramaComputador").ascending();
+        } else {
+
+            sort = Sort.by("idRegistroProgramaComputador").descending();
+        }
 
         return registroProgramaRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(RegistroProgramaComputadorResponseDTO::new).toList();
     }

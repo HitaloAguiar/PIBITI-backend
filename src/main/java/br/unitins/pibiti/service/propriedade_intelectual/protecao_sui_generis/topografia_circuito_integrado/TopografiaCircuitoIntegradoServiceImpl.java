@@ -33,8 +33,6 @@ public class TopografiaCircuitoIntegradoServiceImpl implements TopografiaCircuit
     @Inject
     Validator validator;
 
-    Sort sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
-
     @Override
     public TopografiaCircuitoIntegradoResponseDTO getTopografiaCircuitoIntegrado(Long id) {
         TopografiaCircuitoIntegrado topografiaCircuitoIntegrado = topografiaCircuitoIntegradoRepository.findById(id);
@@ -111,13 +109,33 @@ public class TopografiaCircuitoIntegradoServiceImpl implements TopografiaCircuit
     }
 
     @Override
-    public List<TopografiaCircuitoIntegradoResponseDTO> getAllTopografiaCircuitoIntegrado(Long idNit, int page, int pageSize) {
+    public List<TopografiaCircuitoIntegradoResponseDTO> getAllTopografiaCircuitoIntegrado(Long idNit, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
+        } else {
+
+            sort = Sort.by("idTopografiaCircuitoIntegrado").descending();
+        }
 
         return topografiaCircuitoIntegradoRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(TopografiaCircuitoIntegradoResponseDTO::new).toList();
     }
 
     @Override
-    public List<TopografiaCircuitoIntegradoResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+    public List<TopografiaCircuitoIntegradoResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
+        } else {
+
+            sort = Sort.by("idTopografiaCircuitoIntegrado").descending();
+        }
 
         return topografiaCircuitoIntegradoRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(TopografiaCircuitoIntegradoResponseDTO::new).toList();
     }

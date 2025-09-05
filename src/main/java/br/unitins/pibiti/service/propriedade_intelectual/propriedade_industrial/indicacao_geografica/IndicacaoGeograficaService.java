@@ -16,7 +16,7 @@ public interface IndicacaoGeograficaService {
 
     void deletarIndicacaoGeografica(String cnpj, Long idIndicacaoGeografica);
 
-    List<IndicacaoGeograficaResponseDTO> getAllIndicacaoGeografica(Long idNit, int page, int pageSize);
+    List<IndicacaoGeograficaResponseDTO> getAllIndicacaoGeografica(Long idNit, int page, int pageSize, Boolean isAscending);
 
-    List<IndicacaoGeograficaResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize);
+    List<IndicacaoGeograficaResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending);
 }

@@ -46,9 +46,10 @@ public class DesenhoIndustrialResource {
     @Path("/nit/{id}")
     public List<DesenhoIndustrialResponseDTO> getAll(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return desenhoIndustrialService.getAllDesenhoIndustrial(idNit, page, pageSize);
+        return desenhoIndustrialService.getAllDesenhoIndustrial(idNit, page, pageSize, isAscending);
     }
 
     @GET
@@ -56,9 +57,10 @@ public class DesenhoIndustrialResource {
     public List<DesenhoIndustrialResponseDTO> getAllFiltradoPorTitulo(@PathParam("id") Long idNit,
                                                                                 @PathParam("titulo") String titulo,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return desenhoIndustrialService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize);
+        return desenhoIndustrialService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
     }
 
     @POST

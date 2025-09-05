@@ -16,7 +16,7 @@ public interface PatenteService {
 
     void deletarPatente(String cnpj, Long idPatente);
 
-    List<PatenteResponseDTO> getAllPatente(Long idNit, int page, int pageSize);
+    List<PatenteResponseDTO> getAllPatente(Long idNit, int page, int pageSize, Boolean isAscending);
 
-    List<PatenteResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize);
+    List<PatenteResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending);
 }

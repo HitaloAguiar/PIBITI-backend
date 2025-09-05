@@ -34,8 +34,6 @@ public class CultivarServiceImpl implements CultivarService {
     @Inject
     Validator validator;
 
-    Sort sort = Sort.by("idCultivar").ascending();
-
     @Override
     public CultivarResponseDTO getCultivar(Long id) {
         Cultivar cultivar = cultivarRepository.findById(id);
@@ -110,13 +108,33 @@ public class CultivarServiceImpl implements CultivarService {
     }
 
     @Override
-    public List<CultivarResponseDTO> getAllCultivar(Long idNit, int page, int pageSize) {
+    public List<CultivarResponseDTO> getAllCultivar(Long idNit, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idCultivar").ascending();
+        } else {
+
+            sort = Sort.by("idCultivar").descending();
+        }
 
         return cultivarRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(CultivarResponseDTO::new).toList();
     }
 
     @Override
-    public List<CultivarResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+    public List<CultivarResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idCultivar").ascending();
+        } else {
+
+            sort = Sort.by("idCultivar").descending();
+        }
 
         return cultivarRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(CultivarResponseDTO::new).toList();
     }

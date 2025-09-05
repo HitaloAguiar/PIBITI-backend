@@ -34,8 +34,6 @@ public class PatenteServiceImpl implements PatenteService {
     @Inject
     Validator validator;
 
-    Sort sort = Sort.by("idPatente").ascending();
-
     @Override
     public PatenteResponseDTO getPatente(Long id) {
         Patente patente = patenteRepository.findById(id);
@@ -116,13 +114,33 @@ public class PatenteServiceImpl implements PatenteService {
     }
 
     @Override
-    public List<PatenteResponseDTO> getAllPatente(Long idNit, int page, int pageSize) {
+    public List<PatenteResponseDTO> getAllPatente(Long idNit, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idPatente").ascending();
+        } else {
+
+            sort = Sort.by("idPatente").descending();
+        }
 
         return patenteRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();
     }
 
     @Override
-    public List<PatenteResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize) {
+    public List<PatenteResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idPatente").ascending();
+        } else {
+
+            sort = Sort.by("idPatente").descending();
+        }
 
         return patenteRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();
     }

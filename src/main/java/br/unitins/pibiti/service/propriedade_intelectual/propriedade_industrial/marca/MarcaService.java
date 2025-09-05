@@ -16,7 +16,7 @@ public interface MarcaService {
 
     void deletarMarca(String cnpj, Long idMarca);
 
-    List<MarcaResponseDTO> getAllMarca(Long idNit, int page, int pageSize);
+    List<MarcaResponseDTO> getAllMarca(Long idNit, int page, int pageSize, Boolean isAscending);
 
-    List<MarcaResponseDTO> getAllFiltradoPorNome(Long idNit, String nome, int page, int pageSize);
+    List<MarcaResponseDTO> getAllFiltradoPorNome(Long idNit, String nome, int page, int pageSize, Boolean isAscending);
 }

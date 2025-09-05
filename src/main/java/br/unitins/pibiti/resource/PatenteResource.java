@@ -46,9 +46,10 @@ public class PatenteResource {
     @Path("/nit/{id}")
     public List<PatenteResponseDTO> getAll(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return patenteService.getAllPatente(idNit, page, pageSize);
+        return patenteService.getAllPatente(idNit, page, pageSize, isAscending);
     }
 
     @GET
@@ -56,9 +57,10 @@ public class PatenteResource {
     public List<PatenteResponseDTO> getAllFiltradoPorTitulo(@PathParam("id") Long idNit,
                                                                                 @PathParam("titulo") String titulo,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return patenteService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize);
+        return patenteService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
     }
 
     @POST

@@ -16,7 +16,7 @@ public interface RegistroProgramaComputadorService {
 
     void deletarRegistroProgramaComputador(String cnpj, Long idRegistroProgramaComputador);
 
-    List<RegistroProgramaComputadorResponseDTO> getAllRegistroProgramaComputador(Long idNit, int page, int pageSize);
+    List<RegistroProgramaComputadorResponseDTO> getAllRegistroProgramaComputador(Long idNit, int page, int pageSize, Boolean isAscending);
 
-    List<RegistroProgramaComputadorResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize);
+    List<RegistroProgramaComputadorResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending);
 }

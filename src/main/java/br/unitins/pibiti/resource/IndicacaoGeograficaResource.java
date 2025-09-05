@@ -46,9 +46,10 @@ public class IndicacaoGeograficaResource {
     @Path("/nit/{id}")
     public List<IndicacaoGeograficaResponseDTO> getAll(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return indicacaoGeograficaService.getAllIndicacaoGeografica(idNit, page, pageSize);
+        return indicacaoGeograficaService.getAllIndicacaoGeografica(idNit, page, pageSize, isAscending);
     }
 
     @GET
@@ -56,9 +57,10 @@ public class IndicacaoGeograficaResource {
     public List<IndicacaoGeograficaResponseDTO> getAllFiltradoPorTitulo(@PathParam("id") Long idNit,
                                                                                 @PathParam("titulo") String titulo,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return indicacaoGeograficaService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize);
+        return indicacaoGeograficaService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
     }
 
     @POST

@@ -16,7 +16,7 @@ public interface ContratoFranquiaService {
 
     void deletarContratoFranquia(String cnpj, Long idContratoFranquia);
 
-    List<ContratoFranquiaResponseDTO> getAllContratoFranquia(Long idNit, int page, int pageSize);
+    List<ContratoFranquiaResponseDTO> getAllContratoFranquia(Long idNit, int page, int pageSize, Boolean isAscending);
 
-    List<ContratoFranquiaResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize);
+    List<ContratoFranquiaResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending);
 }

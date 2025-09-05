@@ -46,9 +46,10 @@ public class TopografiaCircuitoIntegradoResource {
     @Path("/nit/{id}")
     public List<TopografiaCircuitoIntegradoResponseDTO> getAll(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return topografiaCircuitoIntegradoService.getAllTopografiaCircuitoIntegrado(idNit, page, pageSize);
+        return topografiaCircuitoIntegradoService.getAllTopografiaCircuitoIntegrado(idNit, page, pageSize, isAscending);
     }
 
     @GET
@@ -56,9 +57,10 @@ public class TopografiaCircuitoIntegradoResource {
     public List<TopografiaCircuitoIntegradoResponseDTO> getAllFiltradoPorTitulo(@PathParam("id") Long idNit,
                                                                                 @PathParam("titulo") String titulo,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return topografiaCircuitoIntegradoService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize);
+        return topografiaCircuitoIntegradoService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
     }
 
     @POST

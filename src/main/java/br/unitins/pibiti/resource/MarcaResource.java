@@ -46,9 +46,10 @@ public class MarcaResource {
     @Path("/nit/{id}")
     public List<MarcaResponseDTO> getAll(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return marcaService.getAllMarca(idNit, page, pageSize);
+        return marcaService.getAllMarca(idNit, page, pageSize, isAscending);
     }
 
     @GET
@@ -56,9 +57,10 @@ public class MarcaResource {
     public List<MarcaResponseDTO> getAllFiltradoPorNome(@PathParam("id") Long idNit,
                                                                                 @PathParam("nome") String nome,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
-                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return marcaService.getAllFiltradoPorNome(idNit, nome, page, pageSize);
+        return marcaService.getAllFiltradoPorNome(idNit, nome, page, pageSize, isAscending);
     }
 
     @POST
