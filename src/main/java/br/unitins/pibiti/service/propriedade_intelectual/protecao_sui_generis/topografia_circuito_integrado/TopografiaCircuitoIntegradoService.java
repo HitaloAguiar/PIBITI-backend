@@ -16,7 +16,11 @@ public interface TopografiaCircuitoIntegradoService {
 
     void deletarTopografiaCircuitoIntegrado(String cnpj, Long idTopografiaCircuitoIntegrado);
 
-    List<TopografiaCircuitoIntegradoResponseDTO> getAllTopografiaCircuitoIntegrado(Long idNit, int page, int pageSize, Boolean isAscending);
+    List<TopografiaCircuitoIntegradoResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending);
 
-    List<TopografiaCircuitoIntegradoResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending);
+    List<TopografiaCircuitoIntegradoResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending);
+
+    List<TopografiaCircuitoIntegradoResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending);
+
+    List<TopografiaCircuitoIntegradoResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending);
 }

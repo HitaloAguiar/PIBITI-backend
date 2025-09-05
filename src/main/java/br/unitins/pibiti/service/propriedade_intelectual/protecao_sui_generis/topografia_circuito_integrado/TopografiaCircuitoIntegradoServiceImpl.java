@@ -109,7 +109,7 @@ public class TopografiaCircuitoIntegradoServiceImpl implements TopografiaCircuit
     }
 
     @Override
-    public List<TopografiaCircuitoIntegradoResponseDTO> getAllTopografiaCircuitoIntegrado(Long idNit, int page, int pageSize, Boolean isAscending) {
+    public List<TopografiaCircuitoIntegradoResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -125,7 +125,7 @@ public class TopografiaCircuitoIntegradoServiceImpl implements TopografiaCircuit
     }
 
     @Override
-    public List<TopografiaCircuitoIntegradoResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+    public List<TopografiaCircuitoIntegradoResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -138,6 +138,38 @@ public class TopografiaCircuitoIntegradoServiceImpl implements TopografiaCircuit
         }
 
         return topografiaCircuitoIntegradoRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(TopografiaCircuitoIntegradoResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<TopografiaCircuitoIntegradoResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
+        } else {
+
+            sort = Sort.by("idTopografiaCircuitoIntegrado").descending();
+        }
+
+        return topografiaCircuitoIntegradoRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(TopografiaCircuitoIntegradoResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<TopografiaCircuitoIntegradoResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
+        } else {
+
+            sort = Sort.by("idTopografiaCircuitoIntegrado").descending();
+        }
+
+        return topografiaCircuitoIntegradoRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(TopografiaCircuitoIntegradoResponseDTO::new).toList();
     }
 
     private void validar(TopografiaCircuitoIntegradoDTO topografiaCircuitoIntegradoDTO) throws ConstraintViolationException {

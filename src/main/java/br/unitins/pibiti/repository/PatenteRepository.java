@@ -25,4 +25,17 @@ public class PatenteRepository implements PanacheRepository<Patente> {
 
         return find("nit = ?1 AND UPPER(titulo) LIKE ?2", sort, nit, "%" + titulo.toUpperCase() + "%");
     }
+
+    public PanacheQuery<Patente> findAllPublico(Sort sort) {
+
+        return find("visualizacaoPublica = ?1", sort, true);
+    }
+
+    public PanacheQuery<Patente> findAllPublicoFiltradoTitulo(Sort sort, String titulo) {
+
+        if (titulo == null)
+            return null;
+
+        return find("visualizacaoPublica = ?1 AND UPPER(titulo) LIKE ?2", sort, true, "%" + titulo.toUpperCase() + "%");
+    }
 }

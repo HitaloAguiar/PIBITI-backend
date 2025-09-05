@@ -25,4 +25,17 @@ public class TopografiaCircuitoIntegradoRepository implements PanacheRepository<
 
         return find("nit = ?1 AND UPPER(titulo) LIKE ?2", sort, nit, "%" + titulo.toUpperCase() + "%");
     }
+
+    public PanacheQuery<TopografiaCircuitoIntegrado> findAllPublico(Sort sort) {
+
+        return find("visualizacaoPublica = ?1", sort, true);
+    }
+
+    public PanacheQuery<TopografiaCircuitoIntegrado> findAllPublicoFiltradoTitulo(Sort sort, String titulo) {
+
+        if (titulo == null)
+            return null;
+
+        return find("visualizacaoPublica = ?1 AND UPPER(titulo) LIKE ?2", sort, true, "%" + titulo.toUpperCase() + "%");
+    }
 }

@@ -1,5 +1,9 @@
 package br.unitins.pibiti.resource;
 
+import java.util.List;
+
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
 import br.unitins.pibiti.application.Result;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.patente.PatenteDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.patente.PatenteResponseDTO;
@@ -21,10 +25,6 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.util.List;
-
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
 @Path("/propriedades-intelectuais/patentes")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -43,13 +43,31 @@ public class PatenteResource {
     }
 
     @GET
+    public List<PatenteResponseDTO> getAllPublico(@QueryParam("page") @DefaultValue("0") int page,
+                                                                        @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                        @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
+
+        return patenteService.getAllPublico(page, pageSize, isAscending);
+    }
+
+    @GET
+    @Path("/filtrado-por/{titulo}")
+    public List<PatenteResponseDTO> getAllPublicoFiltradoPorTitulo(@PathParam("titulo") String titulo,
+                                                                                @QueryParam("page") @DefaultValue("0") int page,
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
+
+        return patenteService.getAllPublicoFiltradoPorTitulo(titulo, page, pageSize, isAscending);
+    }
+
+    @GET
     @Path("/nit/{id}")
-    public List<PatenteResponseDTO> getAll(@PathParam("id") Long idNit,
+    public List<PatenteResponseDTO> getAllByNit(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return patenteService.getAllPatente(idNit, page, pageSize, isAscending);
+        return patenteService.getAllByNit(idNit, page, pageSize, isAscending);
     }
 
     @GET
@@ -60,7 +78,7 @@ public class PatenteResource {
                                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return patenteService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
+        return patenteService.getAllByNitFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
     }
 
     @POST

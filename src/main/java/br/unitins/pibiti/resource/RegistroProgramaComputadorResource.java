@@ -1,5 +1,9 @@
 package br.unitins.pibiti.resource;
 
+import java.util.List;
+
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
 import br.unitins.pibiti.application.Result;
 import br.unitins.pibiti.dto.propriedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorResponseDTO;
@@ -21,10 +25,6 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.util.List;
-
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
 @Path("/propriedades-intelectuais/registros-programa-computador")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -43,13 +43,31 @@ public class RegistroProgramaComputadorResource {
     }
 
     @GET
+    public List<RegistroProgramaComputadorResponseDTO> getAllPublico(@QueryParam("page") @DefaultValue("0") int page,
+                                                                        @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                        @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
+
+        return registroProgramaService.getAllPublico(page, pageSize, isAscending);
+    }
+
+    @GET
+    @Path("/filtrado-por/{titulo}")
+    public List<RegistroProgramaComputadorResponseDTO> getAllPublicoFiltradoPorTitulo(@PathParam("titulo") String titulo,
+                                                                                @QueryParam("page") @DefaultValue("0") int page,
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
+
+        return registroProgramaService.getAllPublicoFiltradoPorTitulo(titulo, page, pageSize, isAscending);
+    }
+
+    @GET
     @Path("/nit/{id}")
-    public List<RegistroProgramaComputadorResponseDTO> getAll(@PathParam("id") Long idNit,
+    public List<RegistroProgramaComputadorResponseDTO> getAllByNit(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return registroProgramaService.getAllRegistroProgramaComputador(idNit, page, pageSize, isAscending);
+        return registroProgramaService.getAllByNit(idNit, page, pageSize, isAscending);
     }
 
     @GET
@@ -60,7 +78,7 @@ public class RegistroProgramaComputadorResource {
                                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return registroProgramaService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
+        return registroProgramaService.getAllByNitFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
     }
 
     @POST

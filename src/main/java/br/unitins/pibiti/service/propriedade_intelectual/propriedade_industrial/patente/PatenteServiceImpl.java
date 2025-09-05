@@ -1,6 +1,9 @@
 package br.unitins.pibiti.service.propriedade_intelectual.propriedade_industrial.patente;
 
 
+import java.util.List;
+import java.util.Set;
+
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.patente.PatenteDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.patente.PatenteResponseDTO;
 import br.unitins.pibiti.enums.TipoPatente;
@@ -18,9 +21,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
-
-import java.util.List;
-import java.util.Set;
 
 @ApplicationScoped
 public class PatenteServiceImpl implements PatenteService {
@@ -114,7 +114,7 @@ public class PatenteServiceImpl implements PatenteService {
     }
 
     @Override
-    public List<PatenteResponseDTO> getAllPatente(Long idNit, int page, int pageSize, Boolean isAscending) {
+    public List<PatenteResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -130,7 +130,7 @@ public class PatenteServiceImpl implements PatenteService {
     }
 
     @Override
-    public List<PatenteResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+    public List<PatenteResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -143,6 +143,38 @@ public class PatenteServiceImpl implements PatenteService {
         }
 
         return patenteRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<PatenteResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
+        } else {
+
+            sort = Sort.by("idTopografiaCircuitoIntegrado").descending();
+        }
+
+        return patenteRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<PatenteResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
+        } else {
+
+            sort = Sort.by("idTopografiaCircuitoIntegrado").descending();
+        }
+
+        return patenteRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();
     }
 
     private void validar(PatenteDTO patenteDTO) throws ConstraintViolationException {

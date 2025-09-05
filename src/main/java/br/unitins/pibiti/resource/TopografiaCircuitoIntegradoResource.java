@@ -43,13 +43,31 @@ public class TopografiaCircuitoIntegradoResource {
     }
 
     @GET
+    public List<TopografiaCircuitoIntegradoResponseDTO> getAllPublico(@QueryParam("page") @DefaultValue("0") int page,
+                                                                        @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                        @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
+
+        return topografiaCircuitoIntegradoService.getAllPublico(page, pageSize, isAscending);
+    }
+
+    @GET
+    @Path("/filtrado-por/{titulo}")
+    public List<TopografiaCircuitoIntegradoResponseDTO> getAllPublicoFiltradoPorTitulo(@PathParam("titulo") String titulo,
+                                                                                @QueryParam("page") @DefaultValue("0") int page,
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
+
+        return topografiaCircuitoIntegradoService.getAllPublicoFiltradoPorTitulo(titulo, page, pageSize, isAscending);
+    }
+
+    @GET
     @Path("/nit/{id}")
-    public List<TopografiaCircuitoIntegradoResponseDTO> getAll(@PathParam("id") Long idNit,
+    public List<TopografiaCircuitoIntegradoResponseDTO> getAllByNit(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return topografiaCircuitoIntegradoService.getAllTopografiaCircuitoIntegrado(idNit, page, pageSize, isAscending);
+        return topografiaCircuitoIntegradoService.getAllByNit(idNit, page, pageSize, isAscending);
     }
 
     @GET
@@ -60,7 +78,7 @@ public class TopografiaCircuitoIntegradoResource {
                                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return topografiaCircuitoIntegradoService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
+        return topografiaCircuitoIntegradoService.getAllByNitFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
     }
 
     @POST
