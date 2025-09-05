@@ -1,6 +1,9 @@
 package br.unitins.pibiti.service.propriedade_intelectual.protecao_sui_generis.cultivar;
 
 
+import java.util.List;
+import java.util.Set;
+
 import br.unitins.pibiti.dto.propriedade_intelectual.protecao_sui_generis.cultivar.CultivarDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.protecao_sui_generis.cultivar.CultivarResponseDTO;
 import br.unitins.pibiti.enums.CategoriaCultivar;
@@ -18,9 +21,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
-
-import java.util.List;
-import java.util.Set;
 
 @ApplicationScoped
 public class CultivarServiceImpl implements CultivarService {
@@ -108,7 +108,7 @@ public class CultivarServiceImpl implements CultivarService {
     }
 
     @Override
-    public List<CultivarResponseDTO> getAllCultivar(Long idNit, int page, int pageSize, Boolean isAscending) {
+    public List<CultivarResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -124,7 +124,7 @@ public class CultivarServiceImpl implements CultivarService {
     }
 
     @Override
-    public List<CultivarResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+    public List<CultivarResponseDTO> getAllByNit(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -137,6 +137,38 @@ public class CultivarServiceImpl implements CultivarService {
         }
 
         return cultivarRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(CultivarResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<CultivarResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idCultivar").ascending();
+        } else {
+
+            sort = Sort.by("idCultivar").descending();
+        }
+
+        return cultivarRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(CultivarResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<CultivarResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idCultivar").ascending();
+        } else {
+
+            sort = Sort.by("idCultivar").descending();
+        }
+
+        return cultivarRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(CultivarResponseDTO::new).toList();
     }
 
     private void validar(CultivarDTO cultivarDTO) throws ConstraintViolationException {

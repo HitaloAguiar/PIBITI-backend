@@ -16,7 +16,11 @@ public interface CultivarService {
 
     void deletarCultivar(String cnpj, Long idCultivar);
 
-    List<CultivarResponseDTO> getAllCultivar(Long idNit, int page, int pageSize, Boolean isAscending);
+    List<CultivarResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending);
 
-    List<CultivarResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending);
+    List<CultivarResponseDTO> getAllByNit(Long idNit, String titulo, int page, int pageSize, Boolean isAscending);
+
+    List<CultivarResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending);
+
+    List<CultivarResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending);
 }

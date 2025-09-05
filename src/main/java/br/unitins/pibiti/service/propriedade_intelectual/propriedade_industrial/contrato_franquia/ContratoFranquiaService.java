@@ -16,7 +16,11 @@ public interface ContratoFranquiaService {
 
     void deletarContratoFranquia(String cnpj, Long idContratoFranquia);
 
-    List<ContratoFranquiaResponseDTO> getAllContratoFranquia(Long idNit, int page, int pageSize, Boolean isAscending);
+    List<ContratoFranquiaResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending);
 
-    List<ContratoFranquiaResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending);
+    List<ContratoFranquiaResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending);
+
+    List<ContratoFranquiaResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending);
+
+    List<ContratoFranquiaResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending);
 }

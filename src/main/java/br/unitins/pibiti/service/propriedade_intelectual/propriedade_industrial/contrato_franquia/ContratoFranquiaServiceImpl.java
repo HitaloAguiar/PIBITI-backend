@@ -1,6 +1,9 @@
 package br.unitins.pibiti.service.propriedade_intelectual.propriedade_industrial.contrato_franquia;
 
 
+import java.util.List;
+import java.util.Set;
+
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.contato_franquia.ContratoFranquiaDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.contato_franquia.ContratoFranquiaResponseDTO;
 import br.unitins.pibiti.enums.TipoPropriedadeIntelectual;
@@ -17,9 +20,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
-
-import java.util.List;
-import java.util.Set;
 
 @ApplicationScoped
 public class ContratoFranquiaServiceImpl implements ContratoFranquiaService {
@@ -108,7 +108,7 @@ public class ContratoFranquiaServiceImpl implements ContratoFranquiaService {
     }
 
     @Override
-    public List<ContratoFranquiaResponseDTO> getAllContratoFranquia(Long idNit, int page, int pageSize, Boolean isAscending) {
+    public List<ContratoFranquiaResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -124,7 +124,7 @@ public class ContratoFranquiaServiceImpl implements ContratoFranquiaService {
     }
 
     @Override
-    public List<ContratoFranquiaResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+    public List<ContratoFranquiaResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -137,6 +137,38 @@ public class ContratoFranquiaServiceImpl implements ContratoFranquiaService {
         }
 
         return contratoFranquiaRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(ContratoFranquiaResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<ContratoFranquiaResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idContratoFranquia").ascending();
+        } else {
+
+            sort = Sort.by("idContratoFranquia").descending();
+        }
+
+        return contratoFranquiaRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(ContratoFranquiaResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<ContratoFranquiaResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idContratoFranquia").ascending();
+        } else {
+
+            sort = Sort.by("idContratoFranquia").descending();
+        }
+
+        return contratoFranquiaRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(ContratoFranquiaResponseDTO::new).toList();
     }
 
     private void validar(ContratoFranquiaDTO contratoFranquiaDTO) throws ConstraintViolationException {

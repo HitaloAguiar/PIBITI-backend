@@ -1,6 +1,9 @@
 package br.unitins.pibiti.service.propriedade_intelectual.propriedade_industrial.desenho_industrial;
 
 
+import java.util.List;
+import java.util.Set;
+
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.desenho_industrial.DesenhoIndustrialDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.desenho_industrial.DesenhoIndustrialResponseDTO;
 import br.unitins.pibiti.enums.TipoDesenhoIndustrial;
@@ -18,9 +21,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
-
-import java.util.List;
-import java.util.Set;
 
 @ApplicationScoped
 public class DesenhoIndustrialServiceImpl implements DesenhoIndustrialService {
@@ -111,7 +111,7 @@ public class DesenhoIndustrialServiceImpl implements DesenhoIndustrialService {
     }
 
     @Override
-    public List<DesenhoIndustrialResponseDTO> getAllDesenhoIndustrial(Long idNit, int page, int pageSize, Boolean isAscending) {
+    public List<DesenhoIndustrialResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -127,7 +127,7 @@ public class DesenhoIndustrialServiceImpl implements DesenhoIndustrialService {
     }
 
     @Override
-    public List<DesenhoIndustrialResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+    public List<DesenhoIndustrialResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
 
         Sort sort;
 
@@ -140,6 +140,38 @@ public class DesenhoIndustrialServiceImpl implements DesenhoIndustrialService {
         }
 
         return desenhoIndustrialRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(DesenhoIndustrialResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<DesenhoIndustrialResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idDesenhoIndustrial").ascending();
+        } else {
+
+            sort = Sort.by("idDesenhoIndustrial").descending();
+        }
+
+        return desenhoIndustrialRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(DesenhoIndustrialResponseDTO::new).toList();
+    }
+
+    @Override
+    public List<DesenhoIndustrialResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
+
+        Sort sort;
+
+        if (isAscending) {
+
+            sort = Sort.by("idDesenhoIndustrial").ascending();
+        } else {
+
+            sort = Sort.by("idDesenhoIndustrial").descending();
+        }
+
+        return desenhoIndustrialRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(DesenhoIndustrialResponseDTO::new).toList();
     }
 
     private void validar(DesenhoIndustrialDTO desenhoIndustrialDTO) throws ConstraintViolationException {

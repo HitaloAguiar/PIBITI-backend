@@ -1,5 +1,9 @@
 package br.unitins.pibiti.resource;
 
+import java.util.List;
+
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
 import br.unitins.pibiti.application.Result;
 import br.unitins.pibiti.dto.propriedade_intelectual.protecao_sui_generis.cultivar.CultivarDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.protecao_sui_generis.cultivar.CultivarResponseDTO;
@@ -21,10 +25,6 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.util.List;
-
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
 @Path("/propriedades-intelectuais/cultivares")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -43,24 +43,42 @@ public class CultivarResource {
     }
 
     @GET
+    public List<CultivarResponseDTO> getAllPublico(@QueryParam("page") @DefaultValue("0") int page,
+                                                                        @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                        @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
+
+        return cultivarService.getAllPublico(page, pageSize, isAscending);
+    }
+
+    @GET
+    @Path("/filtrado-por/{titulo}")
+    public List<CultivarResponseDTO> getAllPublicoFiltradoPorTitulo(@PathParam("titulo") String titulo,
+                                                                                @QueryParam("page") @DefaultValue("0") int page,
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
+
+        return cultivarService.getAllPublicoFiltradoPorTitulo(titulo, page, pageSize, isAscending);
+    }
+
+    @GET
     @Path("/nit/{id}")
-    public List<CultivarResponseDTO> getAll(@PathParam("id") Long idNit,
+    public List<CultivarResponseDTO> getAllByNit(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return cultivarService.getAllCultivar(idNit, page, pageSize, isAscending);
+        return cultivarService.getAllByNit(idNit, page, pageSize, isAscending);
     }
 
     @GET
     @Path("/nit/{id}/filtrado-por/{titulo}")
-    public List<CultivarResponseDTO> getAllFiltradoPorTitulo(@PathParam("id") Long idNit,
+    public List<CultivarResponseDTO> getAllByNitFiltradoPorTitulo(@PathParam("id") Long idNit,
                                                                                 @PathParam("titulo") String titulo,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
                                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return cultivarService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
+        return cultivarService.getAllByNit(idNit, titulo, page, pageSize, isAscending);
     }
 
     @POST

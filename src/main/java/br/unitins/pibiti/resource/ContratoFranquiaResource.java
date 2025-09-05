@@ -1,5 +1,9 @@
 package br.unitins.pibiti.resource;
 
+import java.util.List;
+
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
 import br.unitins.pibiti.application.Result;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.contato_franquia.ContratoFranquiaDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.contato_franquia.ContratoFranquiaResponseDTO;
@@ -21,10 +25,6 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.util.List;
-
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
 @Path("/propriedades-intelectuais/contratos-franquias")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -43,24 +43,42 @@ public class ContratoFranquiaResource {
     }
 
     @GET
+    public List<ContratoFranquiaResponseDTO> getAllPublico(@QueryParam("page") @DefaultValue("0") int page,
+                                                                        @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                        @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
+
+        return contratoFranquiaService.getAllPublico(page, pageSize, isAscending);
+    }
+
+    @GET
+    @Path("/filtrado-por/{titulo}")
+    public List<ContratoFranquiaResponseDTO> getAllPublicoFiltradoPorTitulo(@PathParam("titulo") String titulo,
+                                                                                @QueryParam("page") @DefaultValue("0") int page,
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
+
+        return contratoFranquiaService.getAllPublicoFiltradoPorTitulo(titulo, page, pageSize, isAscending);
+    }
+
+    @GET
     @Path("/nit/{id}")
-    public List<ContratoFranquiaResponseDTO> getAll(@PathParam("id") Long idNit,
+    public List<ContratoFranquiaResponseDTO> getAllByNit(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return contratoFranquiaService.getAllContratoFranquia(idNit, page, pageSize, isAscending);
+        return contratoFranquiaService.getAllByNit(idNit, page, pageSize, isAscending);
     }
 
     @GET
     @Path("/nit/{id}/filtrado-por/{titulo}")
-    public List<ContratoFranquiaResponseDTO> getAllFiltradoPorTitulo(@PathParam("id") Long idNit,
+    public List<ContratoFranquiaResponseDTO> getAllByNitFiltradoPorTitulo(@PathParam("id") Long idNit,
                                                                                 @PathParam("titulo") String titulo,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
                                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return contratoFranquiaService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
+        return contratoFranquiaService.getAllByNitFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
     }
 
     @POST

@@ -16,7 +16,11 @@ public interface DesenhoIndustrialService {
 
     void deletarDesenhoIndustrial(String cnpj, Long idDesenhoIndustrial);
 
-    List<DesenhoIndustrialResponseDTO> getAllDesenhoIndustrial(Long idNit, int page, int pageSize, Boolean isAscending);
+    List<DesenhoIndustrialResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending);
 
-    List<DesenhoIndustrialResponseDTO> getAllFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending);
+    List<DesenhoIndustrialResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending);
+
+    List<DesenhoIndustrialResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending);
+
+    List<DesenhoIndustrialResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending);
 }

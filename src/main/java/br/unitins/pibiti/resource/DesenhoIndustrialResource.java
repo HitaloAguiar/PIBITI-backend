@@ -1,5 +1,9 @@
 package br.unitins.pibiti.resource;
 
+import java.util.List;
+
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
 import br.unitins.pibiti.application.Result;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.desenho_industrial.DesenhoIndustrialDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.desenho_industrial.DesenhoIndustrialResponseDTO;
@@ -21,10 +25,6 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.util.List;
-
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
 @Path("/propriedades-intelectuais/desenhos-industriais")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -43,24 +43,42 @@ public class DesenhoIndustrialResource {
     }
 
     @GET
+    public List<DesenhoIndustrialResponseDTO> getAllPublico(@QueryParam("page") @DefaultValue("0") int page,
+                                                                        @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                        @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
+
+        return desenhoIndustrialService.getAllPublico(page, pageSize, isAscending);
+    }
+
+    @GET
+    @Path("/filtrado-por/{titulo}")
+    public List<DesenhoIndustrialResponseDTO> getAllPublicoFiltradoPorTitulo(@PathParam("titulo") String titulo,
+                                                                                @QueryParam("page") @DefaultValue("0") int page,
+                                                                                @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                                                                @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
+
+        return desenhoIndustrialService.getAllPublicoFiltradoPorTitulo(titulo, page, pageSize, isAscending);
+    }
+
+    @GET
     @Path("/nit/{id}")
-    public List<DesenhoIndustrialResponseDTO> getAll(@PathParam("id") Long idNit,
+    public List<DesenhoIndustrialResponseDTO> getAllByNit(@PathParam("id") Long idNit,
                                                                 @QueryParam("page") @DefaultValue("0") int page,
                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return desenhoIndustrialService.getAllDesenhoIndustrial(idNit, page, pageSize, isAscending);
+        return desenhoIndustrialService.getAllByNit(idNit, page, pageSize, isAscending);
     }
 
     @GET
     @Path("/nit/{id}/filtrado-por/{titulo}")
-    public List<DesenhoIndustrialResponseDTO> getAllFiltradoPorTitulo(@PathParam("id") Long idNit,
+    public List<DesenhoIndustrialResponseDTO> getAllByNitFiltradoPorTitulo(@PathParam("id") Long idNit,
                                                                                 @PathParam("titulo") String titulo,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
                                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) {
 
-        return desenhoIndustrialService.getAllFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
+        return desenhoIndustrialService.getAllByNitFiltradoPorTitulo(idNit, titulo, page, pageSize, isAscending);
     }
 
     @POST
