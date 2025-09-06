@@ -111,28 +111,15 @@ public class AvaliacaoMaturidadeServiceImpl implements AvaliacaoMaturidadeServic
         avaliacaoMaturidade.setImg(img);
         avaliacaoMaturidade.setNit(nit);
 
-        int imgArredondado = (int) Math.round(img);
+        int imgArredondado = img.intValue();
 
         switch (imgArredondado) {
-            case 5:
-                avaliacaoMaturidade.setNivelMaturidade("Consolidado");
-                break;
-            
-            case 4:
-                avaliacaoMaturidade.setNivelMaturidade("Maduro");
-                break;
-            
-            case 3:
-                avaliacaoMaturidade.setNivelMaturidade("Desenvolvido");
-                break;
-            
-            case 2:
-                avaliacaoMaturidade.setNivelMaturidade("Emergente");
-                break;
-        
-            default:
-                avaliacaoMaturidade.setNivelMaturidade("Inicial");
-                break;
+            case 5 -> avaliacaoMaturidade.setNivelMaturidade("Consolidado");
+            case 4 -> avaliacaoMaturidade.setNivelMaturidade("Maduro");
+            case 3 -> avaliacaoMaturidade.setNivelMaturidade("Desenvolvido");
+            case 2 -> avaliacaoMaturidade.setNivelMaturidade("Emergente");
+            case 1 -> avaliacaoMaturidade.setNivelMaturidade("Inicial");
+            default -> avaliacaoMaturidade.setNivelMaturidade("Imaturo");
         }
 
         avaliacaoMaturidadeRepository.persist(avaliacaoMaturidade);

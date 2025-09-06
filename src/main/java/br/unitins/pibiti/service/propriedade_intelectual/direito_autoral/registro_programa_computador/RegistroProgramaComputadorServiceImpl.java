@@ -1,6 +1,7 @@
 package br.unitins.pibiti.service.propriedade_intelectual.direito_autoral.registro_programa_computador;
 
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -11,6 +12,7 @@ import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.RegistroProgramaComputador;
 import br.unitins.pibiti.repository.NitRepository;
 import br.unitins.pibiti.repository.RegistroProgramaComputadorRepository;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -80,19 +82,26 @@ public class RegistroProgramaComputadorServiceImpl implements RegistroProgramaCo
 
     @Override
     public List<RegistroProgramaComputadorResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending ? Sort.by("idRegistroProgramaComputador").ascending()
+                : Sort.by("idRegistroProgramaComputador").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idRegistroProgramaComputador").ascending();
-        } else {
-
-            sort = Sort.by("idRegistroProgramaComputador").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return registroProgramaRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(RegistroProgramaComputadorResponseDTO::new).toList();
+        PanacheQuery<RegistroProgramaComputador> query = registroProgramaRepository.findListByNit(nit, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(RegistroProgramaComputadorResponseDTO::new)
+                .toList();
     }
+
 
     @Override
     public List<RegistroProgramaComputadorResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
