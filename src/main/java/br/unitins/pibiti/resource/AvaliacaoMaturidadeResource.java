@@ -74,10 +74,10 @@ public class AvaliacaoMaturidadeResource {
     }
 
     @GET
-    @Path("/historico-avaliacoes-com-filtro/{id}/{nivel_maturidade}")
+    @Path("/historico-avaliacoes-com-filtro/{id}")
     @Authenticated
     public List<AvaliacaoMaturidadeResponseDTO> getHistoricoAvaliacoesComFiltro(@PathParam("id") Long idNit,
-                                                                                @PathParam("nivel_maturidade") String nivelMaturidade,
+                                                                                @QueryParam("nivelMaturidade") @DefaultValue("") String nivelMaturidade,
                                                                                 @QueryParam("page") @DefaultValue("0") int page,
                                                                                 @QueryParam("pageSize") @DefaultValue("10") int pageSize,
                                                                                 @QueryParam("isAscending") @DefaultValue("false") Boolean isAscending) throws NotFoundException {

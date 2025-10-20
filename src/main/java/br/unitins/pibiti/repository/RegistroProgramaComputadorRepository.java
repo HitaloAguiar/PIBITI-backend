@@ -4,6 +4,7 @@ import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.RegistroProgramaComputador;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.panache.common.Parameters;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -27,8 +28,8 @@ public class RegistroProgramaComputadorRepository implements PanacheRepository<R
     }
 
     public PanacheQuery<RegistroProgramaComputador> findAllPublico(Sort sort) {
-
-        return find("visualizacaoPublica = ?1", sort, true);
+        return find("visualizacaoPublica = :publica", sort,
+                Parameters.with("publica", true));
     }
 
     public PanacheQuery<RegistroProgramaComputador> findAllPublicoFiltradoTitulo(Sort sort, String titulo) {

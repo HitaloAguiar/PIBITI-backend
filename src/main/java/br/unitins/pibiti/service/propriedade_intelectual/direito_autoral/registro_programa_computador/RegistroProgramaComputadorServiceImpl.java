@@ -1,10 +1,6 @@
 package br.unitins.pibiti.service.propriedade_intelectual.direito_autoral.registro_programa_computador;
 
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import br.unitins.pibiti.dto.propriedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.direito_autoral.registro_programa_computador.RegistroProgramaComputadorResponseDTO;
 import br.unitins.pibiti.enums.TipoPropriedadeIntelectual;
@@ -22,6 +18,10 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @ApplicationScoped
 public class RegistroProgramaComputadorServiceImpl implements RegistroProgramaComputadorService {
@@ -82,8 +82,9 @@ public class RegistroProgramaComputadorServiceImpl implements RegistroProgramaCo
 
     @Override
     public List<RegistroProgramaComputadorResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
-        Sort sort = isAscending ? Sort.by("idRegistroProgramaComputador").ascending()
-                : Sort.by("idRegistroProgramaComputador").descending();
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
         Nit nit = nitRepository.findById(idNit);
         if (nit == null) {
@@ -106,49 +107,67 @@ public class RegistroProgramaComputadorServiceImpl implements RegistroProgramaCo
     @Override
     public List<RegistroProgramaComputadorResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
 
-        Sort sort;
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        if (isAscending) {
-
-            sort = Sort.by("idRegistroProgramaComputador").ascending();
-        } else {
-
-            sort = Sort.by("idRegistroProgramaComputador").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return registroProgramaRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(RegistroProgramaComputadorResponseDTO::new).toList();
+        PanacheQuery<RegistroProgramaComputador> query = registroProgramaRepository.findListByNitAndTitulo(nit, titulo, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(RegistroProgramaComputadorResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<RegistroProgramaComputadorResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+        int adjustedPage = page > 0 ? page - 1 : 0;
 
-        Sort sort;
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        if (isAscending) {
+        PanacheQuery<RegistroProgramaComputador> query = registroProgramaRepository.findAllPublico(sort);
 
-            sort = Sort.by("idRegistroProgramaComputador").ascending();
-        } else {
-
-            sort = Sort.by("idRegistroProgramaComputador").descending();
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return registroProgramaRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(RegistroProgramaComputadorResponseDTO::new).toList();
+        return query.page(adjustedPage, pageSize)
+                .list()
+                .stream()
+                .map(RegistroProgramaComputadorResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<RegistroProgramaComputadorResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
+        int adjustedPage = page > 0 ? page - 1 : 0;
 
-        Sort sort;
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        if (isAscending) {
+        PanacheQuery<RegistroProgramaComputador> query = registroProgramaRepository.findAllPublicoFiltradoTitulo(sort, titulo);
 
-            sort = Sort.by("idRegistroProgramaComputador").ascending();
-        } else {
-
-            sort = Sort.by("idRegistroProgramaComputador").descending();
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return registroProgramaRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(RegistroProgramaComputadorResponseDTO::new).toList();
+        return query.page(adjustedPage, pageSize)
+                .list()
+                .stream()
+                .map(RegistroProgramaComputadorResponseDTO::new)
+                .toList();
     }
 
     private RegistroProgramaComputador inserirDadosDTONaClasse(RegistroProgramaComputadorDTO registroProgramaDTO, RegistroProgramaComputador registroPrograma) {

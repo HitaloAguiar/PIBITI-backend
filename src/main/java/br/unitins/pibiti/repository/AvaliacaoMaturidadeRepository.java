@@ -36,11 +36,15 @@ public class AvaliacaoMaturidadeRepository implements PanacheRepository<Avaliaca
     }
 
     public PanacheQuery<AvaliacaoMaturidade> findListByNitAndNivelMaturidade(Nit nit, String nivelMaturidade, Sort sort) {
-
-        if (nit == null || nivelMaturidade == null)
+        if (nit == null) {
             return null;
+        }
 
-        return find("nit = ?1 AND UPPER(nivelMaturidade) LIKE ?2", sort, nit, "%" + nivelMaturidade.toUpperCase() + "%");
+        if (nivelMaturidade == null || nivelMaturidade.isBlank()) {
+            return find("nit = ?1", sort, nit);
+        } else {
+            return find("nit = ?1 AND UPPER(nivelMaturidade) LIKE ?2", sort, nit, "%" + nivelMaturidade.toUpperCase() + "%");
+        }
     }
 
     public List<AvaliacaoMaturidade> findTop3ByNitOrderByImgDesc(Nit nit) {
