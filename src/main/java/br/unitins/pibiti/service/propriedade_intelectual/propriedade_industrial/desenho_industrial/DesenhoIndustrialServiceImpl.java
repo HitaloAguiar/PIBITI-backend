@@ -1,9 +1,6 @@
 package br.unitins.pibiti.service.propriedade_intelectual.propriedade_industrial.desenho_industrial;
 
 
-import java.util.List;
-import java.util.Set;
-
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.desenho_industrial.DesenhoIndustrialDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.desenho_industrial.DesenhoIndustrialResponseDTO;
 import br.unitins.pibiti.enums.TipoDesenhoIndustrial;
@@ -12,6 +9,7 @@ import br.unitins.pibiti.model.DesenhoIndustrial;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.repository.DesenhoIndustrialRepository;
 import br.unitins.pibiti.repository.NitRepository;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -21,6 +19,10 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @ApplicationScoped
 public class DesenhoIndustrialServiceImpl implements DesenhoIndustrialService {
@@ -112,66 +114,84 @@ public class DesenhoIndustrialServiceImpl implements DesenhoIndustrialService {
 
     @Override
     public List<DesenhoIndustrialResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idDesenhoIndustrial").ascending();
-        } else {
-
-            sort = Sort.by("idDesenhoIndustrial").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return desenhoIndustrialRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(DesenhoIndustrialResponseDTO::new).toList();
+        PanacheQuery<DesenhoIndustrial> query = desenhoIndustrialRepository.findListByNit(nit, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(DesenhoIndustrialResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<DesenhoIndustrialResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idDesenhoIndustrial").ascending();
-        } else {
-
-            sort = Sort.by("idDesenhoIndustrial").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return desenhoIndustrialRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(DesenhoIndustrialResponseDTO::new).toList();
+        PanacheQuery<DesenhoIndustrial> query = desenhoIndustrialRepository.findListByNitAndTitulo(nit, titulo, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(DesenhoIndustrialResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<DesenhoIndustrialResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idDesenhoIndustrial").ascending();
-        } else {
-
-            sort = Sort.by("idDesenhoIndustrial").descending();
+        PanacheQuery<DesenhoIndustrial> query = desenhoIndustrialRepository.findAllPublico(sort);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return desenhoIndustrialRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(DesenhoIndustrialResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(DesenhoIndustrialResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<DesenhoIndustrialResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idDesenhoIndustrial").ascending();
-        } else {
-
-            sort = Sort.by("idDesenhoIndustrial").descending();
+        PanacheQuery<DesenhoIndustrial> query = desenhoIndustrialRepository.findAllPublicoFiltradoTitulo(sort, titulo);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return desenhoIndustrialRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(DesenhoIndustrialResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(DesenhoIndustrialResponseDTO::new)
+                .toList();
     }
 
     private void validar(DesenhoIndustrialDTO desenhoIndustrialDTO) throws ConstraintViolationException {

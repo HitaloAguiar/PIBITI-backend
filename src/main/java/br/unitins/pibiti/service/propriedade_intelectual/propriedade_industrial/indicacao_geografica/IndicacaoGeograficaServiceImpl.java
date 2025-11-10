@@ -1,9 +1,6 @@
 package br.unitins.pibiti.service.propriedade_intelectual.propriedade_industrial.indicacao_geografica;
 
 
-import java.util.List;
-import java.util.Set;
-
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.indicacao_geografica.IndicacaoGeograficaDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.indicacao_geografica.IndicacaoGeograficaResponseDTO;
 import br.unitins.pibiti.enums.EspecieIndicacaoGeografica;
@@ -13,6 +10,7 @@ import br.unitins.pibiti.model.IndicacaoGeografica;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.repository.IndicacaoGeograficaRepository;
 import br.unitins.pibiti.repository.NitRepository;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -22,6 +20,10 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @ApplicationScoped
 public class IndicacaoGeograficaServiceImpl implements IndicacaoGeograficaService {
@@ -115,66 +117,84 @@ public class IndicacaoGeograficaServiceImpl implements IndicacaoGeograficaServic
 
     @Override
     public List<IndicacaoGeograficaResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idIndicacaoGeografica").ascending();
-        } else {
-
-            sort = Sort.by("idIndicacaoGeografica").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return indicacaoGeograficaRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(IndicacaoGeograficaResponseDTO::new).toList();
+        PanacheQuery<IndicacaoGeografica> query = indicacaoGeograficaRepository.findListByNit(nit, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(IndicacaoGeograficaResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<IndicacaoGeograficaResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idIndicacaoGeografica").ascending();
-        } else {
-
-            sort = Sort.by("idIndicacaoGeografica").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return indicacaoGeograficaRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(IndicacaoGeograficaResponseDTO::new).toList();
+        PanacheQuery<IndicacaoGeografica> query = indicacaoGeograficaRepository.findListByNitAndTitulo(nit, titulo, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(IndicacaoGeograficaResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<IndicacaoGeograficaResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idIndicacaoGeografica").ascending();
-        } else {
-
-            sort = Sort.by("idIndicacaoGeografica").descending();
+        PanacheQuery<IndicacaoGeografica> query = indicacaoGeograficaRepository.findAllPublico(sort);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return indicacaoGeograficaRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(IndicacaoGeograficaResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(IndicacaoGeograficaResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<IndicacaoGeograficaResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idIndicacaoGeografica").ascending();
-        } else {
-
-            sort = Sort.by("idIndicacaoGeografica").descending();
+        PanacheQuery<IndicacaoGeografica> query = indicacaoGeograficaRepository.findAllPublicoFiltradoTitulo(sort, titulo);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return indicacaoGeograficaRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(IndicacaoGeograficaResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(IndicacaoGeograficaResponseDTO::new)
+                .toList();
     }
 
     private void validar(IndicacaoGeograficaDTO indicacaoGeograficaDTO) throws ConstraintViolationException {

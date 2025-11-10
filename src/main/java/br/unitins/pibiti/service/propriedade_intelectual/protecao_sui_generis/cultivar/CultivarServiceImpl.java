@@ -1,9 +1,6 @@
 package br.unitins.pibiti.service.propriedade_intelectual.protecao_sui_generis.cultivar;
 
 
-import java.util.List;
-import java.util.Set;
-
 import br.unitins.pibiti.dto.propriedade_intelectual.protecao_sui_generis.cultivar.CultivarDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.protecao_sui_generis.cultivar.CultivarResponseDTO;
 import br.unitins.pibiti.enums.CategoriaCultivar;
@@ -12,6 +9,7 @@ import br.unitins.pibiti.model.Cultivar;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.repository.CultivarRepository;
 import br.unitins.pibiti.repository.NitRepository;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -21,6 +19,10 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @ApplicationScoped
 public class CultivarServiceImpl implements CultivarService {
@@ -109,66 +111,84 @@ public class CultivarServiceImpl implements CultivarService {
 
     @Override
     public List<CultivarResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idCultivar").ascending();
-        } else {
-
-            sort = Sort.by("idCultivar").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return cultivarRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(CultivarResponseDTO::new).toList();
+        PanacheQuery<Cultivar> query = cultivarRepository.findListByNit(nit, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(CultivarResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<CultivarResponseDTO> getAllByNit(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idCultivar").ascending();
-        } else {
-
-            sort = Sort.by("idCultivar").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return cultivarRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(CultivarResponseDTO::new).toList();
+        PanacheQuery<Cultivar> query = cultivarRepository.findListByNitAndTitulo(nit, titulo, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(CultivarResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<CultivarResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idCultivar").ascending();
-        } else {
-
-            sort = Sort.by("idCultivar").descending();
+        PanacheQuery<Cultivar> query = cultivarRepository.findAllPublico(sort);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return cultivarRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(CultivarResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(CultivarResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<CultivarResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
-
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idCultivar").ascending();
-        } else {
-
-            sort = Sort.by("idCultivar").descending();
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
+        
+        PanacheQuery<Cultivar> query = cultivarRepository.findAllPublicoFiltradoTitulo(sort, titulo);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return cultivarRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(CultivarResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(CultivarResponseDTO::new)
+                .toList();
     }
 
     private void validar(CultivarDTO cultivarDTO) throws ConstraintViolationException {

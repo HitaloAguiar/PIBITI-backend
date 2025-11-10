@@ -1,9 +1,6 @@
 package br.unitins.pibiti.service.propriedade_intelectual.propriedade_industrial.patente;
 
 
-import java.util.List;
-import java.util.Set;
-
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.patente.PatenteDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.patente.PatenteResponseDTO;
 import br.unitins.pibiti.enums.TipoPatente;
@@ -12,6 +9,7 @@ import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.Patente;
 import br.unitins.pibiti.repository.NitRepository;
 import br.unitins.pibiti.repository.PatenteRepository;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -21,6 +19,10 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @ApplicationScoped
 public class PatenteServiceImpl implements PatenteService {
@@ -115,66 +117,84 @@ public class PatenteServiceImpl implements PatenteService {
 
     @Override
     public List<PatenteResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idPatente").ascending();
-        } else {
-
-            sort = Sort.by("idPatente").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return patenteRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();
+        PanacheQuery<Patente> query = patenteRepository.findListByNit(nit, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(PatenteResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<PatenteResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idPatente").ascending();
-        } else {
-
-            sort = Sort.by("idPatente").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return patenteRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();
+        PanacheQuery<Patente> query = patenteRepository.findListByNitAndTitulo(nit, titulo, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(PatenteResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<PatenteResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idPatente").ascending();
-        } else {
-
-            sort = Sort.by("idPatente").descending();
+        PanacheQuery<Patente> query = patenteRepository.findAllPublico(sort);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return patenteRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(PatenteResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<PatenteResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idPatente").ascending();
-        } else {
-
-            sort = Sort.by("idPatente").descending();
+        PanacheQuery<Patente> query = patenteRepository.findAllPublicoFiltradoTitulo(sort, titulo);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return patenteRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(PatenteResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(PatenteResponseDTO::new)
+                .toList();
     }
 
     private void validar(PatenteDTO patenteDTO) throws ConstraintViolationException {

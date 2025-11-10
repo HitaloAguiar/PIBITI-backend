@@ -1,9 +1,6 @@
 package br.unitins.pibiti.service.propriedade_intelectual.propriedade_industrial.contrato_franquia;
 
 
-import java.util.List;
-import java.util.Set;
-
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.contato_franquia.ContratoFranquiaDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.contato_franquia.ContratoFranquiaResponseDTO;
 import br.unitins.pibiti.enums.TipoPropriedadeIntelectual;
@@ -11,6 +8,7 @@ import br.unitins.pibiti.model.ContratoFranquia;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.repository.ContratoFranquiaRepository;
 import br.unitins.pibiti.repository.NitRepository;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -20,6 +18,10 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @ApplicationScoped
 public class ContratoFranquiaServiceImpl implements ContratoFranquiaService {
@@ -109,66 +111,84 @@ public class ContratoFranquiaServiceImpl implements ContratoFranquiaService {
 
     @Override
     public List<ContratoFranquiaResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idContratoFranquia").ascending();
-        } else {
-
-            sort = Sort.by("idContratoFranquia").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return contratoFranquiaRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(ContratoFranquiaResponseDTO::new).toList();
+        PanacheQuery<ContratoFranquia> query = contratoFranquiaRepository.findListByNit(nit, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(ContratoFranquiaResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<ContratoFranquiaResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idContratoFranquia").ascending();
-        } else {
-
-            sort = Sort.by("idContratoFranquia").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return contratoFranquiaRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(ContratoFranquiaResponseDTO::new).toList();
+        PanacheQuery<ContratoFranquia> query = contratoFranquiaRepository.findListByNitAndTitulo(nit, titulo, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(ContratoFranquiaResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<ContratoFranquiaResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idContratoFranquia").ascending();
-        } else {
-
-            sort = Sort.by("idContratoFranquia").descending();
+        PanacheQuery<ContratoFranquia> query = contratoFranquiaRepository.findAllPublico(sort);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return contratoFranquiaRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(ContratoFranquiaResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(ContratoFranquiaResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<ContratoFranquiaResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idContratoFranquia").ascending();
-        } else {
-
-            sort = Sort.by("idContratoFranquia").descending();
+        PanacheQuery<ContratoFranquia> query = contratoFranquiaRepository.findAllPublicoFiltradoTitulo(sort, titulo);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return contratoFranquiaRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(ContratoFranquiaResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(ContratoFranquiaResponseDTO::new)
+                .toList();
     }
 
     private void validar(ContratoFranquiaDTO contratoFranquiaDTO) throws ConstraintViolationException {

@@ -1,8 +1,5 @@
 package br.unitins.pibiti.service.propriedade_intelectual.propriedade_industrial.marca;
 
-import java.util.List;
-import java.util.Set;
-
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.marca.MarcaDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.propriedade_industrial.marca.MarcaResponseDTO;
 import br.unitins.pibiti.enums.NaturezaMarca;
@@ -11,6 +8,7 @@ import br.unitins.pibiti.model.Marca;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.repository.MarcaRepository;
 import br.unitins.pibiti.repository.NitRepository;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -20,6 +18,10 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @ApplicationScoped
 public class MarcaServiceImpl implements MarcaService {
@@ -114,66 +116,84 @@ public class MarcaServiceImpl implements MarcaService {
 
     @Override
     public List<MarcaResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("nome").ascending()
+                : Sort.by("nome").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idMarca").ascending();
-        } else {
-
-            sort = Sort.by("idMarca").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return marcaRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(MarcaResponseDTO::new).toList();
+        PanacheQuery<Marca> query = marcaRepository.findListByNit(nit, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(MarcaResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<MarcaResponseDTO> getAllByNitFiltradoPorNome(Long idNit, String nome, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("nome").ascending()
+                : Sort.by("nome").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idMarca").ascending();
-        } else {
-
-            sort = Sort.by("idMarca").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return marcaRepository.findListByNitAndNome(nitRepository.findById(idNit), nome, sort).page(page, pageSize).list().stream().map(MarcaResponseDTO::new).toList();
+        PanacheQuery<Marca> query = marcaRepository.findListByNitAndNome(nit, nome, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(MarcaResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<MarcaResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("nome").ascending()
+                : Sort.by("nome").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idMarca").ascending();
-        } else {
-
-            sort = Sort.by("idMarca").descending();
+        PanacheQuery<Marca> query = marcaRepository.findAllPublico(sort);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return marcaRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(MarcaResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(MarcaResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<MarcaResponseDTO> getAllPublicoFiltradoPorNome(String nome, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("nome").ascending()
+                : Sort.by("nome").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idMarca").ascending();
-        } else {
-
-            sort = Sort.by("idMarca").descending();
+        PanacheQuery<Marca> query = marcaRepository.findAllPublicoFiltradoNome(sort, nome);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return marcaRepository.findAllPublicoFiltradoNome(sort, nome).page(page, pageSize).list().stream().map(MarcaResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(MarcaResponseDTO::new)
+                .toList();
     }
 
     private void validar(MarcaDTO marcaDTO) throws ConstraintViolationException {

@@ -1,9 +1,6 @@
 package br.unitins.pibiti.service.propriedade_intelectual.direito_autoral.direito_autor;
 
 
-import java.util.List;
-import java.util.Set;
-
 import br.unitins.pibiti.dto.propriedade_intelectual.direito_autoral.direito_autor.DireitoAutorDTO;
 import br.unitins.pibiti.dto.propriedade_intelectual.direito_autoral.direito_autor.DireitoAutorResponseDTO;
 import br.unitins.pibiti.enums.Genero;
@@ -12,6 +9,7 @@ import br.unitins.pibiti.model.DireitoAutor;
 import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.repository.DireitoAutorRepository;
 import br.unitins.pibiti.repository.NitRepository;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -21,6 +19,10 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @ApplicationScoped
 public class DireitoAutorServiceImpl implements DireitoAutorService {
@@ -123,66 +125,85 @@ public class DireitoAutorServiceImpl implements DireitoAutorService {
 
     @Override
     public List<DireitoAutorResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idDireitoAutor").ascending();
-        } else {
-
-            sort = Sort.by("idDireitoAutor").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return direitoAutorRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(DireitoAutorResponseDTO::new).toList();
+        PanacheQuery<DireitoAutor> query = direitoAutorRepository.findListByNit(nit, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(DireitoAutorResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<DireitoAutorResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idDireitoAutor").ascending();
-        } else {
-
-            sort = Sort.by("idDireitoAutor").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return direitoAutorRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(DireitoAutorResponseDTO::new).toList();
+        PanacheQuery<DireitoAutor> query = direitoAutorRepository.findListByNitAndTitulo(nit, titulo, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(DireitoAutorResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<DireitoAutorResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
 
-        if (isAscending) {
-
-            sort = Sort.by("idDireitoAutor").ascending();
-        } else {
-
-            sort = Sort.by("idDireitoAutor").descending();
+        PanacheQuery<DireitoAutor> query = direitoAutorRepository.findAllPublico(sort);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return direitoAutorRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(DireitoAutorResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(DireitoAutorResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<DireitoAutorResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idDireitoAutor").ascending();
-        } else {
-
-            sort = Sort.by("idDireitoAutor").descending();
+        PanacheQuery<DireitoAutor> query = direitoAutorRepository.findAllPublicoFiltradoTitulo(sort, titulo);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return direitoAutorRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(DireitoAutorResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(DireitoAutorResponseDTO::new)
+                .toList();
     }
 
     private void validar(DireitoAutorDTO direitoAutorDTO) throws ConstraintViolationException {

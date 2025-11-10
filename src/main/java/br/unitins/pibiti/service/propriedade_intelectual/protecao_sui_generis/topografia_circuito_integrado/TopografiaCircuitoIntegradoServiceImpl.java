@@ -8,6 +8,7 @@ import br.unitins.pibiti.model.Nit;
 import br.unitins.pibiti.model.TopografiaCircuitoIntegrado;
 import br.unitins.pibiti.repository.NitRepository;
 import br.unitins.pibiti.repository.TopografiaCircuitoIntegradoRepository;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -18,6 +19,7 @@ import jakarta.validation.Validator;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -110,66 +112,84 @@ public class TopografiaCircuitoIntegradoServiceImpl implements TopografiaCircuit
 
     @Override
     public List<TopografiaCircuitoIntegradoResponseDTO> getAllByNit(Long idNit, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
-        } else {
-
-            sort = Sort.by("idTopografiaCircuitoIntegrado").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return topografiaCircuitoIntegradoRepository.findListByNit(nitRepository.findById(idNit), sort).page(page, pageSize).list().stream().map(TopografiaCircuitoIntegradoResponseDTO::new).toList();
+        PanacheQuery<TopografiaCircuitoIntegrado> query = topografiaCircuitoIntegradoRepository.findListByNit(nit, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(TopografiaCircuitoIntegradoResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<TopografiaCircuitoIntegradoResponseDTO> getAllByNitFiltradoPorTitulo(Long idNit, String titulo, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
-        } else {
-
-            sort = Sort.by("idTopografiaCircuitoIntegrado").descending();
+        Nit nit = nitRepository.findById(idNit);
+        if (nit == null) {
+            return Collections.emptyList();
         }
 
-        return topografiaCircuitoIntegradoRepository.findListByNitAndTitulo(nitRepository.findById(idNit), titulo, sort).page(page, pageSize).list().stream().map(TopografiaCircuitoIntegradoResponseDTO::new).toList();
+        PanacheQuery<TopografiaCircuitoIntegrado> query = topografiaCircuitoIntegradoRepository.findListByNitAndTitulo(nit, titulo, sort);
+        if (query == null) {
+            return Collections.emptyList();
+        }
+
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(TopografiaCircuitoIntegradoResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<TopografiaCircuitoIntegradoResponseDTO> getAllPublico(int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
-        } else {
-
-            sort = Sort.by("idTopografiaCircuitoIntegrado").descending();
+        PanacheQuery<TopografiaCircuitoIntegrado> query = topografiaCircuitoIntegradoRepository.findAllPublico(sort);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return topografiaCircuitoIntegradoRepository.findAllPublico(sort).page(page, pageSize).list().stream().map(TopografiaCircuitoIntegradoResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(TopografiaCircuitoIntegradoResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<TopografiaCircuitoIntegradoResponseDTO> getAllPublicoFiltradoPorTitulo(String titulo, int page, int pageSize, Boolean isAscending) {
+        Sort sort = isAscending
+                ? Sort.by("titulo").ascending()
+                : Sort.by("titulo").descending();
 
-        Sort sort;
-
-        if (isAscending) {
-
-            sort = Sort.by("idTopografiaCircuitoIntegrado").ascending();
-        } else {
-
-            sort = Sort.by("idTopografiaCircuitoIntegrado").descending();
+        PanacheQuery<TopografiaCircuitoIntegrado> query = topografiaCircuitoIntegradoRepository.findAllPublicoFiltradoTitulo(sort, titulo);
+        if (query == null) {
+            return Collections.emptyList();
         }
 
-        return topografiaCircuitoIntegradoRepository.findAllPublicoFiltradoTitulo(sort, titulo).page(page, pageSize).list().stream().map(TopografiaCircuitoIntegradoResponseDTO::new).toList();
+        return query.page(page - 1, pageSize)
+                .list()
+                .stream()
+                .map(TopografiaCircuitoIntegradoResponseDTO::new)
+                .toList();
     }
 
     private void validar(TopografiaCircuitoIntegradoDTO topografiaCircuitoIntegradoDTO) throws ConstraintViolationException {
